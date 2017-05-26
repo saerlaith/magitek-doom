@@ -7,7 +7,7 @@
 ACTOR Centaur : MagitekMonsterBase
 {
     Health 1000
-    Radius 255
+    Radius 25
     Height 70
     Mass 500
     Speed 12
