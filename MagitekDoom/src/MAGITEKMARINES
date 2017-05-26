@@ -1,0 +1,1326 @@
+ACTOR MarineMeter : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 100
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 100
+}
+
+ACTOR CapturedMarine Replaces Shotgun
+{
+    Radius 20
+    Height 48
+	deathheight 48
+    Speed 0
+	Mass 999999999999999999
+    Health 1000
+    gravity 0.5
+	Decal BloodSuper
+    +SHOOTABLE
+	+FLOORCLIP
+    +SOLID
+    Painchance 255
+    DamageType Taunt
+    damagefactor "Trample", 0.0
+    damagefactor "Cut", 10.0
+    damagefactor "Taunt", 0.0
+    damagefactor "headcut", 0.0
+    damagefactor "KillMe", 0.0
+    damagefactor "Fatality", 99.0
+    damagefactor "Melee", 99.0
+    damagefactor "Kick", 99.0
+	damagefactor "Extremepunches", 99.0
+	damagefactor "Cut", 99.0
+	damagefactor "Tear", 99.0
+	+NOTIMEFREEZE
+	DeathSound "*death"
+	PainSound "*pain50"
+    BloodType "Nashgore_Blood"
+    States
+    {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 1 A_Jump(125, "SpawnOther")
+		TNT1 A 1
+		Goto Spawn2
+	SpawnOther:
+		TNT1 A 1
+		TNT1 A 1 A_SpawnItemEx ("MagitekBarrel", 0)
+		Stop
+	Spawn2:
+	    TNT1 A 0
+        TNT1 A 0 A_CheckSight("Spawn3")
+        CAPT ABCB 15
+        TNT1 A 0
+        Loop
+
+    Spawn3:
+        CAPT A 5
+        Goto Spawn2
+
+    SetFree:
+    Death.Cut:
+    Death.Melee:
+	Death.SuperPunch:
+    Death.Fatality:
+    Death.Kick:
+	Death.Extremepunches:
+	Death.Cut:
+	Death.Tear:
+		TNT1 A 0 A_ChangeFLag ("NOPAIN", 1)
+        CAPT F 12
+        TNT1 A 0 A_NoBlocking
+        TNT1 A 0 A_SpawnItem("MagitekAlly")
+        CAPT N 1
+		TNT1 A 0 A_ChangeFLag ("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFLag ("SOLID", 0)
+        Stop
+    Pain:
+        CAPT P 1
+        CAPT P 5 A_Pain
+        Goto Spawn2
+    Death:
+        CAPT D 1 A_Scream
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItem ("MediumBloodSpot")
+        CAPT D -1
+        Stop
+    Death.Trample:
+	Crush:
+        TNT1 AAAAAAAA 0 A_CustomMissile ("NashGore_FlyingBloodTrail5", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 A 0 A_SpawnItem ("MediumBloodSpot")
+        CRS1 B 5
+        CRS1 B -1
+        Stop
+    Death.plasma:
+        TNT1 A 0
+	    TNT1 A 0 A_CustomMissile ("XDeathBurnedSkull", 32, 0, random (0, 360), 2, random (0, 160))
+		EXPL A 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+        TNT1 A 0
+        Stop
+    }
+}
+
+ACTOR CapturedMarine2 : CapturedMarine Replaces Chaingun
+{
+  
+}
+
+//// --------------------------------------------------------------------------
+//
+// Magitek Marines
+//
+// --------------------------------------------------------------------------
+
+actor MagitekAlly: DeadMarine
+{
+	Game Doom
+	States
+	{
+    Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(255,"Fire", "Ice", "Shock", "Earth")
+		Stop
+
+   Fire:
+		TNT1 A 1 A_SpawnItemEx ("MagitekFireMarine", 0, 0, 10, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+
+   Ice:
+		TNT1 A 1 A_SpawnItemEx ("MagitekIceMarine", 0, 0, 10, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+
+   Shock:
+		TNT1 A 1 A_SpawnItemEx ("MagitekShockMarine", 0, 0, 10, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+
+   Earth:
+		TNT1 A 1 A_SpawnItemEx ("MagitekEarthMarine", 0, 0, 10, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+
+    Death:
+        Stop
+	}
+}
+
+ACTOR MagitekFireMarine 4304
+{
+	//$Category Friendly NPCs
+	Translation "112:127=32:47"
+	Game Doom
+	Health 100
+	Radius 20
+	Height 45
+	Speed 12
+	PainChance 255
+	Monster
+	+FLOORCLIP
+	+FRIENDLY
+	+MISSILEMORE
+	+MISSILEEVENMORE
+	+DONTHURTSPECIES
+	+MTHRUSPECIES
+	+LOOKALLAROUND
+	+NOBLOCKMONST
+	+NOTIMEFREEZE
+	+NOBLOOD
+	MaxTargetRange 99999
+	Species "Marines"
+	damagefactor "Taunt", 0.0
+	damagefactor "Head", 0.0
+	damagefactor "MinorHead", 0.0
+	damageFactor "FireHead", 0.0
+	damageFactor "IceHead", 0.0
+	damageFactor "Kick", 0.0
+	damageFactor "KickHead", 0.0
+	damageFactor "Plasma2", 0.0
+	DamageFactor "Ice", 0
+	DamageFactor "Earth", 0
+	DamageFactor "Shrapnel", 0
+	damagefactor "CancelTeleportFog", 0.0
+	damagefactor "HelperMarineFatallity", 0.0
+	damagefactor "Leg", 0.0
+	damagefactor "Avoid", 0.0
+	damagefactor "SpawnMarine", 0.0
+	damagefactor "TeleportRemover", 0.0
+	DamageFactor "CauseObjectsToSplash", 0.0
+	damagefactor "GibRemoving", 0.0
+	damagefactor "KillMe", 0.0
+	damagefactor "FriendBullet", 0.0
+	DamageFactor "Holy", -4
+	DamageFactor "Decaptate", 0
+	DamageFactor "Charm", 0
+	DamageFactor "Extreme", 0
+	DamageFactor "DarkLaser", 0
+	DamageFactor "Laser", 0
+	DamageFactor "Defrost", 0
+	DamageFactor "ClusterDet", 0
+	DamageFactor "Desintegrate", 0
+	DamageFactor "Shock", 0
+	DamageFactor "BlueFlames", 0
+	DamageFactor "WeakHit", 0
+	damagefactor "Teleport", 999.0
+	SeeSound "none"
+	PainSound "Ally/Hurt"
+	ActiveSound "none"
+	Obituary "$Somehow, a friend killed you!"
+	States
+	{
+	Spawn:
+		PLAY A 1 A_Look
+		Goto See
+	See:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+		PLAY AABB 1 A_Chase
+		PLAY CCDD 1 A_Chase
+		TNT1 A 0 A_ClearTarget
+		Goto Spawn
+	Missile:
+		TNT1 A 0 A_Jump(64, "StrafeLeft", "StrafeRight")
+		// Assault Rifle
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("MarineMeter",99,"SpecialShot")
+		TNT1 A 0 A_AlertMonsters (2000)
+		PLAY E 2
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_PlaySound("BRifle/Fire", 1, .7)
+		PLAY F 2 A_CustomMissile("MagitekMarineTracer", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-3, 3))
+		PLAY E 2
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_PlaySound("BRifle/Fire", 1, .7)
+		PLAY F 2 A_CustomMissile("MagitekMarineTracer", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-3, 3))
+		PLAY E 2
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_PlaySound("BRifle/Fire", 1, .7)
+		PLAY F 5 A_CustomMissile("MagitekMarineTracer", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-3, 3))
+		PLAY E 5
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	SpecialShot:
+		TNT1 A 0 A_PlaySound("BRifle/Fire", 1, .7)
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_SpawnItemEx("MagicGlowFire",8,0,32,0,0,0,0,32,0)
+		PLAY E 8
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_PlaySound("BRifle/AltFire", 1, 1)
+		PLAY F 8 A_CustomMissile("MarineFireShot", 32, 0, random(-1, 1), 1 | 2 | 64, random(-1, 1))
+		PLAY E 8 A_Takeinventory("MarineMeter",99)
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	StrafeLeft:
+		PLAY A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		PLAY B 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		PLAY C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		PLAY D 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See
+		
+	StrafeRight:
+		PLAY A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		PLAY B 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		PLAY C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		PLAY D 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See	
+	FallBack:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		PLAY ABCD 4 A_Recoil(3)
+		Goto See
+		
+	Pain:
+		PLAY G 4
+		PLAY G 4 A_Pain
+		Goto See
+	Pain.Teleport:
+	Death.Teleport:
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 1)
+		GTIK A 0 A_Print("An Ally is awaiting release! (10 HP)")
+		Stop
+	Death:
+		PLAY H 5
+		TNT1 A 0 A_PlaySound("Ally/Dead", CHAN_NOPAUSE, 1, 0, ATTN_NONE)
+		GTIK A 0 A_Print("You killed your Ally!")
+		PLAY I 5 A_Scream
+		PLAY J 5 A_NoBlocking
+		PLAY K 5
+		TNT1 A 1 A_SpawnItem ("DeadFireMarine", 5)
+		Stop
+	}
+}
+
+
+ACTOR MagitekEarthMarine: MagitekFireMarine 4105
+{
+	Translation "112:127=64:79"
+	States
+	{
+	Spawn:
+		NPM1 A 1 A_Look
+		Goto See
+	See:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+		NPM1 AABB 1 A_Chase
+		NPM1 CCDD 1 A_Chase
+		TNT1 A 0 A_ClearTarget
+		Goto Spawn
+	Missile:
+	// Shotgun
+		TNT1 A 0
+		TNT1 A 0 A_Jump(64, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfInventory("MarineMeter",75,"SpecialShot")
+		NPM1 E 2 A_FaceTarget
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_PlaySound("weapons/sg", 1, .7)
+		TNT1 A 0 A_FaceTarget
+		TNT1 AAAAA 0 A_CustomMissile("MagitekMarineTracer", 32, 0, random(-5, 5), 1 | 2 | 32| 64, random(-5, 5))
+		NPM1 F 5 
+		NPM1 E 5 A_PlaySound("weapons/sgpump")
+		NPM1 EE 10
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	SpecialShot:
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_SpawnItemEx("MagicGlowEarth2",8,0,32,0,0,0,0,32,0)
+		NPM1 E 15 A_Takeinventory("MarineMeter",100)
+		TNT1 A 0 A_FaceTarget
+		NPM1 F 15 A_CustomMissile("MarineEarthShot", 32, 0, random(-1, 1), 1 | 2 | 32| 64, 10)
+		NPM1 E 5 A_FaceTarget
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See	
+	StrafeLeft:
+		NPM1 A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		NPM1 B 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		NPM1 C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		NPM1 D 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See
+		
+	StrafeRight:
+		NPM1 A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		NPM1 B 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		NPM1 C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		NPM1 D 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See	
+	FallBack:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		NPM1 ABCD 4 A_Recoil(3)
+		Goto See
+	Pain.Teleport:
+	Death.Teleport:
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 2)
+		GTIK A 0 A_Print("An Ally is awaiting release! (10 HP)")
+		Stop	
+	Pain:
+		NPM1 G 4
+		NPM1 G 4 A_Pain
+		Goto See
+	Death:
+		NPM1 H 5
+		TNT1 A 0 A_PlaySound("Ally/Dead", CHAN_NOPAUSE, 1, 0, ATTN_NONE)
+		GTIK A 0 A_Print("You killed your Ally!")
+		NPM1 I 5 A_Scream
+		NPM1 J 5 A_NoBlocking
+		NPM1 K 5
+		TNT1 A 1 A_SpawnItem ("DeadEarthMarine", 5)
+		Stop
+	}
+}
+
+
+ACTOR MagitekIceMarine: MagitekFireMarine 4106
+{
+	Translation "112:127=192:197"
+	States
+	{
+	Spawn:
+		NPM2 A 1 A_Look
+		Goto See
+	See:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+		NPM2 AABB 1 A_Chase
+		NPM2 CCDD 1 A_Chase
+		TNT1 A 0 A_ClearTarget
+		Goto Spawn
+	Missile:
+	// Plasma Gun
+		TNT1 A 0
+		TNT1 A 0 A_Jump(64, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfInventory("MarineMeter",50,"SpecialShot")
+		NPM2 E 8 A_FaceTarget
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_FaceTarget
+		NPM2 FFFF 2 A_CustomMissile("MagitekMarinePlasma", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-6, 6))
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile") 
+		NPM2 FFFF 2 A_CustomMissile("MagitekMarinePlasma", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-6, 6))
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 FFFF 2 A_CustomMissile("MagitekMarinePlasma", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-6, 6))
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 FFFF 2 A_CustomMissile("MagitekMarinePlasma", 32, 0, random(-3, 3), 1 | 2 | 32| 64, random(-6, 6))
+		NPM2 E 8 A_MonsterRefire(130, "AfterMissile")
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	AfterMissile:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(130, "StrafeLeft", "StrafeRight")
+		Goto See
+	SpecialShot:
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_SpawnItemEx("MagicGlowIce",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_PlaySound("BEPBEP")
+		NPM2 FFFFFFFF 2 A_CustomMissile("MarineIceShot", 32, 0, random(-15, 15), 1 | 2 | 32| 64, random(5, -5))
+		NPM2 E 8 A_Takeinventory("MarineMeter",10)
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 FFFFFFFF 2 A_CustomMissile("MarineIceShot", 32, 0, random(-15, 15), 1 | 2 | 32| 64, random(5, -5))
+		NPM2 E 8 A_Takeinventory("MarineMeter",10)
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 FFFFFFFF 2 A_CustomMissile("MarineIceShot", 32, 0, random(-15, 15), 1 | 2 | 32| 64, random(5, -5))
+		NPM2 E 8 A_Takeinventory("MarineMeter",10)
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 FFFFFFFF 2 A_CustomMissile("MarineIceShot", 32, 0, random(-15, 15), 1 | 2 | 32| 64, random(5, -5))
+		NPM2 E 8 A_Takeinventory("MarineMeter",10)
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 FFFFFFFF 2 A_CustomMissile("MarineIceShot", 32, 0, random(-15, 15), 1 | 2 | 32| 64, random(5, -5))
+		NPM2 E 8 A_Takeinventory("MarineMeter",10)
+		TNT1 A 0 A_MonsterRefire(130, "AfterMissile")
+		NPM2 E 8 
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	StrafeLeft:
+		NPM2 A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		NPM2 B 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		NPM2 C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		NPM2 D 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See
+		
+	StrafeRight:
+		NPM2 A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		NPM2 B 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		NPM2 C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		NPM2 D 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See	
+	FallBack:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		NPM2 ABCD 4 A_Recoil(3)
+		Goto See
+	Pain.Teleport:
+	Death.Teleport:
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 3)
+		GTIK A 0 A_Print("An Ally is awaiting release! (10 HP)")
+		Stop	
+	Pain:
+		NPM2 G 4
+		NPM2 G 4 A_Pain
+		Goto See
+	Death:
+		NPM2 H 5
+		TNT1 A 0 A_PlaySound("Ally/Dead", CHAN_NOPAUSE, 1, 0, ATTN_NONE)
+		GTIK A 0 A_Print("You killed your Ally!")
+		NPM2 I 5 A_Scream
+		NPM2 J 5 A_NoBlocking
+		NPM2 K 5
+		TNT1 A 1 A_SpawnItem ("DeadIceMarine", 5)
+		Stop
+	}
+}
+
+
+ACTOR MagitekShockMarine: MagitekFireMarine 4107
+{
+	Translation "112:127=161:166"
+	States
+	{
+	Spawn:
+		NPM3 A 1 A_Look
+		Goto See
+	See:
+		TNT1 A 0
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 0)
+		NPM3 AABB 1 A_Chase
+		NPM3 CCDD 1 A_Chase
+		TNT1 A 0 A_ClearTarget
+		Goto Spawn
+	Missile:
+	// Rocket Launcher
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("MarineMeter",99,"SpecialShot")
+		TNT1 A 0 A_Jump(64, "StrafeLeft", "StrafeRight")
+		NPM3 E 8 A_FaceTarget
+		TNT1 A 0 A_PlaySound("DSRFIRE")
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_FaceTarget
+		NPM3 F 8 A_CustomMissile("MagitekMarineRocket", 32, 0, random(-1, 1), 1 | 2 | 64, random(-1, 1))
+		NPM3 E 8
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	SpecialShot:
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_SpawnItemEx("MagicGlowShock",8,0,32,0,0,0,0,32,0)
+		NPM3 E 15 A_Takeinventory("MarineMeter",100)
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_PlaySound("Canon/Boom", 1)
+		NPM3 F 5 A_CustomMissile("MarineShockShot", 32, 0, 0, 1 | 2 | 64, 0)
+		NPM3 E 15 A_FaceTarget
+		TNT1 A 0 A_Jump(120, "StrafeLeft", "StrafeRight")
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+		Goto See
+	StrafeLeft:
+		NPM3 A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		NPM3 B 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		NPM3 C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		NPM3 D 3 ThrustThing(angle*256/360+192, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See
+		
+	StrafeRight:
+		NPM3 A 3 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		TNT1 A 0 A_Recoil(-3)
+		NPM3 B 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		NPM3 C 3 A_FaceTarget
+		TNT1 A 0 A_Recoil(-3)
+		NPM3 D 3 ThrustThing(angle*256/360+64, 11, 0, 0)
+		TNT1 A 0 A_JumpIfCloser(800, "FallBack")
+        Goto See	
+	FallBack:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_ChangeFLag("NODROPOFF", 1)
+		NPM3 ABCD 4 A_Recoil(3)
+		Goto See
+	Pain.Teleport:
+	Death.Teleport:
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 4)
+		GTIK A 0 A_Print("An Ally is awaiting release! (10 HP)")
+		Stop
+	Pain:
+		NPM3 G 4
+		NPM3 G 4 A_Pain
+		Goto See
+	Death:
+		NPM3 H 5
+		TNT1 A 0 A_PlaySound("Ally/Dead", CHAN_NOPAUSE, 1, 0, ATTN_NONE)
+		GTIK A 0 A_Print("You killed your Ally!")
+		NPM3 I 5 A_Scream
+		NPM3 J 5 A_NoBlocking
+		NPM3 K 5
+		TNT1 A 1 A_SpawnItem ("DeadShockMarine", 5)
+		Stop
+	}
+}
+
+
+
+
+
+
+
+
+Actor DeadFireMarine
+{
+	Translation "112:127=32:47"
+    Radius 0
+    Height 12
+    +SHOOTABLE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CORPSE
+	+FLOORCLIP
+	-SOLID
+	+THRUACTORS
+	damagefactor "Normal", 0.0
+	damagefactor "Crush", 100.0
+	damagefactor "Teleport", 100.0
+    Mass 1000
+    Health 100
+States
+    {
+    Spawn:
+        PLAY L -1
+        Stop
+	Pain.Teleport:
+	Death.Teleport:
+		PLAY KJI 5
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 1)
+		TNT1 A 0 A_GiveToTarget ("SpawnIsDead", 1)
+		GTIK A 0 A_Print("An Ally is awaiting resurrection! (50 HP)")
+		Stop
+    Death:		
+        TNT1 AAA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath3", 5, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAA 0 A_CustomMissile ("XDeath4", 5, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+Actor DeadEarthMarine : DeadFireMarine
+{
+Translation "112:127=64:79"
+States
+    {
+    Spawn:
+        NPM1 L -1
+        Stop
+	Pain.Teleport:
+	Death.Teleport:
+		NPM1 KJI 5
+		TNT1 A 0 A_GiveToTarget ("SpawnIsDead", 1)
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 2)
+		GTIK A 0 A_Print("An Ally is awaiting resurrection! (50 HP)")
+		Stop
+	}
+}
+
+Actor DeadIceMarine : DeadFireMarine
+{
+Translation "112:127=192:197"
+States
+    {
+    Spawn:
+        NPM2 L -1
+        Stop
+	Pain.Teleport:
+	Death.Teleport:
+		NPM2 KJI 5
+		TNT1 A 0 A_GiveToTarget ("SpawnIsDead", 1)
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 3)
+		GTIK A 0 A_Print("An Ally is awaiting resurrection! (50 HP)")
+		Stop
+	}
+}
+
+Actor DeadShockMarine : DeadFireMarine
+{
+Translation "112:127=161:166"
+States
+    {
+    Spawn:
+        NPM3 L -1
+        Stop
+	Pain.Teleport:
+	Death.Teleport:
+		NPM3 KJI 5
+		TNT1 A 0 A_GiveToTarget ("SpawnIsDead", 1)
+		TNT1 A 0 A_GiveToTarget ("SpawnWho", 4)
+		GTIK A 0 A_Print("An Ally is awaiting resurrection! (50 HP)")
+		Stop
+	}
+}
+
+
+
+
+
+
+
+actor MarineFireShot : FireShotgunShot
+{
+  damage (100)
+  DamageType "Laser"
+  species "Marines"
+  +THRUSPECIES
+  speed 120
+  states
+  {
+  Spawn:
+    FRSH AABB 1 Bright Light("HOMEFIREBALL") A_CustomMissile ("FireShotTrail", 0, 0, 0, 2 | 4, 0)
+    Loop
+  Death: Crash:
+	TNT1 AAA 0
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 A 0 A_PlaySound("custom/fireBreak", 2)
+	NRXP A 3 BRIGHT Light ("FIRESHOTPUFF") A_Fire(30)
+    NRXP BC 2 BRIGHT Light ("FIRESHOTPUFF") A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	NRXP DEF 2 BRIGHT Light ("FIRESHOTPUFF") A_Fire(30)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(8, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("SmallFlameTrails", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	stop
+  XDeath:
+    TNT1 A 0
+	TNT1 A 0 A_SeekerMissile(90,90,1,255,0)
+	SLSH A 0 A_PlaySound("custom/fireBreak", 1, 1.0)
+	TNT1 A 0 A_ChangeFlag("MISSILE", FALSE)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", FALSE)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", FALSE)
+	TNT1 A 0 A_ChangeFlag("SOLID", FALSE)
+	Goto Death+11
+  }
+}
+
+ACTOR MarineEarthShot : Rocket
+{
+    Radius 20
+	Height 10
+	Speed 25
+	Scale 1
+	Damage (50)
+	DamageType Laser
+	Projectile
+	BounceType "Doom" 
+    BounceFactor 0.5
+	BounceCount 10
+	-NOGRAVITY
+	+CANBOUNCEWATER
+	+USEBOUNCESTATE
+	Gravity 0.7
+	SeeSound "Weapons/GrenadeBounce"
+	DeathSound "FAREXPL"
+	species "Marines"
+	+THRUSPECIES
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52", 2, 0, random (70, 110), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		GRNP A 8 Bright A_SpawnItem("RedFlareSmall",0,0)
+		Loop
+	Death:
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		EXPL AAAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+		RBXP A 0 Bright A_CustomMissile ("ClusterDetonate", 0, 0, 0, 2 | 4, 0)
+		RBXP A 0 Bright A_Explode(100, 150, false)
+		RBXP A 3 Bright A_Explode(50, 100, true)
+		
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 0, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 45, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 90, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 135, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 180, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 225, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 270, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("MarineEarthTrail", 0, 0, 315, 2 | 4, random (10, 20))
+		
+		
+		RBXP A 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP CDE 3
+		Stop
+	Bounce.Actor:
+		Goto Death
+  }
+}
+
+ACTOR MarineEarthTrail
+{
+	Radius 6
+	Height 2
+	Speed 10
+	Damage 0
+	Projectile
+	DeathSound ""
+	Decal ""
+	+BLOODLESSIMPACT
+	+stepmissile
+	+nodropoff
+	+floorhugger
+	+ripper
+	maxdropoffheight 120
+	maxstepheight 120
+	species "Marines"
+	+THRUSPECIES
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 8
+		TNT1 A 0 A_Quake(6,40,0,200)
+		TNT1 A 0 A_SpawnItemEx("MarineEarthSpike",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 B 8
+		TNT1 A 0 A_Quake(6,40,0,200)
+		TNT1 A 0 A_SpawnItemEx("MarineEarthSpike",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 C 8
+		TNT1 A 0 A_Quake(6,40,0,200)
+		TNT1 A 0 A_SpawnItemEx("MarineEarthSpike",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 D 8
+		TNT1 A 0 A_Quake(6,40,0,200)
+		TNT1 A 0 A_SpawnItemEx("MarineEarthSpike",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 E 8
+		TNT1 A 0 A_Quake(6,40,0,200)
+		TNT1 A 0 A_SpawnItemEx("MarineEarthSpike",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		Goto Death
+	Death:
+		Stop
+	}
+}
+
+ACTOR MarineEarthSpike
+{
+	Scale 1
+	Radius 6
+	Height 8
+	Speed 0
+	Damage 0
+	DamageType "Earth"
+	Projectile
+	Renderstyle Translucent
+	Alpha 1
+	+FLOORHUGGER
+	+NOCLIP
+	+NOEXTREMEDEATH
+	species "Marines"
+	+THRUSPECIES
+	States
+	{
+	Spawn:
+		SPIK A 0
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		SPIK A 1 A_PlaySound("Magic/Earth2", 1, 1.0)
+		SPIK BCD 1
+		SPIK E 8 A_Explode(70,100,0, 50)
+		SPIK DCB 3 
+		SPIK A 100
+		SPIK AAAAAAAAAAAAAAAAAAAA 1 A_FadeOut(0.05)
+		Stop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor MarineIceShot
+{
+	Projectile
+  -DOOMBOUNCE
+  -NOCLIP
+  -NOBLOCKMAP
+  Damage (4)
+  Damagetype Ice
+  RenderStyle Add
+  Scale 0.3
+  Alpha 0.9
+  Speed 30
+  +RIPPER
+  -NOGRAVITY
+  Gravity 0.2
+  +NOEXTREMEDEATH
+  +THRUGHOST
+  +NODAMAGETHRUST
+  Decal "Scorch"
+  SeeSound "PLSTHRW"
+  DeathSound "imp/shotx"
+  Radius 2
+  Height 2
+  species "Marines"
+	+THRUSPECIES
+  States
+  {
+  Spawn:
+    FIR5 A 1 BRIGHT
+	FIR5 BBCCDDEEFFGGHHIIJJKKLLMMNNOOPP 1 Bright A_CustomMissile ("BluePlasmaFireMove", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAA 0 A_CustomMissile ("BluePlasmaFireBreak", 0, 0, random (0, 360), 2, random (0, 360))
+	Loop
+  Death:
+	TNT1 A 0
+	TNT1 A 0 A_Explode (15, 50, false, 0, 50)
+	TNT1 AAA 0 A_CustomMissile ("BluePlasmaFireBreak", 0, 0, random (0, 360), 2, random (0, 360))
+	FIR5 CEHJLNP 1 Bright A_CustomMissile ("BluePlasmaFireMove", 0, 0, random (0, 360), 2, random (0, 360))
+    Stop
+  XDeath:
+	FIR5 CEHJLNP 1 Bright A_CustomMissile ("BluePlasmaFireMove", 0, 0, random (0, 360), 2, random (0, 360))
+    Stop
+  }
+}
+
+actor MarineShockShot : FastProjectile
+{
+  Radius 2
+  Height 2
+  Projectile
+  Speed 300
+  Damage 0
+  Damagetype Laser
+  species "Marines"
+  +THRUSPECIES
+  +NODAMAGETHRUST
+  +FORCEPAIN
+  states
+  {
+  Spawn:
+	TNT1 A 1
+	Loop
+  Death:
+    SHOK A 0 bright A_AlertMonsters (1500)
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 A_RadiusThrust
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+	TNT1 AAAAA 1 
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 A_RadiusThrust
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 1 
+	TNT1 A 0 Radius_Quake (2, 10, 0, 120, 0)
+    TNT1 A 0 A_Explode(50, 150, false, 0, 150)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect2", 0, 0, 0, 2 | 4, 0)
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+    stop
+  }
+}
+
+Actor MagitekMarineTracer
+{
+	Projectile
+	+RANDOMIZE
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+    +BLOODSPLATTER 
+    +NOEXTREMEDEATH
+	damage (30)
+	radius 2
+	height 2
+	speed 60
+	renderstyle ADD
+	alpha 0.9
+	scale .5
+	DamageType "Laser"
+	species "Marines"
+	+THRUSPECIES
+	Translation "0:255=%[0,0,0]:[2.0,2.0,1.0]"
+		states
+		{
+		Spawn:
+			SCBL A 1 BRIGHT
+			Loop
+		Death:
+			TNT1 A 1 A_SpawnItem("HitPuff")
+			Stop
+		XDeath:
+			TNT1 A 0 A_GiveToTarget ("Health", 3)
+			TNT1 A 0 A_GiveToTarget ("MarineMeter", 9)
+			TNT1 A 0 A_CustomMissile ("GreenPLSHeal3", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+			TNT1 A 0 
+			Stop
+	}
+}
+
+Actor MagitekMarinePlasma
+{
+	Projectile
+	+RANDOMIZE
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+    +BLOODSPLATTER 
+    +NOEXTREMEDEATH
+	damage (15)
+	radius 2
+	height 2
+	speed 30
+	renderstyle ADD
+	alpha 0.9
+	scale .15
+	DamageType "Laser"
+	species "Marines"
+	seesound "PLSM9"
+	+THRUSPECIES
+		states
+		{
+		Spawn:
+			PBAL C 1 BRIGHT A_SpawnItem("PlasmaFlare",0,0)
+			Loop
+
+		Xdeath:
+			TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+			TNT1 A 0 A_GiveToTarget ("MarineMeter", 5)
+			TNT1 A 0 A_GiveToTarget ("Health", 3)
+			TNT1 A 0 A_CustomMissile ("GreenPLSHeal3", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+			TNT1 AAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+			TNT1 B 1
+			TNT1 B 4
+			TNT2 A 4 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+			Stop
+		Death:
+			TNT1 A 0 A_SpawnItemEx ("DetectFloorCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+			TNT1 A 0 A_Explode(10, 50, false, 0, 50)
+			TNT1 A 0 A_SpawnItemEx ("DetectCeilCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+			TNT1 B 1
+			TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+			TNT1 AAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+			TNT1 B 4	
+			TNT2 A 4 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+			Stop
+	}
+}
+
+Actor MagitekMarineRocket
+{
+	Projectile
+	+RANDOMIZE
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+    +BLOODSPLATTER 
+    +NOEXTREMEDEATH
+	damage (30)
+	radius 5
+	height 5
+	speed 30
+	renderstyle ADD
+	alpha 0.9
+	+EXTREMEDEATH
+	scale .15
+	DamageType "ExplosiveImpact"
+	species "Marines"
+	+THRUSPECIES
+		states
+		{
+		Spawn:
+	    MISL A 1 Bright 
+		TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater")
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+		
+		TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52Moving", 2, 0, random (160, 210), 2, random (-30, 30))
+		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		Loop
+	
+	SpawnUnderwater:
+	    TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		TNT1 A 0 A_SpawnItem("RocketFlare",-20,0)
+	    TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
+	    Goto Spawn
+	XDeath:
+		TNT1 A 0 A_GiveToTarget ("Health", 15)
+		TNT1 A 0 A_GiveToTarget ("MarineMeter", 25)
+		TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	Death: Crash:
+		TNT1 A 1 A_SpawnItem("MarineRocketExplosion")
+		Stop
+	}
+}
+
+actor MarineRocketExplosion : MNEFFECT
+{
+Projectile
+DamageType "Laser"
+Speed 1
+Gravity 0
+BounceType "Doom" 
+Alpha 0.7
+Scale .3
+states
+	{
+	Spawn:
+	Death:
+		EXPL A 0 Radius_Quake (2, 16, 0, 15, 0)
+		TNT1 A 0 A_Explode (90, 150, false)
+        TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 AA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL AAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 1
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		TNT1 AAA 3 A_CustomMissile ("HeavyExplosionSmoke", 2, 0, random (0, 360), 2, random (0, 360))
+		stop
+	}
+}
+
+actor SacrificeDamage : MNEFFECT
+{
+Projectile
+Speed 1
+Gravity 0
+BounceType "Doom" 
+DamageType "ExplosiveImpact"
+Alpha 0.7
+Scale .3
+states
+	{
+	Spawn:
+	Death:
+		TNT1 A 0
+		TNT1 A 1 A_Explode(5, 25)
+		stop
+	}
+}

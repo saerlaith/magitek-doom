@@ -1,0 +1,1382 @@
+//// --------------------------------------------------------------------------
+//
+// Ammo
+//
+// ----------------------------------------------------------------------------
+
+ACTOR N_HealthBonus: HealthBonus Replaces HealthBonus
+{
+	Inventory.Amount 2
+	Inventory.PickupMessage "+2 Health"
+	Scale 0.4
+	Inventory.MaxAmount 200
+	States
+	{
+	Spawn:
+		GRHL AAA 2 BRIGHT
+		Loop
+	}
+}
+
+ACTOR N_ArmorBonus : ArmorBonus Replaces ArmorBonus 
+{
+	Inventory.Amount 1
+	Inventory.PickupMessage "+1 Armor"
+	Scale 1.4
+	Armor.MaxSaveAmount 500
+	States
+	{
+	Spawn:
+		CSHD A 2 BRIGHT
+		TNT1 A 0 A_Jump(8, "LargeArmor")
+	Spawn2:
+		CSHD A 2 BRIGHT
+		Loop
+	LargeArmor:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile("DroppedArmor",20,0,0,2,random(45,80))
+		Stop
+	}
+}
+
+ACTOR N_Stimpack: Stimpack Replaces Stimpack
+{
+	Inventory.Amount 10
+	Inventory.PickupMessage "+10 Health"
+	Inventory.MaxAmount 100
+	Scale 0.5
+}
+
+ACTOR N_Medikit: Medikit Replaces Medikit
+{
+	Inventory.Amount 25
+	Inventory.PickupMessage "+25 Health"
+	Inventory.MaxAmount 100
+	Scale 0.5
+}
+
+actor FillUp : CustomInventory 10492
+{
+  states
+  {
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx ("Backpack", 0, 0, 5)
+	TNT1 A 0 A_SpawnItemEx ("ShellBox", 0, 0, 5)
+	TNT1 A 0 A_SpawnItemEx ("ClipBox", 0, 0, 5)
+	TNT1 A 0 A_SpawnItemEx ("RocketBox", 0, 0, 5)
+	TNT1 A 0 A_SpawnItemEx ("Cellpack", 0, 0, 5)
+	TNT1 A 0 A_SpawnItemEx ("MagicAmmo", 0, 0, 5)
+    TNT1 A 10
+    stop
+  Pickup:
+    TNT1 A 0
+    stop
+  }
+}
+
+actor FillUpMax : CustomInventory 10492
+{
+  states
+  {
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_SpawnItemEx ("Backpack", 0, 0, 5)
+	TNT1 AAAAAAA 0 A_SpawnItemEx ("ShellBox", 0, 0, 5)
+	TNT1 AAAAA 0 A_SpawnItemEx ("ClipBox", 0, 0, 5)
+	TNT1 AAAAAAAAA 0 A_SpawnItemEx ("RocketBox", 0, 0, 5)
+	TNT1 AAAAAAA 0 A_SpawnItemEx ("Cellpack", 0, 0, 5)
+	TNT1 AAAAA 0 A_SpawnItemEx ("MagicAmmo", 0, 0, 5)
+    TNT1 A 10
+    stop
+  Pickup:
+    TNT1 A 0
+    stop
+  }
+}
+
+ACTOR N_Clip: Ammo Replaces Clip
+{
+  Inventory.PickupMessage "+15 Multi Ammo"
+  Inventory.MaxAmount 240
+  Ammo.BackpackMaxAmount 480
+  Inventory.Amount 15
+  Ammo.BackpackAmount 15
+  Inventory.Icon "CLIPA0"
+  Scale .5
+  States
+  {
+  Spawn:
+    CLIP A -1
+    Stop
+  }
+}
+
+ACTOR N_ClipBox : N_Clip Replaces ClipBox
+{
+  Inventory.PickupMessage "+60 Multi Ammo"
+  Inventory.Amount 60
+  Scale .5
+  States
+  {
+	Spawn:
+		TNT1 A 1
+		Goto Spawn2
+	CreateOther:
+		TNT1 A 1
+		TNT1 A 1 A_SpawnItemEx ("MagicAmmoPack", 0)
+		Stop
+	Spawn2:
+		AMMO A -1
+		Stop
+  }
+}
+
+ACTOR N_Shell : Ammo Replaces Shell
+{
+  Inventory.PickupMessage "+5 Strike Ammo"
+  Inventory.MaxAmount 35
+  Ammo.BackpackMaxAmount 70
+  Inventory.Amount 5
+  Ammo.BackpackAmount 5
+  Inventory.Icon "SHELA0"
+  Scale .5
+  States
+  {
+  Spawn:
+    SHEL A -1
+    Stop
+  }
+}
+
+ACTOR N_ShellBox : N_Shell Replaces ShellBox
+{
+  Inventory.PickupMessage "+10 Strike Ammo"
+  Inventory.Amount 10
+  Scale .5
+  States
+  {
+	Spawn:
+		TNT1 A 1
+		Goto Spawn2
+	CreateOther:
+		TNT1 A 1
+		TNT1 A 1 A_SpawnItemEx ("MagicAmmoPack", 0)
+		Stop
+	Spawn2:
+		SBOX A -1
+		Stop
+  }
+}
+
+ACTOR N_RocketAmmo : Ammo Replaces RocketAmmo
+{
+  Inventory.PickupMessage "+1 Power Ammo"
+  Inventory.MaxAmount 25
+  Ammo.BackpackMaxAmount 50
+  Inventory.Amount 1
+  Ammo.BackpackAmount 1
+  Inventory.Icon "ROCKA0"
+  Scale .5
+  States
+  {
+  Spawn:
+    ROCK A -1
+    Stop
+  }
+}
+
+ACTOR N_RocketBox : N_RocketAmmo Replaces RocketBox
+{
+  Inventory.PickupMessage "+5 Power Ammo"
+  Inventory.Amount 5
+  Scale .5
+  States
+  {
+	Spawn:
+		TNT1 A 1
+		Goto Spawn2
+	CreateOther:
+		TNT1 A 1
+		TNT1 A 1 A_SpawnItemEx ("MagicAmmoPack", 0)
+		Stop
+	Spawn2:
+		BROK A -1
+		Stop
+  }
+}
+
+ACTOR N_Cell : Ammo Replaces Cell
+{
+  Inventory.PickupMessage "+10 Special Ammo"
+  Inventory.MaxAmount 200
+  Ammo.BackpackMaxAmount 400
+  Inventory.Amount 10
+  Ammo.BackpackAmount 10
+  Inventory.Icon "CELLA0"
+  Scale .5
+  States
+  {
+  Spawn:
+    CELL A -1
+    Stop
+  }
+}
+
+ACTOR N_SmallCell : N_Cell
+{
+}
+
+ACTOR N_CellBox : N_Cell Replaces CellPack
+{
+  Inventory.PickupMessage "+40 Special Ammo"
+  Inventory.Amount 40
+  Scale .5
+  States
+  {
+	Spawn:
+		TNT1 A 1
+		Goto Spawn2
+	CreateOther:
+		TNT1 A 1
+		TNT1 A 1 A_SpawnItemEx ("MagicAmmoPack", 0)
+		Stop
+	Spawn2:
+		CELP A -1
+		Stop
+  }
+}
+
+ACTOR DroppedArmor : CustomInventory
+{
+  Inventory.PickupMessage "+25 Armor"
+  Radius 30
+  Height 16
+  Scale .5
+  +NOTELEPORT
+  +DROPOFF
+  +MISSILE
+  +HEXENBOUNCE
+  +BOUNCEONACTORS
+  +CANBOUNCEWATER
+  +DONTSPLASH
+  +THRUACTORS
+  +PICKUP
+  +ALWAYSPICKUP
+  +DONTBLAST
+  -NOGRAVITY
+  Bouncefactor 0.7
+  Radius 15
+  Speed 5
+  States
+  {
+  Spawn:
+    BSHD A 10
+	BSHD A 10 A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Death:
+      TNT1 A 0 BRIGHT
+      stop
+  Pickup:
+    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_GiveInventory("N_ArmorBonus",1)
+    Stop
+  }
+}
+
+ACTOR DroppedArmorShards : DroppedArmor
+{
+  Inventory.PickupMessage "+1 Armor"
+  Bouncefactor 0.7
+  Radius 15
+  Speed 5
+  Scale 1.4
+  States
+  {
+  Spawn:
+    CSHD AAAAAAA 2 BRIGHT
+	CSHD A 2 BRIGHT A_ChangeFlag("THRUACTORS",0)
+	CSHD AAAAAAA 2 BRIGHT
+    Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("N_ArmorBonus",1)
+    Stop
+  }
+}
+
+ACTOR DroppedHealth : DroppedArmor
+{
+  Inventory.PickupMessage "+2 Health"
+  Bouncefactor 0.7
+  Radius 15
+  Speed 5
+  Scale 0.4
+  States
+  {
+  Spawn:
+    GRHL AAAAAAA 2 BRIGHT
+	GRHL A 2 BRIGHT A_ChangeFlag("THRUACTORS",0)
+	GRHL AAAAAAA 2 BRIGHT	
+    Loop
+  Pickup:
+    TNT1 AA 1 A_GiveInventory("HealthBonus",1)
+    Stop
+  }
+}
+
+ACTOR DroppedStimpack : DroppedArmor
+{
+  Inventory.PickupMessage "+10 Health"
+  -ALWAYSPICKUP
+  Scale 0.5
+  States
+  {
+  Spawn:
+    STIM A 10 BRIGHT
+	STIM A 10 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("N_Stimpack",1)
+    Stop
+  }
+}
+
+ACTOR DroppedMedikit : DroppedArmor
+{
+  Inventory.PickupMessage "+25 Health"
+  -ALWAYSPICKUP
+  Scale 0.5
+  States
+  {
+  Spawn:
+    MEDI A 10 BRIGHT
+	MEDI A 10 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("N_Medikit",1)
+    Stop
+  }
+}
+
+ACTOR DroppedMagic : DroppedArmor
+{
+  Inventory.PickupMessage "+1 Magic Point"
+  -ALWAYSPICKUP
+  Translation "0:255=%[0,0,0]:[1.0,1.0,2.0]"
+  Scale .8
+  States
+  {
+  Spawn:
+    MAGP ABCD 4 BRIGHT
+	MAGP ABCD 4 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("MagicAmmo",1)
+    Stop
+  }
+}
+
+ACTOR DroppedMagicTrap : DroppedArmor
+{
+  Inventory.PickupMessage "+1 Magic Point"
+  -ALWAYSPICKUP
+  Translation "0:255=%[0,0,0]:[1.0,1.0,2.0]"
+  Scale .8
+  Radius 5
+  States
+  {
+  Spawn:
+    MAGP ABCD 4 BRIGHT
+	MAGP ABCD 4 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("MagicAmmo",1)
+    Stop
+  }
+}
+
+ACTOR DroppedClip : DroppedArmor
+{
+  Inventory.PickupMessage "+15 Multi Ammo"
+  -ALWAYSPICKUP
+  Scale .5
+  States
+  {
+  Spawn:
+    CLIP A 10 BRIGHT
+	CLIP A 10 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 AAAAAAAAAAAAAAA 1 A_GiveInventory("N_Clip",1)
+    Stop
+  }
+}
+
+ACTOR DroppedShell : DroppedArmor
+{
+  Inventory.PickupMessage "+5 Strike Ammo"
+  -ALWAYSPICKUP
+  Scale .5
+  States
+  {
+  Spawn:
+    SHEL A 10 BRIGHT
+	SHEL A 10 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 AAAAA 1 A_GiveInventory("N_Shell",1)
+    Stop
+  }
+}
+
+ACTOR DroppedRocket : DroppedArmor
+{
+  Inventory.PickupMessage "+1 Power Ammo"
+  -ALWAYSPICKUP
+  Scale .5
+  States
+  {
+  Spawn:
+    ROCK A 10 BRIGHT
+	ROCK A 10 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("N_RocketAmmo",1)
+    Stop
+  }
+}
+
+ACTOR DroppedCell : DroppedArmor
+{
+  Inventory.PickupMessage "+10 Special Ammo"
+  -ALWAYSPICKUP
+  Scale .5
+  States
+  {
+  Spawn:
+    CELL A 10 BRIGHT
+	CELL A 10 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    Loop
+  Pickup:
+    TNT1 AAAAAAAAAA 1 A_GiveInventory("N_Cell",1)
+    Stop
+  }
+}
+
+ACTOR MagitekMoney : Inventory
+{
+   - INVBAR
+   Inventory.MaxAmount 9999
+   Inventory.Icon TNT1A0
+   States
+   {
+   Spawn:
+      KOIN ABCB 4 BRIGHT
+      loop
+   }
+}
+
+actor MagitekCoin: CustomInventory
+{
+  inventory.pickupmessage "+1 Money!"
+  +NOTELEPORT
+  +DROPOFF
+  +MISSILE
+  +HEXENBOUNCE
+  +BOUNCEONACTORS
+  +CANBOUNCEWATER
+  +DONTSPLASH
+  +THRUACTORS
+  +PICKUP
+  +ALWAYSPICKUP
+  +DONTBLAST
+  +USEBOUNCESTATE
+  +BOUNCEAUTOOFF
+  -NOGRAVITY
+  Bouncefactor 0.7
+  Radius 20
+  Speed 5
+  states
+  {
+  Spawn:
+      KOIN ABCB 2
+      KOIN A 2 A_ChangeFlag("THRUACTORS",0)
+      KOIN BCB 4 BRIGHT
+	  Loop
+  Bounce:
+	  TNT1 A 0 A_PlaySound("General/MoneyBounce", 0, 1) 
+	  KOIN ABCB 2
+	  Goto Spawn
+  Death:
+      TNT1 A 0 BRIGHT A_CustomMissile("MagitekCoin2",0,0,0,2,random(45,80))
+      stop
+  Pickup:
+	TNT1 A 0 A_PlaySound("General/Coin", 0, 1)
+    TNT1 A 0 A_GiveInventory("MagitekMoney",1)
+    Stop
+  }
+}
+
+actor MagitekCoin2: CustomInventory
+{
+  inventory.pickupmessage "+1 Money!"
+  +NOTELEPORT
+  +DROPOFF
+  +MISSILE
+  +HEXENBOUNCE
+  +BOUNCEONACTORS
+  +CANBOUNCEWATER
+  +DONTSPLASH
+  +PICKUP
+  +ALWAYSPICKUP
+  +DONTBLAST
+  -NOGRAVITY
+  Bouncefactor 0.7
+  Radius 20
+  states
+  {
+  Spawn:
+      KOIN BCBABCBABCBA 4 BRIGHT 
+      loop
+  Death:
+      TNT1 A 0 BRIGHT
+      stop
+  Pickup:
+	TNT1 A 0 A_PlaySound("General/Coin", 0, 1)
+    TNT1 A 0 A_GiveInventory("MagitekMoney",1)
+    Stop
+  }
+}
+
+actor MagitekDollar: CustomInventory
+{
+  inventory.pickupmessage "+10 Money!"
+  +NOTELEPORT
+  +DROPOFF
+  +MISSILE
+  +HEXENBOUNCE
+  +BOUNCEONACTORS
+  +CANBOUNCEWATER
+  +DONTSPLASH
+  +THRUACTORS
+  +PICKUP
+  +ALWAYSPICKUP
+  +DONTBLAST
+  -NOGRAVITY
+  Bouncefactor 0
+  Radius 20
+  Gravity 0.05
+  Speed 2
+  Scale .5
+  states
+  {
+  Spawn:
+      DOLR AB 8
+      DOLR A 8 A_ChangeFlag("THRUACTORS",0)
+      DOLR BABABABABABABABABABABABABABABABABABABA 8 BRIGHT A_CheckFloor("Grounded")
+  Grounded:
+	  DOLR A 8 BRIGHT
+	  loop
+  Death:
+      TNT1 A 0 BRIGHT
+      stop
+  Pickup:
+	TNT1 A 0 A_PlaySound("General/Dollar", 0, 1)
+    TNT1 A 0 A_GiveInventory("MagitekMoney",10)
+    Stop
+  }
+}
+
+ACTOR MagitekChestSpawn
+{
+	Speed 2
+	PROJECTILE
+	+NOCLIP
+	States
+	{
+	Spawn:
+        TNT1 A 0
+		TNT1 A 0 A_Jump(8, "ChestSpawn")
+		TNT1 A 1 A_CustomMissile("MagitekChest",20,0,0,2,random(45,80))
+		TNT1 AAAAA 0
+		Stop
+	ChestSpawn:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile("MagitekBossChest",20,0,0,2,random(45,80))
+		Stop
+	}
+}
+
+ACTOR MagitekChest
+{
+   Height 12
+   Radius 30
+   Speed 2
+   Scale 1
+   +DOOMBOUNCE
+   - NOGRAVITY
+   +WINDTHRUST
+   +CLIENTSIDEONLY
+   +MOVEWITHSECTOR
+   +MISSILE
+   +NOBLOCKMAP
+   -DROPOFF
+   +NOTELEPORT
+   +FORCEXYBILLBOARD
+   +NOTDMATCH
+   +GHOST
+   +CANBOUNCEWATER
+   Mass 1000
+   Gravity 0.5
+   BounceFactor 0.5
+   States
+	{
+  Spawn:
+	CHST E 5 BRIGHT
+    Loop
+  Death:
+	CHST E 30
+	TNT1 A 0 A_PlaySound("General/OpenChest")
+	CHST F 30 A_CustomMissile("RandomItemChest",15,0,0,2,random(45,80))
+	CHST FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR RandomItemChest
+{
+	Speed 2
+	PROJECTILE
+	+NOCLIP
+	States
+	{
+	Spawn:
+        TNT1 A 0
+		TNT1 A 0 A_Jump(255, "Medikit", "DroppedArmor", "HealthBonus", "MagicAmmo", "ClipBox", "ShellBox", "CellBox", "RocketBox", "Money")
+	Medikit:
+		TNT1 A 0
+		TNT1 AA 2 A_CustomMissile("DroppedMedikit",5,0,random(0,360),2,random(45,80))
+		stop
+	HealthBonus:
+		TNT1 A 0
+		TNT1 AAAAAAAAAA 2 A_CustomMissile("DroppedHealth",5,0,random(0,360),2,random(45,80))
+		stop
+	DroppedArmor:
+		TNT1 A 0
+		TNT1 AA 2 A_CustomMissile("DroppedArmor",5,0,random(0,360),2,random(45,80))
+		stop
+	MagicAmmo:
+		TNT1 A 0
+		TNT1 AAAAAA 2 A_CustomMissile("DroppedMagic",5,0,random(0,360),2,random(45,80))
+		stop
+	ClipBox:
+		TNT1 A 0
+		TNT1 AAAA 2 A_CustomMissile("DroppedClip",5,0,random(0,360),2,random(45,80))
+		stop
+	ShellBox:
+		TNT1 A 0
+		TNT1 AAA 1 A_CustomMissile("DroppedShell",5,0,random(0,360),2,random(45,80))
+		stop
+	CellBox:
+		TNT1 A 0
+		TNT1 AAAA 2 A_CustomMissile("DroppedCell",5,0,random(0,360),2,random(45,80))
+		stop
+	RocketBox:
+		TNT1 A 0
+		TNT1 AAAAAA 2 A_CustomMissile("DroppedRocket",5,0,random(0,360),2,random(45,80))
+		stop
+	Money:
+		TNT1 A 0
+		TNT1 AAAAAA 2 A_CustomMissile("MagitekDollar",5,0,0,2,random(45,80))
+		TNT1 AAAAAAAAAAAA 2 A_CustomMissile("MagitekCoin",5,0,random(0,360),2,random(45,80))
+		stop
+	SpecialItems:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(180, "DoubleDefense", "DoubleDamage", "FullMap", "Radioactive", "Frightener")
+		TNT1 A 0 A_Jump(180, "Haste", "ShieldArmor", "Berserk", "Marine")
+		TNT1 A 0 A_Jump(255, "Invunlerability")
+		stop
+	DoubleDefense:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("DefensePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	DoubleDamage:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("DamagePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	FullMap:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("Allmap", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Visor:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("Infrared", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Radioactive:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("RadSuit", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Frightener:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("ScarePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Haste:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("HastePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	ShieldArmor:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("ShieldArmor", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Berserk:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("Berserk", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Invunlerability:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("InvulnerabilitySphere", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Marine:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItem("CapturedMarine")
+		stop
+	}
+}
+
+ACTOR MagitekSmallChest : MagitekChest
+{
+   Scale 1
+   States
+	{
+  Spawn:
+	CHST A 5 BRIGHT
+    Loop
+  Death:
+	CHST A 30
+	TNT1 A 0 A_PlaySound("General/OpenChest")
+	CHST B 30 A_CustomMissile("RandomItemChestSmall",5,0,0,2,random(45,80))
+	CHST BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR RandomItemChestSmall
+{
+	Speed 2
+	PROJECTILE
+	+NOCLIP
+	States
+	{
+	Spawn:
+        TNT1 A 0
+		TNT1 A 0 A_Jump(255, "Medikit", "DroppedArmor", "HealthBonus", "MagicAmmo", "Clip", "Shell", "Cell", "Rocket", "Money")
+		Stop
+	Medikit:
+		TNT1 A 0
+		TNT1 A 2 A_CustomMissile("DroppedMedikit",15,0,0,2,random(45,80))
+		stop
+	HealthBonus:
+		TNT1 A 0
+		TNT1 AAAAA 2 A_CustomMissile("DroppedHealth",15,0,0,2,random(45,80))
+		stop
+	DroppedArmor:
+		TNT1 A 0
+		TNT1 A 2 A_CustomMissile("DroppedArmor",15,0,0,2,random(45,80))
+		stop
+	MagicAmmo:
+		TNT1 A 0
+		TNT1 AAAA 2 A_CustomMissile("DroppedMagic",15,0,0,2,random(45,80))
+		stop
+	Clip:
+		TNT1 A 0
+		TNT1 AA 2 A_CustomMissile("DroppedClip",15,0,0,2,random(45,80))
+		stop
+	Shell:
+		TNT1 A 0
+		TNT1 AA 2 A_CustomMissile("DroppedShell",15,0,0,2,random(45,80))
+		stop
+	Cell:
+		TNT1 A 0
+		TNT1 AA 2 A_CustomMissile("DroppedCell",15,0,0,2,random(45,80))
+		stop
+	Rocket:
+		TNT1 A 0
+		TNT1 AA 2 A_CustomMissile("DroppedRocket",15,0,0,2,random(45,80))
+		stop
+	Money:
+		TNT1 A 0
+		TNT1 A 2 A_CustomMissile("MagitekDollar",15,0,0,2,random(45,80))
+		TNT1 AAAAAAAAAA 2 A_CustomMissile("MagitekCoin",15,0,0,2,random(45,80))
+		stop
+	}
+}
+
+ACTOR MagitekBossChest : MagitekChest
+{
+   Scale 2
+   States
+	{
+  Spawn:
+	CHST G 5 BRIGHT
+    Loop
+  Death:
+	CHST G 60
+	TNT1 A 0 A_PlaySound("General/OpenChest")
+	CHST H 10 A_CustomMissile("RandomItemChest",35,0,0,2,random(45,80))
+	CHST H 10 A_CustomMissile("RandomItemChest",35,-20,0,2,random(45,80))
+	CHST H 10 A_CustomMissile("RandomItemChest",35,0,0,2,random(45,80))
+	CHST H 10 A_CustomMissile("RandomItemChest",35,20,0,2,random(45,80))
+	CHST HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagHealthBonus
+{
+   Speed 2
+	PROJECTILE
+	+NOCLIP
+   States
+	{
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagHealthBonus_",20,0,0,2,0)
+    Stop
+  Death:
+	TNT1 A 0
+    Stop
+  }
+}
+
+ACTOR ItemBagHealthBonus_
+{
+   Height 12
+   Radius 30
+   Speed 2
+   Scale .7
+   +DOOMBOUNCE
+   - NOGRAVITY
+   +WINDTHRUST
+   +CLIENTSIDEONLY
+   +MOVEWITHSECTOR
+   +MISSILE
+   +NOBLOCKMAP
+   -DROPOFF
+   +NOTELEPORT
+   +FORCEXYBILLBOARD
+   +NOTDMATCH
+   +GHOST
+   +CANBOUNCEWATER
+   Mass 1000
+   Gravity 0.5
+   BounceFactor 0.5
+   States
+	{
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump(8, "ChestSpawn")
+	TNT1 A 0 A_Jump(75, "NoSpawn")
+	TNT1 AAAAA 0
+    Goto Continue
+  Continue:
+	CHST C 5 BRIGHT
+	Loop
+  ChestSpawn:
+	TNT1 A 0
+	TNT1 A 0 A_CustomMissile("MagitekSmallChest",20,0,0,2,random(45,80))
+	Stop
+  NoSpawn:
+	TNT1 A 0
+	Stop
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 2 A_CustomMissile("DroppedHealth",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagStimpack : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagStimpack_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagStimpack_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST CC 15 A_CustomMissile("DroppedStimpack",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagMedikit : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagMedikit_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagMedikit_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 15 A_CustomMissile("DroppedMedikit",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagMoney : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagMoney_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagMoney_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST CCC 2 A_CustomMissile("MagitekDollar",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCC 2 A_CustomMissile("MagitekCoin",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagArmorBonus : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagArmorBonus_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagArmorBonus_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST CCCCC 5 A_CustomMissile("DroppedArmorShards",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagDroppedArmor : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagDroppedArmor_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagDroppedArmor_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 5 A_CustomMissile("DroppedArmor",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagMagicAmmo : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagMagicAmmo_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagMagicAmmo_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST CCC 10 A_CustomMissile("DroppedMagic",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagMagicMini : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagMagicMini_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagMagicMini_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 30 A_CustomMissile("DroppedMagic",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagClip : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagClip_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagClip_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 30 A_CustomMissile("DroppedClip",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagShell : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagShell_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagShell_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 30 A_CustomMissile("DroppedShell",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagRocket : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagRocket_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagRocket_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 30 A_CustomMissile("DroppedRocket",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+ACTOR ItemBagCell : ItemBagHealthBonus
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	TNT1 A 1 A_CustomMissile("ItemBagCell_",20,0,0,2,0)
+    Stop
+  }
+}
+
+ACTOR ItemBagCell_ : ItemBagHealthBonus_
+{
+   States
+	{
+  Death:
+	CHST C 5
+	TNT1 A 0 A_PlaySound("General/OpenBag")
+	CHST C 30 A_CustomMissile("DroppedCell",25,0,0,2,random(45,80))
+	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+    Stop
+  }
+}
+
+//// --------------------------------------------------------------------------
+//
+// Items
+//
+// --------------------------------------------------------------------------
+
+ACTOR BlurSphere2: BlurSphere Replaces BlurSphere
+{
+-COUNTITEM
+	States
+	{
+	Spawn:
+		PINS A 2 Bright
+		TNT1 A 1
+		TNT1 A 0 A_Jump (255, "ShieldArmor", "HastePower", "DefensePower", "DamagePower", "RegenPower", "FreezePower", "ScarePower", "LightAmp", "Berserk", "Invunlerable", "Radiation", "Map")
+		Stop
+	ShieldArmor:
+		TNT1 A 0 A_SpawnItemEx ("ShieldArmor", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	HastePower:
+		TNT1 A 0 A_SpawnItemEx ("HastePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	DefensePower:
+		TNT1 A 0 A_SpawnItemEx ("DefensePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	DamagePower:
+		TNT1 A 0 A_SpawnItemEx ("DamagePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	RegenPower:
+		TNT1 A 0 A_SpawnItemEx ("RegenPower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	FreezePower:
+		TNT1 A 0 A_SpawnItemEx ("FreezePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	ScarePower:
+		TNT1 A 0 A_SpawnItemEx ("ScarePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	LightAmp:
+		TNT1 A 0 A_SpawnItemEx ("Infrared", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	Berserk:
+		TNT1 A 0 A_SpawnItemEx ("Berserk", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	Invunlerable:
+		TNT1 A 0 A_SpawnItemEx ("InvulnerabilitySphere ", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	Radiation:
+		TNT1 A 0 A_SpawnItemEx ("RadSuit", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	Map:
+		TNT1 A 0 A_SpawnItemEx ("Allmap ", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR ShieldArmor : BasicArmorPickup Replaces Chainsaw
+{
+  Radius 20
+  Height 16
+  Inventory.PickupMessage "Picked up Shield Armor!"
+  Inventory.Icon "ARM2A0"
+  Armor.SavePercent 99
+  Armor.SaveAmount 150
+  Translation "0:255=%[0,0,0]:[1.5,0.5,0.5]"
+  States
+  {
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump (125, "Continue")
+	Stop
+  Continue:
+    ARM2 A 6
+    ARM2 B 6 Bright
+    Loop
+  }
+}
+
+ACTOR DefensePower : PowerupGiver Replaces PlasmaRifle
+{
+  Inventory.PickupMessage "Half Damage!!"
+  Powerup.Color Grey4 0.25
+  Inventory.MaxAmount 0
+  Inventory.UseSound "pickups/slowmo"
+  Powerup.Type "PowerHalfDamage"
+  Powerup.Duration 1000
+  Powerup.Color "200 255 200", 0.3
+  Translation "0:255=%[0,0,0]:[1.7,2.0,1.7]"
+  +INVENTORY.AUTOACTIVATE
+  +INVENTORY.FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump (125, "Continue")
+	Stop
+  Continue:
+    ARM2 A 6
+    ARM2 B 6 Bright
+    Loop
+  }
+}
+
+ACTOR PowerHalfDamage : PowerProtection
+{
+  DamageFactor "Normal", 0.5
+  Inventory.Icon "MEGAA0"
+}
+
+actor DamagePower : PowerupGiver Replaces BFG9000
+{
+ inventory.pickupmessage "Double Damage!!"
+ inventory.maxamount 0
+ inventory.usesound "pickups/slowmo"
+ powerup.type "PowerDoubleDamage"
+ powerup.duration 1000
+ Powerup.Color "50 0 0", 0.5
+ Translation "0:255=%[0,0,0]:[2.0,0.5,0.5]"
+ +AUTOACTIVATE
+ +INVENTORY.FANCYPICKUPSOUND
+   states
+ {
+ Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump (125, "Continue")
+	Stop
+  Continue:
+   PINV ABCDCB 4 bright
+   loop
+ }
+}
+
+actor PowerDoubleDamage : PowerDamage
+{
+damagefactor "normal", 2
+inventory.icon "MEGAA0"
+}
+
+Actor FireRatePower2 : FireRatePower
+{
+  Inventory.Pickupmessage "Your firerate has been doubled!"
+  Inventory.Icon "MEGAA0"
+  Inventory.MaxAmount 0
+  Inventory.UseSound "pickups/slowmo"
+  Powerup.Type "DoubleFiringSpeed"
+  Powerup.Duration 2000
+  Powerup.Color "255 255 190", 0.3
+  Translation "0:255=%[0,0,0]:[2.0,2.0,0.5]"
+  +AUTOACTIVATE
+  +INVENTORY.FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+    PINS ABCDCB 4 bright
+    Loop
+  }
+}
+
+Actor RunSpeedPower2 : RunSpeedPower
+{
+  Inventory.Pickupmessage "You can move faster!"
+  Inventory.Icon "MEGAA0"
+  Inventory.MaxAmount 0
+  Inventory.UseSound "pickups/slowmo"
+  Powerup.Type "PowerHasteSpeed"
+  Powerup.Duration 1500
+  +AUTOACTIVATE
+  +INVENTORY.FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+    TNT1 ABCD 4 bright
+    Loop
+  }
+}
+
+Actor FreezePower : PowerupGiver Replaces RocketLauncher
+{
+  Inventory.Pickupmessage "Time is frozen!"
+  Inventory.Icon "MEGAA0"
+  Inventory.MaxAmount 0
+  Inventory.UseSound "pickups/slowmo"
+  Powerup.Type "TimeFreezer"
+  Powerup.Duration 750
+  Translation "0:255=%[0,0,0]:[1.0,1.0,2.0]"
+  +AUTOACTIVATE
+  +INVENTORY.FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump (125, "Continue")
+	Stop
+  Continue:
+    PINS ABCDCB 4 bright
+    Loop
+  }
+}
+
+Actor ScarePower : PowerupGiver Replaces SuperShotgun
+{
+  Inventory.Icon "MEGAA0"
+  Inventory.MaxAmount 0
+  powerup.type "Frightener"
+  powerup.duration 1500
+  Translation "0:255=%[0,0,0]:[0.5,0.3,0.7]"
+  Powerup.Color "50 0 50", 0.3
+  +AUTOACTIVATE
+  +INVENTORY.FANCYPICKUPSOUND
+  States
+  {
+  Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Jump (125, "Continue")
+	Stop
+  Continue:
+    MEGA ABCDCB 4 bright
+    Loop
+  }
+}

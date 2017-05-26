@@ -1,0 +1,15 @@
+clearplayerclasses
+addplayerclass Doomer2
+
+weaponsection "Brutal_Doom"
+
+setslot 1 Melee_Attacks RazorSaw BFS
+setslot 2 BrutalPistol Battle_Rifle Mini_Gun
+setslot 3 Shot_Gun Revolver SSG
+setslot 4 EchoGun Rocket_Launcher Grenade_Launcher
+setslot 5 ChargeRifle Plasma_Gun BIG_FUCKING_GUN
+setslot 6 MBow MWand ManaCannons
+setslot 7 
+setslot 8 
+setslot 9 
+setslot 0 

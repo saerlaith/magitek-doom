@@ -1,0 +1,213 @@
+Magic/Charm SHKBEAM
+Magic/Laser	LASER
+
+
+
+Revolver/fire REVFIRE
+Revolver/puff REVPUFF
+Revolver/alt PIERCES
+Revolver/Pick REVSPIN
+Canon/Cluster CLUSTER
+Canon/Boom CBOOM
+Shotgun/FrostShot FSGFIRE
+Rocket/MiniRocket MROCK
+Rocket/MiniShoot   MINMIS
+ComShot/Special COMCHR
+ComShot/Special2 COMCHR2
+Pistol/Pick    PISTOPK
+Pistol/Fire 	PISFIRE
+Pistol/Charge PISCHRG
+SSG/QuadShot	QUADFIRE
+Echogun/Pick	RAILSND
+BRifle/Pick	BRIFPK
+BRifle/Fire	RIFFIRE1
+BRifle/AltFire	RIFFIRE2
+Grenade/Pick	GRENPK
+Grenade/Shrapnel SHRPNEL
+$volume Grenade/Shrapnel 1
+$pitchshift Grenade/Shrapnel 7
+Wand/ManaSap	MANASAP
+Wand/Fire	WANDSHOT
+Wand/Star	WANDSTAR
+
+
+LightRifle/Pick	CHRGPK
+LightRifle/Primary LIFESAP
+LightRifle/BFire PLSBIGM
+LightRifle/Boom PLSBIGB
+LightRifle/Charge1 PLSC_1
+LightRifle/Charge2 PLSC_2
+LightRifle/Charge3 PLSC_3
+LightRifle/Charge4 PLSC_4
+LightRifle/BasicShot CHRGLV1
+LightRifle/RapidShot CHRGLV2
+LightRifle/MidShot CHRGLV3
+LightRifle/StrongShot CHRGLV4
+LightRifle/MegaShot CHRGLV5
+LightRifle/BasicDie CHRGDIE
+
+MBow/Charge ARWDRAW
+MBow/Fire ARWFIRE
+MBow/Wall ARWWALL
+MBow/ArrowHit ARWSTAB
+MBow/Melee ARWMELE
+MBow/RainArrow ARWSPCL
+MBow/FireArrow ARWFLAM
+MBow/IceArrow ARWICE
+MBow/ShockArrow ARWSHCK
+MBow/EarthArrow ARWERTH
+MBow/DarkArrow ARWDARK
+
+ManaGuns/Fire MGSFIRE
+ManaGuns/Reload MGSRLD
+ManaGuns/ClipBreak MGSCLIP
+ManaGuns/ShockShot MGSHOCK
+ManaGuns/EarthShot MGSERTH
+ManaGuns/DarkShot MGSDARK
+ManaGuns/LightShot MGSLIHT
+
+TechBeep	BEPBEP
+
+$random General/HeadShotHit { General/HeadShotHit1 General/HeadShotHit2 General/HeadShotHit3 }
+$volume General/HeadShotHit 2
+$rolloff General/HeadShotHit 400 1200  
+
+General/HeadShotHit1	HEDSHT1
+General/HeadShotHit2	HEDSHT2
+General/HeadShotHit3	HEDSHT3
+General/FullHeal		HEALUP
+General/OpenChest		OPCHEST
+General/OpenBag			OPBAG
+General/MoneyBounce		monboun
+General/Coin			moncoin
+General/Dollar			mondoll
+
+Magic/Blizzard BLIZZ
+Magic/Earth2 EARTHB
+Magic/Earth1 EARTHM
+Magic/FireShot	FireS
+Magic/Flame1 FLAMEM
+Magic/Flame2 FLAMEB
+Magic/FireAssist FASSIST
+Magic/Freeze FREEZE
+Magic/Mirror1 MIRRORM
+Magic/Mirror2 MIRRORB
+
+Magic/ShadowShot SHADOW
+Magic/MagnetPull MAGPULL
+Magic/FireTackle FTACKLE
+Magic/Summoning	CALLH
+Magic/Cast	MCAST
+Magic/HolyRay1  HOLYRAYA
+Magic/HolyRay2  HOLYRAYB
+Magic/LightBeam	LITEBEAM
+Magic/Terror 	TERRORS
+Magic/Thunder	THUNDERB
+Magic/TimeStop	TIMESTOP
+Magic/ClockTick	CLCKTICK
+
+Melee/SwingHeavy SWINGH
+Melee/SwingMedium SWINGM
+Melee/SwingLight SWINGL
+Melee/SlashHeavy SLASHH
+Melee/SlashMedium SLASHM
+Melee/SlashLight SLASHL
+Melee/Clash CLASH
+Melee/WaveSpawn WAVES
+Melee/WaveDeath WAVED
+Melee/DaggerShield DAGS
+Melee/Counter	SWRDCNTR
+Melee/Charge BFSCHRG
+Chainsaw/Hit	fstatcc
+Chainsaw/Wall	fstatck
+Chainsaw/Catch	fscatch
+
+AxeHit DSKNIFE
+
+Ally/Hurt		ALYHURT
+Ally/Dead		ALYDEAD
+
+GSWMZombie/Sight BZRD_SI1
+GSWMZombie/Pain BZRD_HIT
+GSWMZombie/Death BZRD_DED
+GSWMZombie/ProjDeath BZRD_PRD
+DormGSWMZombie/Sight BZRD_SI2
+
+$random Hellion/hurt { Hellion/hurt1 Hellion/hurt2 Hellion/hurt3 }
+Hellion/hurt1	HELNHRT1
+Hellion/hurt2 	HELNHRT2
+Hellion/hurt3	HELNHRT3
+
+$random Hellion/death { Hellion/death1 Hellion/death2 Hellion/death3 }
+Hellion/death1	HELNDIE1
+Hellion/death2 	HELNDIE2
+Hellion/death3	HELNDIE3
+
+$volume Hellion/Idle 0.2
+
+$random Hellion/Idle { Hellion/Idle1 Hellion/Idle2 }
+Hellion/Idle1	HELNIDL1
+Hellion/Idle2 	HELNIDL2
+
+Hellion/charge	HELNCHRG
+
+$random Missler/death { Missler/death1 Missler/death2 Missler/death3 }
+Missler/death1	MISSDIE1
+Missler/death2 	MISSDIE2
+Missler/death3	MISSDIE3
+
+$random Missler/pain { Missler/pain1 Missler/pain2 Missler/pain3 }
+Missler/pain1	MISSHRT1
+Missler/pain2	MISSHRT2
+Missler/pain3	MISSHRT3
+
+$random Missler/Idle { Missler/Idle1 Missler/Idle2 }
+Missler/Idle1	MISSIDL1
+Missler/Idle2	MISSIDL2
+
+$random Succubus/pain { Succubus/pain1 Succubus/pain2 Succubus/pain3 }
+Succubus/pain1	SUCCHRT1
+Succubus/pain2 	SUCCHRT2
+Succubus/pain3	SUCCHRT3
+
+$random Succubus/death { Succubus/death1 Succubus/death2 Succubus/death3 Succubus/death4 }
+Succubus/death1	SUCCDIE1
+Succubus/death2 SUCCDIE2
+Succubus/death3	SUCCDIE3
+Succubus/death4	SUCCDIE4
+
+Succubus/laugh	SUCCGIG
+Succubus/fire	SUCCFIRE
+
+Sentry/Sight	SENTRSEE
+Sentry/Pain	SENTROW
+
+
+$random Gargoyle/Death { Gargoyle/Death1 Gargoyle/Death2 }
+Gargoyle/Death1		GRGDIE1
+Gargoyle/Death2		GRGDIE2
+Gargoyle/Pain		GRGPAIN
+Gargoyle/See		GRGSEE
+Gargoyle/EchoDive 	ECDIVE
+Gargoyle/EchoWarn	ECWARN
+
+$random Centaur/Pain	{ Centaur/Pain1  Centaur/Pain2 }
+Centaur/See		CENTSEE
+Centaur/Pain1		CENTHRT1
+Centaur/Pain2		CENTHRT2
+Centaur/Death		CENTDIE
+Centaur/Rage		CENTRAGE
+
+
+wizard/tele1                    wiztel1
+wizard/tele2                    wiztel2
+wizard/pain                     wizpain
+wizard/cast                     wizact
+wizard/death                    wizdth  
+
+hellspawn/see			HSSEE
+hellspawn/walk			HSWALK
+hellspawn/pain			HSPAIN
+hellspawn/die			HSDEATH
+hellspawn/jump			HSLUNGE
+hellspawn/attack    		HSBITE

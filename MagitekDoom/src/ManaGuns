@@ -1,0 +1,1414 @@
+ACTOR ManaGunsAmmo : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 30
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 30
+}
+
+ACTOR AkimboToggle : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 1
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 1
+}
+
+// --------------------------------------------------------------------------
+//
+// Mana Cannons
+//
+// --------------------------------------------------------------------------
+
+ACTOR ManaCannons : MagicBaseSystem
+{
+	Weapon.AmmoUse1 0
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive1 20
+	Weapon.AmmoGive2 0
+	Weapon.AmmoType1 "MagicAmmo"
+	Weapon.AmmoType2 "ManaGunsAmmo"
+	Inventory.PickupMessage "You got Mana Cannons!"
+    Inventory.PickupSound "CLIPIN"
+    AttackSound "None"
+    +WEAPON.NOALERT
+	+WEAPON.NOAUTOFIRE
+	-WEAPON.NOAUTOAIM
+	States
+	{
+
+	Steady:
+	RIFL A 1
+	Goto Ready
+	Ready:
+        TNT1 AAAA 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+        TNT1 A 0 A_PlaySound("Pistol/Pick")
+		MGND A 2
+        TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+        TNT1 AAAAAAAAAAAAAAA 0
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+		TNT1 A 0 A_GiveInventory("BurstCount",3)
+		TNT1 A 0 A_ZoomFactor(1.0)
+		TNT1 A 0 A_TakeInventory("PowerTorch",1)
+		TNT1 AAAAAAAAAAAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto ReadyEmptyGuns
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto ReadyFireGuns
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"ReadyLightGuns")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"ReadyDarkGuns")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"ReadyEarthGuns")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"ReadyShockGuns")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"ReadyIceGuns")
+		Goto Ready+11
+	ReadyFireGuns:
+        TNT1 E 0
+		MGFD A 2 A_weaponready
+		goto ready+11
+	ReadyIceGuns:
+        TNT1 E 0
+		MGID A 2 A_weaponready
+		goto ready+11
+	ReadyShockGuns:
+        TNT1 E 0
+		MGSD A 2 A_weaponready
+		goto ready+11
+	ReadyEarthGuns:
+        TNT1 E 0
+		MGED A 2 A_weaponready
+		goto ready+11
+	ReadyDarkGuns:
+        TNT1 E 0
+		MGDD A 2 A_weaponready
+		goto ready+11
+	ReadyLightGuns:
+        TNT1 E 0
+		MGLD A 2 A_weaponready
+		goto ready+11
+	ReadyEmptyGuns:
+        TNT1 E 0
+		MGND A 2 A_weaponready
+		goto ready+11
+	MagicEnd:
+		TNT1 A 0
+		goto ready+9
+	Deselect:
+		TNT1 A 0 A_Takeinventory("ADSmode",1)
+        MGND A 2
+		FAST A 0 A_Lower
+		Wait
+	NoAmmo:
+		TNT1 A 0 A_PlaySound("Pistol/Pick")
+		MGND A 8 A_weaponready
+		goto ready+9
+	
+	Select:
+	TNT1 A 0 A_Takeinventory("FistsSelected",1)
+	TNT1 A 0 A_Takeinventory("SawSelected",1)
+	TNT1 A 0 A_Giveinventory("ShotgunSelected",1)
+	TNT1 A 0 A_Takeinventory("SSGSelected",1)
+	TNT1 A 0 A_Takeinventory("MinigunSelected",1)
+	TNT1 A 0 A_Takeinventory("PlasmaGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RocketLauncherSelected",1)
+    TNT1 A 0 A_Takeinventory("GrenadeLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("BFGSelected",1)
+	TNT1 A 0 A_Takeinventory("BFG10kSelected",1)
+	TNT1 A 0 A_Takeinventory("RailGunSelected",1)
+	TNT1 A 0 A_Takeinventory("SubMachineGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RevenantLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("LostSoulSelected",1)
+	TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+	TNT1 A 0 A_Takeinventory("HasBarrel",1)
+		FAST A 0 A_Raise
+		Wait
+		
+	Spawn:
+		CSHP A -1
+		Stop
+		
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+        TNT1 AAAA 0
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto FireGunsFire
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"LightGunsFire")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"DarkGunsFire")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"EarthGunsFire")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"ShockGunsFire")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"IceGunsFire")
+		Goto Ready+11
+	
+	FireGunsFire:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"FireGunsFireLeft")
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+        MGFF B 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGFF C 2
+		MGFF CCCC 1 A_Refire
+		Goto Ready+11
+	
+	FireGunsFireLeft:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+        MGFF E 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGFF F 2
+		MGFF FFFF 1 A_Refire
+		Goto Ready+11
+		
+	IceGunsFire:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"IceGunsFireLeft")
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+        MGIF B 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGIF C 2
+		MGIF CCCC 1 A_Refire
+		Goto Ready+11
+		
+	IceGunsFireLeft:
+        TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+        MGIF E 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGIF F 2
+		MGIF FFFF 1 A_Refire
+		Goto Ready+11
+		
+	ShockGunsFire:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"ShockGunsFireLeft")
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+        MGSF B 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGSF C 2
+		MGSF CCCC 1 A_Refire
+		Goto Ready+11
+		
+	ShockGunsFireLeft:
+        TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+        MGSF E 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGSF F 2
+		MGSF FFFF 1 A_Refire
+		Goto Ready+11
+		
+	EarthGunsFire:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"EarthGunsFireLeft")
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+        MGEF B 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGEF C 2
+		MGEF CCCC 1 A_Refire
+		Goto Ready+11
+		
+	EarthGunsFireLeft:
+        TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+        MGEF E 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(2, -2), 0, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGEF F 2
+		MGEF FFFF 1 A_Refire
+		Goto Ready+11
+		
+	DarkGunsFire:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"DarkGunsFireLeft")
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+        MGDF B 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGDF C 2
+		MGDF CCCC 1 A_Refire
+		Goto Ready+11
+		
+	DarkGunsFireLeft:
+        TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+        MGDF E 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGDF F 2
+		MGDF FFFF 1 A_Refire
+		Goto Ready+11
+		
+	LightGunsFire:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"LightGunsFireLeft")
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+        MGLF B 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGLF C 2
+		MGLF CCCC 1 A_Refire
+		Goto Ready+11
+		
+	LightGunsFireLeft:
+        TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",1,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("MP40", 1, .7)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+        MGLF E 2 BRIGHT A_FireCustomMissile("MagicShot", frandom(0.8, -0.8), 0, 0, 5, FPF_NOAUTOAIM, frandom(0.8, -0.8))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",1)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-.5, -1) + pitch)
+		MGLF F 2
+		MGLF FFFF 1 A_Refire
+		Goto Ready+11
+	
+    AltFire:
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto FireGunsSpecial
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"LightGunsSpecial")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"DarkGunsSpecial")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"EarthGunsSpecial")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"ShockGunsSpecial")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"IceGunsSpecial")
+		Goto Ready+11
+		
+	FireGunsSpecial:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",5,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_PlaySound("Magic/FireShot", 1, .7)
+		TNT1 AAAAA 0 A_FireCustomMissile("FlameShotgunEffect2", random(-20, 20), 0, 0, 5, FPF_NOAUTOAIM, random(-20, 20))
+        MGFS A 0 A_FireCustomMissile("ManaFireball", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		MGFS A 2 BRIGHT
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2, -2) + pitch)
+		MGFS A 2
+		MGFS B 4
+		MGFS C 6 
+		MGFS CCCC 1 A_Refire
+		Goto Ready+11
+		
+	IceGunsSpecial:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",3,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"IceGunsSpecialRight")
+		TNT1 A 0 A_PlaySound("ManaGuns/Fire", 1, 1)
+        MGIS A 2 BRIGHT A_FireCustomMissile("MGIceShot", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",3)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-0.5, -1.5) + pitch)
+		MGIS A 1
+		MGIS B 4 
+		MGIS BBBB 1 A_Refire
+		Goto Ready+11
+		
+	IceGunsSpecialRight:
+		TNT1 A 0 A_PlaySound("ManaGuns/Fire", 1, 1)
+        MGIS C 2 BRIGHT A_FireCustomMissile("MGIceShot", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",3)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-0.5, -1.5) + pitch)
+		MGIS C 1
+		MGIS D 4 
+		MGIS DDDD 1 A_Refire
+		Goto Ready+11
+		
+	ShockGunsSpecial:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",6,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfTargetInLOS("ShockGunsSpecialRight",0,JLOSF_COMBATANTONLY | JLOSF_ALLYNOJUMP | JLOSF_NOAUTOAIM,3000)
+		MGSD A 2 A_Print("No Target!", 1)
+		MGSD A 2 A_Refire
+	    Goto Ready+11
+	ShockGunsSpecialRight:
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"ShockGunsSpecialLeft")
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+		TNT1 A 0 A_PlaySound("ManaGuns/ShockShot", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+        MGSS A 2 BRIGHT A_FireCustomMissile("ShockRocket")
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",6)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(0, -1) + pitch)
+		MGSS A 4
+		MGSS B 6
+		MGSS C 6
+		MGSS CCCC 1 A_Refire
+		Goto Ready+11
+	ShockGunsSpecialLeft:
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+		TNT1 A 0 A_PlaySound("ManaGuns/ShockShot", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+        MGSS D 2 BRIGHT A_FireCustomMissile("ShockRocket")
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",6)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(0, -1) + pitch)
+		MGSS D 4
+		MGSS E 6
+		MGSS F 6
+		MGSS FFFF 1 A_Refire
+		Goto Ready+11
+		
+	EarthGunsSpecial:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",3,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"EarthGunsSpecialLeft")
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+		MAGR A 0 A_PlaySound("Magic/Earth1", 0, 1)
+		MAGR A 0 A_PlaySound("ManaGuns/EarthShot", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+        MGES A 2 BRIGHT A_FireCustomMissile("RockShot", random(-1,1), 0, -1, 0, FPF_NOAUTOAIM, random(3,6))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",3)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1.5, -1.5) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2, -4) + pitch)
+		MGES A 2
+		MGES B 8
+		MGES BBBB 1 A_Refire
+		Goto Ready+11
+	EarthGunsSpecialLeft:
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+		MAGR A 0 A_PlaySound("Magic/Earth1", 0, 1)
+		MAGR A 0 A_PlaySound("ManaGuns/EarthShot", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+        MGES C 2 BRIGHT A_FireCustomMissile("RockShot", random(-1,1), 0, -1, 0, FPF_NOAUTOAIM, random(3,6))
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",3)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1.5, -1.5) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2, -4) + pitch)
+		MGES C 2
+		MGES D 8
+		MGES DDDD 1 A_Refire
+		Goto Ready+11
+	
+	LightGunsSpecial:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",6,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfTargetInLOS("LightGunsSpecialRight",0,JLOSF_COMBATANTONLY | JLOSF_ALLYNOJUMP | JLOSF_NOAUTOAIM,1000)
+		TNT1 A 0 A_JumpIfTargetInLOS("LightGunsSpecialRightHeal",0,JLOSF_COMBATANTONLY | JLOSF_NOAUTOAIM,1000)
+		MGLD A 2 A_Print("No Target!", 1)
+		MGLD A 2 A_Refire
+	    Goto Ready+11
+	LightGunsSpecialRight:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"LightGunsSpecialLeft")
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+		TNT1 A 0 A_PlaySound("Wand/Fire", 1, 1)
+        MGLS A 2 BRIGHT A_FireCustomMissile("LightGunShot", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",6)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1, -2) + pitch)
+		MGLS A 4
+		MGLS B 8
+		MGLS C 12
+		MGLS CCCC 1 A_Refire
+		Goto Ready+11
+	LightGunsSpecialLeft:
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+		TNT1 A 0 A_PlaySound("Wand/Fire", 1, 1)
+        MGLS D 2 BRIGHT A_FireCustomMissile("LightGunShot", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",6)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1, -2) + pitch)
+		MGLS D 4
+		MGLS E 8
+		MGLS F 12
+		MGLS FFFF 1 A_Refire
+		Goto Ready+11
+	LightGunsSpecialRightHeal:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"LightGunsSpecialLeftHeal")
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+		TNT1 A 0 A_PlaySound("Wand/Fire", 1, 1)
+        MGLS A 2 BRIGHT A_FireBullets (2, 2, 1, 75, "LightHealPuff")
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1, -2) + pitch)
+		MGLS A 4
+		MGLS B 8
+		MGLS C 12
+		MGLS CCCC 1 A_Refire
+		Goto Ready+11
+	LightGunsSpecialLeftHeal:
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+		TNT1 A 0 A_PlaySound("Wand/Fire", 1, 1)
+        MGLS D 2 BRIGHT A_FireBullets (0, 0, 1, 75, "LightHealPuff")
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1, -2) + pitch)
+		MGLS D 4
+		MGLS E 8
+		MGLS F 12
+		MGLS FFFF 1 A_Refire
+		Goto Ready+11
+		
+	DarkGunsSpecial:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",5,2)
+		Goto NoAmmo
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"DarkGunsSpecialLeft")
+		TNT1 A 0 A_GiveInventory("AkimboToggle",1)
+		MAGR A 0 A_PlaySound("ManaGuns/DarkShot", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam2", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam3", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam4", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam5", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+        MGDS A 2
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2, -3) + pitch)
+		MGDS A 2
+		MGDS B 6
+		MGDS C 12
+		MGDS CCCC 1 A_Refire
+		Goto Ready+11
+	DarkGunsSpecialLeft:
+		TNT1 A 0 A_TakeInventory("AkimboToggle",1)
+		MAGR A 0 A_PlaySound("ManaGuns/DarkShot", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam2", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam3", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam4", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("DarkBeam5", 0, 0, -1, 0, FPF_NOAUTOAIM, 0)
+        MGDS D 2
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
+		TNT1 A 0 A_AlertMonsters(1500)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2, -3) + pitch)
+		MGDS D 2
+		MGDS E 6
+		MGDS F 12
+		MGDS FFFF 1 A_Refire
+		Goto Ready+11
+
+    DoKick:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",12,2)
+		Goto DoHalfKick
+		TNT1 AAA 0
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",12)
+        MGNF A 2 BRIGHT A_FireCustomMissile("MGBlast", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_AlertMonsters(2000)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, -2.5) + pitch)
+		MGNF A 4
+		MGNF B 6
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MGNF C 20
+		Goto Ready+11
+		
+	DoHalfKick:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",6,2)
+		Goto DoFreeKick
+		TNT1 AAA 0
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",6)
+        MGNF A 2 BRIGHT A_FireCustomMissile("MGBlastHalf", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_AlertMonsters(2000)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, -2.5) + pitch)
+		MGNF A 4
+		MGNF B 6
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MGNF C 20
+		Goto Ready+11
+		
+	DoFreeKick:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+        MGNF A 2 BRIGHT A_FireCustomMissile("MGBlastFree", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+		TNT1 A 0 A_AlertMonsters(2000)
+		TNT1 A 0 A_SetAngle(frandom(1, -1) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, -2.5) + pitch)
+		MGNF A 4
+		MGNF B 6
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MGNF C 20
+		Goto Ready+11
+		
+    Taunt:
+	    TNT1 A 0 A_Takeinventory("Zoomed",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+        TNT1 A 5
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 0, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", -9, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 9, 0, -1, 0)
+		FUCK A 2
+        FUCK B 2 A_PlaySound("FUCK", 1)
+        FUCK C 2 A_AlertMonsters
+		FUCK D 15 A_Takeinventory("Taunting",1)
+        FUCK CBA 5
+        TNT1 A 5
+		Goto Ready+11
+	
+    Reload:
+		MGND A 1 A_WeaponReady
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_Takeinventory("ADSmode",1)
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",30,"Ready")
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,2)
+		Goto Ready+11
+		TNT1 AAA 0
+		TNT1 C 0 A_FireCustomMissile("EmptyManaClipSpawn",-5,0,8,-4)
+		MGNR AB 2
+		MGNR C 12
+		TNT1 A 0 A_PlaySound("ManaGuns/Reload")
+		MGNR DEFG 2
+		MGNR H 16
+		MGNR IJ 2
+		MGNR K 8
+		TNT1 C 0 A_FireCustomMissile("EmptyManaClipSpawn",220,0,8,-4)
+		MGNR K 8
+		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"PowerReloading")
+		
+	Reloading:
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",30,"FinishReload")
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,3)
+		Goto Ready+6
+        TNT1 AAAAAA 0
+		TNT1 A 0 A_Giveinventory("ManaGunsAmmo",3)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		Goto Reloading
+		
+	PowerReloading:
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",30,"FinishReload")
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,3)
+		Goto Ready+6
+        TNT1 AAAAAA 0
+		TNT1 A 0 A_Giveinventory("ManaGunsAmmo",5)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		Goto PowerReloading
+		
+	FinishReload:
+		TNT1 AAAAA 0
+		MGNR LMNO 2
+		TNT1 A 0 A_PlaySound("ManaGuns/Reload")
+		MGNR PQRS 2
+		MGNR T 12
+		MGNR UVWXY 2
+		Goto Ready+11
+	}
+}
+
+ACTOR MagicShot : FastProjectile
+{
+  +NOTELEPORT
+  +NOGRAVITY
+  Height 1
+  Radius 1
+  Speed 300
+  Damage (35)
+  DamageType Pistol
+  Scale .5
+  alpha 0.6
+  +NOTIMEFREEZE
+  species "Marines"
+  +THRUSPECIES
+  Translation "0:255=%[0,0,0]:[1.0,0.5,1.0]"
+  States
+  {
+  Spawn:
+   SCBL A 1 BRIGHT Light ("MAGICSHOT")
+   Loop
+  Death: XDeath: Crash:
+	TNT1 A 0 
+    ICPR A 2 BRIGHT Light ("MAGICSHOTPUFF") A_CustomMissile ("MagicGunPart", 0, 0, random (0, 360), 2 | 4, random (30, 90))
+    ICPR BCDEGH 2 BRIGHT Light ("MAGICSHOTPUFF")
+    stop
+  }
+}
+
+ACTOR MGBlast : FastProjectile
+{
+  Radius 10
+  Height 10
+  Speed 60
+  Damage (100)
+  Scale 1
+  Damagetype Kick
+  SeeSound "Rocket/MiniShoot"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  +NOEXTREMEDEATH
+  States
+	{
+	Spawn:
+		TNT1 AAAAAAAA 1 Bright A_CustomMissile ("MagicStarTrail", 1, 0, random (0, 360), 2, random (0, 360))
+		Goto Death
+	Death:
+		TNT1 A 0 Bright A_CustomMissile ("MagicStarTrail", 1, 0, random (0, 360), 2, random (0, 360))
+		Stop
+	XDeath:
+		TNT1 A 0 
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("MagicStarSmall", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_GiveToTarget ("MagicAmmo", 8)
+		TNT1 AAAA 0 A_CustomMissile ("BlueManaPoint", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 AAAA 0 A_CustomMissile ("BlueManaPoint2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		Stop
+  }
+}
+
+ACTOR MGBlastHalf : MGBlast
+{
+  Radius 10
+  Height 10
+  Speed 60
+  Damage (50)
+  Scale 1
+  Damagetype Kick
+  SeeSound "Rocket/MiniShoot"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  +NOEXTREMEDEATH
+  States
+	{
+	Spawn:
+		TNT1 AAAAAAAA 1 Bright A_CustomMissile ("MagicStarTrail", 1, 0, random (0, 360), 2, random (0, 360))
+		Goto Death
+	XDeath:
+		TNT1 A 0 
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("MagicStarSmall", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_GiveToTarget ("MagicAmmo", 4)
+		TNT1 AA 0 A_CustomMissile ("BlueManaPoint", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 AA 0 A_CustomMissile ("BlueManaPoint2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		Stop
+  }
+}
+
+ACTOR MGBlastFree : MGBlast
+{
+  Radius 10
+  Height 10
+  Speed 60
+  Damage (25)
+  Scale 1
+  Damagetype Kick
+  SeeSound "Rocket/MiniShoot"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  +NOEXTREMEDEATH
+  States
+	{
+	Spawn:
+		TNT1 AAAA 1 Bright A_CustomMissile ("MagicStarTrail", 1, 0, random (0, 360), 2, random (0, 360))
+		Goto Death
+	XDeath:
+		TNT1 A 0 
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAAAAAAAA 0 A_CustomMissile ("MagicStarSmall", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_GiveToTarget ("MagicAmmo", 1)
+		Stop
+  }
+}
+
+ACTOR ManaFireball
+{
+	Game Doom
+	DamageType Fire
+	Radius 8
+	Height 8
+	Speed 30
+	Damage (0)
+	PROJECTILE
+    +THRUGHOST
+	RenderStyle Add
+	Alpha 1
+	SeeSound "imp/attack"
+	DeathSound "imp/shotx"
+	Decal "Scorch"
+	Scale 1.6
+	+THRUSPECIES
+	+SEEKERMISSILE
+	States
+	{
+	Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater")
+		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails", 0, random( -2, 2))
+		FR7X A 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails")
+		FR7X B 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		
+		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails", 0, random( -2, 2))
+		FR7X A 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails")
+		FR7X B 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52", 2, 0, random (70, 110), 2, random (0, 360))
+		Loop
+		
+	SpawnUnderwater:
+		FR7X A 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
+		FR7X B 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
+		Goto Spawn
+		
+	Death: Crash:
+	TNT1 AAA 0
+	TNT1 A 0 A_ChangeFlag("PAINLESS", 1)
+	EXPL A 0 A_SpawnItem("ExplosionParticleSpawner")
+	TNT1 A 0 A_SpawnItemEx ("SmallUnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	EXPL AAAAAA 0 A_CustomMissile ("FireBallExplosionFlames", 1, 0, random (0, 360), 2, random (0, 360))
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(50, 100, false, 0,100)
+	TNT1 A 0 A_PlaySound("custom/fireBreak", 2)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(5, 100, false, 0,100)
+	stop
+  XDeath:
+    TNT1 A 0
+	TNT1 A 0 A_SeekerMissile(90,90,1,255,0)
+	SLSH A 0 A_PlaySound("custom/fireBreak", 1, 1.0)
+	TNT1 A 0 A_ChangeFlag("MISSILE", FALSE)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", FALSE)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", FALSE)
+	TNT1 A 0 A_ChangeFlag("SOLID", FALSE)
+	Goto Death
+	}
+}
+
+ACTOR MGIceShot : FastProjectile
+{
+  Radius 1
+  Height 1
+  Speed 150
+  Damage (0)
+  Scale 1
+  DamageType "Ice"
+  States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		TNT1 A 0 A_ChangeVelocity(velx*0, vely*0, velz*0, CVF_REPLACE)
+		Goto Death
+	Death: Crash: XDeath:
+		TNT1 A 0 
+		TNT1 AA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("IceSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		NREB BBBBBBBBBBB 0 BRIGHT A_CustomMissile ("IceCloud", 0, 0, random (0, 360), 2 | 4, random (-70, 70))
+		EXPL A 0 Bright A_Explode(80, 100, false)
+		EXPL A 0 Bright A_Explode(40, 200, false)
+    Stop
+  }
+}
+
+ACTOR ShockRocket
+{
+	Radius 5
+	Height 5
+	Speed 20
+	Damage (0)
+	PROJECTILE
+	+SEEKERMISSILE
+	MaxTargetRange 64
+	+FORCEPAIN
+	RenderStyle "Add"
+	Scale 0.5
+	Alpha 0.7
+    damagetype "ExplosiveImpact"
+	+NODAMAGETHRUST
+	States
+	{
+	Spawn:
+		FATB A 0 Bright A_JumpIfTargetInLOS("TrailSpawn",0,JLOSF_PROJECTILE)
+		MIRR A 2 Bright A_SeekerMissile(6,10,SMF_PRECISE)
+		MIRR B 2 Bright
+	TrailSpawn:
+		FATB A 0 Bright A_SeekerMissile(6,10,SMF_PRECISE)
+		TNT1 A 0 A_SpawnItemEx("RevenantProjectileTrails", 0, 0, 0, 0, 0, 0, 0, 128)  
+		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		MIRR A 2 Bright A_CustomMissile ("ShockBurst", 2, 0, random (70, 110), 2, random (0, 360))
+		MIRR B 2 Bright A_SpawnItemEx("RevenantProjectileTrails", 0, 0, 0, 0, 0, 0, 0, 128) 
+		MIRR C 2 Bright A_CustomMissile ("ShockBurst", 2, 0, random (70, 110), 2, random (0, 360))
+		MIRR D 2 Bright A_SpawnItemEx("RevenantProjectileTrails", 0, 0, 0, 0, 0, 0, 0, 128)
+		MIRR E 2 Bright
+		Loop
+	Death:
+	    EXPL A 0 Radius_Quake (2, 54, 0, 15, 0)
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx("ExplosionParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce")
+		EXPL A 0 A_Explode (60, 140, false)
+		EXPL A 0 A_Explode (20, 50, true)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockSpark2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 10
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx("ExplosionParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce")
+		EXPL A 0 A_Explode (60, 160, false)
+		EXPL A 0 A_Explode (20, 60, true)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockSpark2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 10
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx("ExplosionParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce")
+		EXPL A 0 A_Explode (60, 180, false)
+		EXPL A 0 A_Explode (20, 70, true)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockSpark2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 10
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx("ExplosionParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		TNT1 A 0 A_SpawnItem("Spark_UpOnce")
+		EXPL A 0 A_Explode (60, 200, false)
+		EXPL A 0 A_Explode (20, 80, true)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurstB", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockBurst2", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 0 A_CustomMissile ("ShockBoom", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("ShockSpark2", 0, 0, random (0, 360), 2, random (0, 360))
+		Stop
+	}
+}
+
+ACTOR RockShot
+{
+    Radius 10
+	Height 10
+	Speed 45
+	Scale 0.8
+	Damage (0)
+	DamageType Kick
+	Projectile
+	BounceType "Doom" 
+    BounceFactor 0.8
+	BounceCount 9
+	-NOGRAVITY
+	+CANBOUNCEWATER
+	+USEBOUNCESTATE
+	+BOUNCEONACTORS
+	Gravity 0.5
+	reactiontime 50
+	States
+	{
+	Spawn:
+		RKSH ABCD 3 
+		TNT1 A 0 A_Countdown
+		Loop
+	Bounce.Actor.Creature:
+		TNT1 A 0 A_JumpIfInventory("ChargeAmmo",2,"BounceNormal")
+		TNT1 A 0 A_GiveInventory("ChargeAmmo",1)
+		TNT1 A 0 A_ChangeFlag("MISSILE", 0)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 0)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 0)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 1)
+		TNT1 A 0 A_ScaleVelocity(0.01)
+		EXPL A 0 A_Explode (40, 40, false, 0, 40)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		RKSH C 4 
+		TNT1 A 0 A_ScaleVelocity(-100)
+		TNT1 A 0 A_ChangeFlag("MISSILE", 1)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 1)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 1)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		Goto Spawn
+	BounceNormal:
+		TNT1 A 0 A_ChangeFlag("MISSILE", 0)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 0)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 0)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 1)
+		TNT1 A 0 A_ScaleVelocity(0.01)
+		EXPL A 0 A_Explode (40, 40, false, 0, 40)
+		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		RKSH A 4 
+		TNT1 A 0 A_ScaleVelocity(100)
+		TNT1 A 0 A_ChangeFlag("MISSILE", 1)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 1)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 1)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		Goto Spawn
+	Death:
+		RKSH A 50
+		TNT1 AAAA 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 AAAA 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 AAAA 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		Stop
+  }
+}
+
+actor DarkBeam
+{
+	projectile
+	DamageType "DarkLaser"
+	radius 9
+	height 3
+	speed 1
+	damage (5)
+    Scale 3
+	renderstyle "Add"
+	alpha 0.7
+	-MISSILE
+	-ACTIVATEIMPACT
+	-ACTIVATEPCROSS
+	+NODAMAGETHRUST
+	Translation "0:255=%[0.1,0.0,0.1]:[0.3,0.2,0.9]"
+	states
+	{
+	Spawn: 
+		TNT1 A 0 bright
+		Goto ContinueFrames
+	ContinueFrames:
+		TNT1 A 0 A_ChangeFlag("MISSILE", 1)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 1)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 1)
+		TNT1 A 0 A_ChangeVelocity(velx*60, vely*60, velz*60, CVF_REPLACE)
+		TNT1 A 0 A_CustomMissile ("DarkBeamPart", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 2
+		Goto NormalLoop
+	NormalLoop:
+		LSRS A 1 bright
+		loop
+	death:
+		TNT1 AA 0 A_CustomMissile ("DarkBeamPart", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_Explode (35, 150, false)
+		TNT1 A 0 A_SetScale(2)
+		MIRB ABCDEFGH 1 bright
+		stop
+	}
+}
+
+actor DarkBeam2 : DarkBeam
+{
+	states
+	{
+	Spawn: 
+		TNT1 A 3 bright
+		Goto ContinueFrames
+	}
+}
+
+actor DarkBeam3 : DarkBeam
+{
+	states
+	{
+	Spawn: 
+		TNT1 A 6 bright
+		Goto ContinueFrames
+	}
+}
+
+actor DarkBeam4 : DarkBeam
+{
+	states
+	{
+	Spawn: 
+		TNT1 A 9 bright
+		Goto ContinueFrames
+	}
+}
+
+actor DarkBeam5 : DarkBeam
+{
+	states
+	{
+	Spawn: 
+		TNT1 A 12 bright
+		Goto ContinueFrames
+	}
+}
+
+ACTOR LightGunShot : FastProjectile
+{
+  +NOTELEPORT
+  +NOGRAVITY
+  Height 3
+  Radius 5
+  Speed 400
+  Damage (50)
+  DamageType LightShot
+  Scale 1
+  alpha 0.6
+  +NOTIMEFREEZE
+  Translation "0:255=%[0.1,0.0,0.1]:[2.0,1.0,2.0]"
+  States
+  {
+  Spawn:
+   TNT1 A 1
+   Loop
+  Death:
+	TNT1 A 0 
+    ICPR A 2 A_CustomMissile ("MagicGunPart", 0, 0, random (0, 360), 2 | 4, random (30, 90))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 0, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 45, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 90, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 135, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 180, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 225, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 270, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 315, 2 | 4, random (20, -20))
+    ICPR BCDEGH 2 BRIGHT Light ("MAGICSHOT")
+    stop
+  XDeath:
+	TNT1 A 0 
+	TNT1 A 0 A_GiveToTarget ("Health", 3)
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+    ICPR A 2 A_CustomMissile ("MagicGunPart", 0, 0, random (0, 360), 2 | 4, random (30, 90))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 0, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 45, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 90, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 135, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 180, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 225, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 270, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 315, 2 | 4, random (20, -20))
+    ICPR BCDEGH 2 BRIGHT Light ("MAGICSHOT")
+    stop
+  }
+}
+
+actor LightHealPuff : HitPuff
+{
++PUFFONACTORS
+damageType "LightShot"
+Scale 1
+alpha 0.6
+Translation "0:255=%[0.1,0.0,0.1]:[2.0,1.0,2.0]"
+states
+  {
+  Spawn: Death: XDeath:
+	TNT1 A 0 
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 0, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 45, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 90, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 135, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 180, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 225, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 270, 2 | 4, random (20, -20))
+	TNT1 A 0 A_CustomMissile ("LightWisp", 0, 0, 315, 2 | 4, random (20, -20))
+    ICPR A 2 A_CustomMissile ("MagicGunPart", 0, 0, random (0, 360), 2 | 4, random (30, 90))
+    ICPR BCDEGH 2 BRIGHT Light ("MAGICSHOT")
+    stop
+  }
+}
+
+ACTOR LightWisp
+{
+	Radius 8
+	Height 8
+	Speed 10
+	Damage (25)
+	DamageType "Holy"
+	PROJECTILE
+	RenderStyle "Add"
+	Alpha 1
+	+SEEKERMISSILE
+	+DONTGIB
+	+BOUNCEONWALLS
+	+BOUNCEONFLOORS
+	+BOUNCEONCEILINGS
+	+THRUGHOST
+	+THRUACTORS
+	BounceFactor 1
+	WallBounceFactor 1
+	DeathSound "imp/shotx"
+	Decal "Scorch"
+	Scale .3
+	Translation "0:255=%[0.5,0.5,0.5]:[2.0,2.0,2.0]"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_SeekerMissile (0,0,SMF_LOOK,256,8)
+		TNT1 A 0 A_Giveinventory("TimerTick",3)
+		Goto InitialShot
+	InitialShot:
+		FR7X A 1 BRIGHT A_SpawnItem("LightFlare",0,0)
+		FR7X B 1 BRIGHT A_SpawnItem("LightFlare",0,0)
+		TNT1 A 0 A_JumpIfInventory("TimerTick",1,2)
+		TNT1 A 0 A_Giveinventory("TimerTick",80)
+		Goto SeekingInitial
+		TNT1 A 0 A_Takeinventory("TimerTick",1)
+		Loop
+	SeekingInitial:
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+		TNT1 A 0 A_JumpIfInventory("TimerTick",1,1)
+		Goto SeekingTransition
+		TNT1 A 0 A_Takeinventory("TimerTick",1)
+		TNT1 A 0 A_SpawnItem ("LightFireTrail", 0, random( -2, 2))
+		TNT1 A 0 BRIGHT A_SpawnItem("LightFlare",0,0)
+		FR7X A 1 BRIGHT
+		TNT1 A 0 A_SpawnItem ("LightFireTrail")
+		TNT1 A 0 BRIGHT A_SpawnItem("LightFlare",0,0)
+		FR7X B 1 BRIGHT A_SeekerMissile (3,12, SMF_PRECISE | SMF_LOOK,256,8)
+		TNT1 A 0 A_Takeinventory("TimerTick",1)
+		Loop
+	SeekingTransition:
+		TNT1 A 0 A_ChangeFlag("BOUNCEONWALLS", FALSE)
+		TNT1 A 0 A_ChangeFlag("BOUNCEONFLOORS", FALSE)
+		TNT1 A 0 A_ChangeFlag("BOUNCEONCEILINGS", FALSE)
+		Goto Seeking
+	Seeking:
+		TNT1 A 0 A_SpawnItem ("LightFireTrail", 0, random( -2, 2))
+		TNT1 A 0 BRIGHT A_SpawnItem("LightFlare",0,0)
+		FR7X A 1 BRIGHT
+		TNT1 A 0 A_SpawnItem ("LightFireTrail")
+		TNT1 A 0 BRIGHT A_SpawnItem("LightFlare",0,0)
+		FR7X B 1 BRIGHT A_SeekerMissile (3,12, SMF_PRECISE | SMF_LOOK,256,8)
+		Loop
+	Death:
+		EXPL A 0 A_SpawnItem("ExplosionParticleSpawner")
+		TNT1 A 0 A_SpawnItemEx ("SmallUnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    EXPL AAAA 0 A_CustomMissile ("LightExplosionFlames", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAA 19 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+ACTOR EmptyManaClipSpawn
+{
+	Speed 20
+	PROJECTILE
+	+NOCLIP
+	+CLIENTSIDEONLY
+	States
+	{
+	Spawn:
+        TNT1 A 0
+		TNT1 A 1 A_CustomMissile("EmptyManaClip",-5,0,random(-80,-100),2,random(45,80))
+		Stop
+	}
+}
+
+ACTOR EmptyManaClip
+{
+   Height 12
+   Radius 9
+   Speed 4
+   Scale 1.01
+   +DOOMBOUNCE
+   - NOGRAVITY
+   +WINDTHRUST
+   +CLIENTSIDEONLY
+   +MOVEWITHSECTOR
+   +MISSILE
+   +NOBLOCKMAP
+   -DROPOFF
+   +NOTELEPORT
+   +FORCEXYBILLBOARD
+   +NOTDMATCH
+   +GHOST
+   Mass 1
+   Gravity 0.4
+   SeeSound "weapons/largemagdrop"
+   States
+   {
+   Spawn:
+      TNT1 A 7 A_PlaySound("NULL")
+      ECLI ABCDEFGH 4
+      ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+      ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+	  ECLI ABCDEFGH 4
+   Death:
+      ECLI G 50
+	  TNT1 A 0 A_PlaySound("ManaGuns/ClipBreak", 0, .5)
+	  TNT1 A 0 A_CustomMissile("ManaClipExplode")
+      Stop
+   }
+}

@@ -1,0 +1,885 @@
+ACTOR WandType : Inventory
+{
+   Inventory.MaxAmount 5
+}
+
+//// --------------------------------------------------------------------------
+//
+// Magic Wand
+//
+// --------------------------------------------------------------------------
+
+Actor MWand: MagicBaseSystem
+{
+    +WEAPON.NOAUTOAIM
+	Weapon.AmmoType1 "MagicAmmo"
+states 
+	{
+	Select:
+	TNT1 A 0 A_Takeinventory("Kicking",1)
+	TNT1 A 0 A_Takeinventory("Reloading",1)
+	TNT1 A 0 A_Takeinventory("FistsSelected",1)
+	TNT1 A 0 A_Giveinventory("SawSelected",1)
+	TNT1 A 0 A_Takeinventory("ShotgunSelected",1)
+	TNT1 A 0 A_Takeinventory("SSGSelected",1)
+	TNT1 A 0 A_Takeinventory("MinigunSelected",1)
+	TNT1 A 0 A_Takeinventory("PlasmaGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RocketLauncherSelected",1)
+    TNT1 A 0 A_Takeinventory("GrenadeLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("BFGSelected",1)
+	TNT1 A 0 A_Takeinventory("BFG10kSelected",1)
+	TNT1 A 0 A_Takeinventory("RailGunSelected",1)
+	TNT1 A 0 A_Takeinventory("SubMachineGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RevenantLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("LostSoulSelected",1)
+	TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+	TNT1 A 0 A_Takeinventory("HasBarrel",1)
+		KICK A 0 A_Takeinventory("PowerBloodOnVisor",1)
+		KICK A 0 A_Takeinventory("PowerBlueBloodOnVisor",1)
+		KICK A 0 A_Takeinventory("PowerGreenBloodOnVisor",1)
+		TNT1 A 0 A_Raise
+		Wait
+	Deselect:
+	    TNT1 A 0 A_Takeinventory("SawSelected",1)
+		TNT1 A 0 A_StopsoundEx("Weapon")
+		TNT1 A 0 A_Lower
+		TNT1 A 0 A_Lower
+		goto deselect+1
+
+    Steady:
+	TNT1 A 1
+	Goto Ready
+	
+	Spawn:
+		MWDA A -1
+		Stop
+	
+	Ready:
+        TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+		TNT1 A 0 A_TakeInventory("ChargeShot", 999)
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto ReadyFireWand
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"ReadyLightWand")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"ReadyDarkWand")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"ReadyEarthWand")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"ReadyShockWand")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"ReadyIceWand")
+		goto ready+35
+	ReadyFireWand:
+        TNT1 E 0
+		MWDB A 4 A_weaponready
+		MWDF E 2 A_weaponready
+		goto ready+35
+	ReadyIceWand:
+        TNT1 A 0
+		MWDB A 4 A_weaponready
+		MWDI E 2 A_weaponready
+		goto ready+35
+	ReadyShockWand:
+        TNT1 A 0
+		MWDB A 4 A_weaponready
+		MWDS E 2 A_weaponready
+		goto ready+35
+	ReadyEarthWand:
+        TNT1 A 0
+		MWDB A 4 A_weaponready
+		MWDE E 2 A_weaponready
+		goto ready+35
+	ReadyDarkWand:
+        TNT1 A 0
+		MWDB A 4 A_weaponready
+		MWDD E 2 A_weaponready
+		goto ready+35
+	ReadyLightWand:
+        TNT1 A 0
+		MWDB A 4 A_weaponready
+		MWDL E 2 A_weaponready
+		goto ready+35
+	MagicEnd:
+		TNT1 A 0
+		goto ready+9
+		
+	Fire:
+	  TNT1 A 0
+      TNT1 A 0 A_Refire
+      Goto Hold	
+	  
+	Hold:
+	  TNT1 A 0 a_unsetreflectiveinvulnerable
+	  MWDB A 0 A_JumpIfInventory("ChargeShot", 4, "ChargeReady")
+      MWDB D 2 A_GiveInventory("ChargeShot", 1)
+      MWDB A 3
+      MWDB A 0 A_Refire
+	  goto BasicShot
+	  
+	ChargeReady:
+	  MWDB E 2
+      MWDB A 4
+      MWDB Q 0 A_Refire
+	  Goto SappingShot
+	
+	BasicShot:
+		TNT1 A 0 A_TakeInventory("ChargeShot", 999)
+		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"PowerBasicShot")
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_PlaySound("Wand/Fire", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		TNT1 AA 0 A_FireCustomMissile("WandShot", random(-6, 6), 0, 0, 5, 0, random(-4, 4))
+		TNT1 AA 0 A_FireCustomMissile("WandShot2", random(-6, 6), 0, 0, 5, 0, random(-4, 4))
+		MWDB C 8
+		MWDB BA 8 
+		MWDB AAAA 2 A_Refire
+		Goto Ready+14
+		
+	PowerBasicShot:
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_PlaySound("Wand/Fire", 1, 1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		TNT1 AAAA 0 A_FireCustomMissile("WandShot", random(-6, 6), 0, 0, 5, 0, random(-4, 4))
+		MWDB C 8
+		MWDB BA 8 
+		MWDB A 2 A_Refire
+		Goto Ready+14
+		
+		
+	SappingShot:
+		TNT1 A 0 A_TakeInventory("ChargeShot", 999)
+		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"PowerSappingShot")
+		MWDB E 3
+		TNT1 A 0 A_PlaySound("Wand/ManaSap", 1, 1)
+        MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 2 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 2 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap2", 0, 0, 0, 5, 0, 0)
+		MWDB BCCDDA 5
+		MWDB A 2 A_Refire
+		Goto Ready+14
+		
+	PowerSappingShot:
+		MWDB E 3
+		TNT1 A 0 A_PlaySound("Wand/ManaSap", 1, 1)
+        MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap3", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 2 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 2 BRIGHT A_FireCustomMissile("ManaSap3", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap3", 0, 0, 0, 5, 0, 0)
+		MWDB C 3
+		MWDB B 3 BRIGHT A_FireCustomMissile("ManaSap2", 0, 0, 0, 5, 0, 0)
+		MWDB BCCDDA 5
+		MWDB A 2 A_Refire
+		Goto Ready+14
+		
+	DoKick:
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto WandFlameTrap
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"WandHolyRay")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"WandMagnetPull")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"WandEarthWall")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"WandShockShield")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"WandBlizzardMagic")
+		Goto Ready	
+		
+	Reload:
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto WandFireHelper
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"WandCharmTrick")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"WandDisrupterField")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"WandStoneArmor")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"WandCastHaste")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"WandTimeFreeze")
+		Goto Ready	
+		
+	AltFire:	
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",2,2)
+		Goto Ready+9
+		TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (2000)
+		TNT1 A 0 A_jumpifinventory("PowerStrength",1,"PowerAltFire")
+		TNT1 A 0 A_PlaySound("Wand/Star", 1, 1)
+		TNT1 A 0 A_FireCustomMissile("WandOrb", 0, 0, 0, 5, 0, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",2)
+		MWDB C 8
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		MWDB BA 8 
+		MWDB A 2 A_Refire
+		Goto Ready+14
+	
+	PowerAltFire:
+		TNT1 A 0 A_PlaySound("Wand/Star", 1, 0.5)
+		TNT1 A 0 A_FireCustomMissile("WandOrb2", 0, 0, 0, 5, 0, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",2)
+		MWDB C 8
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		MWDB BA 8 
+		MWDB A 2 A_Refire
+		Goto Ready+14
+		
+	MagicAction:
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto WandFlameShot
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"WandLightBeam")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"WandShadowShot")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"WandEarthSpikes")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"WandThunderShot")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"WandIceShot")
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		MWDB C 8
+		Goto Ready	
+		
+	WandSwitchIce:
+		TNT1 A 0 A_GiveInventory("MagicType",1)
+		MWDI D 5
+		MWDI B 3
+		MWDI A 2
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+9
+	
+	WandSwitchShock:
+		TNT1 A 0 A_GiveInventory("MagicType",1)
+		MWDS D 5
+		MWDS B 3
+		MWDS A 2
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+9
+		
+	WandSwitchEarth:
+		TNT1 A 0 A_GiveInventory("MagicType",1)
+		MWDE D 5
+		MWDE B 3
+		MWDE A 2
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+9
+		
+	WandSwitchDark:
+		TNT1 A 0 A_GiveInventory("MagicType",1)
+		MWDD D 5
+		MWDD B 3
+		MWDD A 2
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+9
+		
+	WandSwitchLight:
+		TNT1 A 0 A_GiveInventory("MagicType",1)
+		MWDL D 5
+		MWDL B 3
+		MWDL A 2
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+9
+		
+	WandSwitchFlame:
+		TNT1 A 0 A_Takeinventory("MagicType",9)
+		MWDF D 5
+		MWDF B 3
+		MWDF A 2
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+9
+		
+	WandFlameShot:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowFire",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF 80 1B",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",7,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1000)
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		MWDF B 5
+		TNT1 A 0 A_PlaySound("Magic/FireShot", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)
+		MWDF C 5 BRIGHT A_FireCustomMissile("MagicFlameShot", 0, 1, 0, -5)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",7)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDF DBD 5 BRIGHT
+        MWDF B 7
+		MWDF A 10
+        Goto Ready+7
+		
+	WandFireHelper:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowFire",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF 80 1B",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",10,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_JumpIfInventory("MagicCooldown",1,"SpellCooldown")
+		MWDF B 5
+		TNT1 A 0 A_PlaySound("Magic/FireAssist", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)
+		MWDF C 7 BRIGHT A_FireCustomMissile("FireHelper", 0, 1, 0, -5)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",10)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDF BDB 7 BRIGHT
+        MWDF D 10
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDF A 10
+        Goto Ready+7
+		
+	WandFlameTrap:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowFire",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF 80 1B",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",5,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		MWDF B 2
+		TNT1 A 0 A_PlaySound("Magic/Flame1", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)
+		MWDF C 5 BRIGHT A_FireCustomMissile("FireTrapShot", 0, 1, 0, 0, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDF BDB 3 BRIGHT
+        MWDF D 5
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDF A 10
+        Goto Ready+7
+		
+	WandIceShot:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowIce",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("90 90 FF",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1000)
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		MWDI BDB 2
+		TNT1 A 0 A_FireCustomMissile("BlueFlareSpawn",-5,0,0,0)
+		MWDI C 2 BRIGHT A_FireCustomMissile("IceTouch", 0, 1, 0, -5)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDI DBD 4 BRIGHT
+		MWDI A 10
+        Goto Ready+7       
+		
+	WandTimeFreeze:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowIce",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("90 90 FF",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",7,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDI BDB 3
+		TNT1 A 0 A_FireCustomMissile("BlueFlareSpawn",-5,0,0,0)
+		TNT1 A 0 A_GiveInventory ("FreezeTimePower")
+		TNT1 A 0 A_CustomMissile ("FrozenTimeParticles", 0, 0, 0, 2, 0)
+		TNT1 A 0 ACS_Execute(4402, 0, 0, 0, 0)
+		MWDI C 3 BRIGHT
+		TNT1 A 0 A_Takeinventory("MagicAmmo",7)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDI DB 3 BRIGHT
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+        MWDI D 3
+		MWDI A 3
+        Goto Ready+7
+		
+	WandBlizzardMagic:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowIce",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("90 90 FF",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",10,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		MWDI DBD 3
+		TNT1 A 0 A_FireCustomMissile("BlueFlareSpawn",-5,0,0,0)
+		MWDI C 5 BRIGHT A_FireCustomMissile("BlizzardShot", 0, 1, 0, -5)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",10)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDI DBDB 5 BRIGHT
+        MWDI DB 5
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDI A 10
+        Goto Ready+7
+	
+	WandShockShield:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowShock",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF FF 73",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",7,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1000)
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDS DBD 2
+		TNT1 A 0 A_PlaySound("Magic/Mirror1", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",-5,0,0,0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",7)
+		MWDS CCCCC 6 BRIGHT A_FireCustomMissile("ShockShield", 0, 1, 0, -5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDS BDB 5 BRIGHT
+        MWDS D 5
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDS A 5
+        Goto Ready+7
+		
+	WandThunderShot:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowShock",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF FF 73",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",5,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		MWDS CCC 1
+		TNT1 A 0 A_PlaySound("Magic/Thunder", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",-5,0,0,0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		MWDS D 0 BRIGHT A_FireCustomMissile("LaserShot", 0, 0, -1, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDS DBD 5 BRIGHT
+        MWDS B 5
+		MWDS A 10
+        Goto Ready+7
+		
+	WandCastHaste:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowShock",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF FF 73",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",10,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDS CCC 1
+		TNT1 A 0 A_PlaySound("Magic/Mirror1", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",-5,0,0,0)
+		TNT1 A 0 A_GiveInventory ("FireRatePower")
+		TNT1 A 0 A_GiveInventory ("RunSpeedPower")
+		TNT1 A 0 ACS_Execute(4403, 0, 0, 0, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",10)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDS BDB 1 BRIGHT
+        MWDS D 4
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDS A 10
+        Goto Ready+7
+		
+	WandEarthSpikes:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowEarth",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("BF A7 8F",0.4,8)
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",5,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		MWDE BDB 2
+		MWDE A 0 A_PlaySound("Magic/Earth1", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",-5,0,0,0)
+		MWDE C 5 BRIGHT A_FireCustomMissile("EarthShot", 0, 1, 0, -5)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDE BDB 5 BRIGHT
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+        MWDE D 8
+		MWDE A 8
+        Goto Ready+7
+		
+	WandStoneArmor:
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,2)
+		Goto SARemoveArmor
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDE A 15
+		MWDE A 5 A_PlaySound("Magic/Earth1", 0, 1.0)
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",150,2)
+		TNT1 A 0 A_JumpIfInventory("Reloading", 1, "SARemoveArmor")
+		Goto SAApplyArmor
+		TNT1 AAA 0
+	SARemoveArmor:
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",50,"FinishArmor")
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",1,2)
+		Goto FinishArmor
+		TNT1 AAA 0
+		MWDE B 1
+		TNT1 AAAAAAAAAA 0 A_Takeinventory("BasicArmor",1)
+		TNT1 A 0 A_GiveInventory("MagicAmmo",1)
+		Loop
+	SAApplyArmor:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("BasicArmor",150,"FinishArmor")
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,2)
+		Goto FinishArmor
+        TNT1 AAAA 0
+		MWDE C 1
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		TNT1 AAAAA 0 A_GiveInventory("StoneArmor",1)
+		Loop
+	FinishArmor:
+		MWDE D 2 BRIGHT
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDE BCA 2 BRIGHT
+        MWDE D 2
+		MWDE A 2
+        Goto Ready+7
+		
+	WandEarthWall:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowEarth",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("BF A7 8F",0.4,8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",5,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDE BDB 2
+		TNT1 A 0 A_AlertMonsters (500)
+		MWDE A 0 A_PlaySound("Magic/Earth1", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",-5,0,0,0)
+		MWDE C 5 BRIGHT A_SpawnItemEx ("EarthWall", 70, 0, 10,0,0,0,0,SXF_SETMASTER,0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDE BDB 5 BRIGHT
+        MWDE D 3
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDE A 10
+        Goto Ready+7
+		
+	WandShadowShot:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowDark",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("00 00 00", 0.5, 8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",3,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",3)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		MWDD B 3 A_PlaySound("Magic/ShadowShot", 0, 1.0)
+		MWDD C 3 BRIGHT A_FireCustomMissile("ShadowBolt", 9, 1, 0, -5)
+		MWDD C 3 BRIGHT A_FireCustomMissile("ShadowBolt", 0, 1, 0, -5)
+		MWDD C 3 BRIGHT A_FireCustomMissile("ShadowBolt", -9, 1, 0, -5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+        MWDD DB 5
+		MWDD A 10
+        Goto Ready+7
+		
+	WandMagnetPull:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowDark",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("00 00 00", 0.5, 8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",3,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDD CC 3
+		TNT1 A 0 A_PlaySound("Magic/MagnetPull", 0, 1.0)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",-5,0,0,0)
+		MWDD D 0 BRIGHT A_FireCustomMissile("MagnetPull", 0, 0, -1, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",3)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDD DB 3
+		MWDD A 2
+        Goto Ready+7
+		
+	WandDisrupterField:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowDark",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("00 00 00", 0.5, 8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",3,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDD BCC 2
+		TNT1 A 0 A_PlaySound("Magic/Terror", 0, 1.0)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoShot", 0, 1, 0, -5)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, 0, 25)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, 30, 25)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, -30, 25)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, 0, -5)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, 30, -5)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, -30, -5)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, 0, -25)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, 30, -25)
+		TNT1 D 0 BRIGHT A_FireCustomMissile("EchoBlock", 0, 1, -30, -25)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",3)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDD DB 5 
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDD A 10
+        Goto Ready+7
+		
+	WandLightBeam:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowLight",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF FF FF", 0.5, 8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",5,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1000)
+		TNT1 A 0 A_Takeinventory("Salute1",1)
+		MWDL BCC 2
+		TNT1 A 0 A_PlaySound("Magic/LightBeam", 0, 1.0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		
+		TNT1 B 0 A_FireCustomMissile("LightBeam", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam2", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam3", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam4", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam5", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam6", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam7", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam8", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam9", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam10", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam11", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam12", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam13", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam14", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam15", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam16", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam17", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam18", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam19", 0, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam20", 0, 0, -1, 0)
+		
+		TNT1 B 0 A_FireCustomMissile("LightBeam", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam2", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam3", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam4", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam5", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam6", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam7", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam8", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam9", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam10", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam11", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam12", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam13", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam14", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam15", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam16", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam17", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam18", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam19", -5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam20", -5, 0, -1, 0)
+		
+		TNT1 B 0 A_FireCustomMissile("LightBeam", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam2", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam3", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam4", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam5", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam6", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam7", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam8", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam9", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam10", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam11", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam12", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam13", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam14", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam15", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam16", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam17", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam18", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam19", 5, 0, -1, 0)
+		TNT1 B 0 A_FireCustomMissile("LightBeam20", 5, 0, -1, 0)
+		
+		TNT1 A 0 A_Takeinventory("MagicAmmo",5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDL CDB 7 
+		MWDL A 10
+        Goto Ready+7	
+		
+	WandHolyRay:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowLight",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF FF FF", 0.5, 8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",7,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (500)
+		TNT1 A 0 A_Takeinventory("Kicking",1)
+		MWDL BCC 2
+		TNT1 A 0 A_PlaySound("Magic/HolyRay1", 0, 1.0)
+		TNT1 B 0 A_FireCustomMissile("HolyShot", 0, 0, -1, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",7)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDL DBD 5 
+		MWDL A 10
+        Goto Ready+7
+	
+	WandCharmTrick:
+		TNT1 A 0 A_SpawnItemEx("MagicGlowLight",8,0,32,0,0,0,0,32,0)
+		TNT1 A 0 A_SetBlend("FF FF FF", 0.5, 8)
+        TNT1 A 0 A_JumpIfInventory("MagicAmmo",5,2)
+		Goto Ready+9
+        TNT1 AAAA 0
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		MWDL BCC 2
+		TNT1 A 0 A_PlaySound("Magic/Charm", 0, 1.0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		TNT1 B 0 A_FireCustomMissile("CharmShot", 0, 0, -1, 0)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",5)
+		TNT1 A 0 A_FireCustomMissile("ShakeYourAssDouble", 0, 0, 0, 0)
+		MWDL DB 5 
+		MWDL A 10
+        Goto Ready+7
+		
+    Taunt:
+        TNT1 A 5
+		FUCK A 2
+        FUCK B 2 A_PlaySound("FUCK", 1)
+        FUCK C 2 A_AlertMonsters
+		FUCK D 15 A_Takeinventory("Taunting",1)
+        FUCK CBA 5
+        TNT1 A 5
+		goto ready+35
+	}
+}
+
+ACTOR WandOrb
+{
+  height 10
+  radius 15
+  damage (200)
+  DamageType "MagicOrb"
+  speed 35
+  Scale 4
+  PROJECTILE
+  +NOEXTREMEDEATH
+  RenderStyle "Add"
+  Translation "0:255=%[0,0,0]:[1.1,1.8,1.3]"
+  Alpha 1
+   States
+   {
+   Spawn:
+		MSHO AAAABBBBCCCCDDDDEEEE 1 BRIGHT A_CustomMissile ("MagicWandOrbEffect", 1, 0, random (0, 360), 2, random (0, 360))
+		Loop
+    Death:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("ShotgunKickback", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+		MSHO AAAABBBBBCCCCDDDDEEEE 1 BRIGHT A_FadeOut(0.05)
+		Stop
+   }
+}
+
+ACTOR WandOrb2 : WandOrb
+{
+   DamageType "MagicOrbSap"
+}
+
+ACTOR WandShot
+{
+  height 5
+  radius 10
+  damage (30)
+  damageType "WandShot"
+  speed 50
+  Scale 1
+  PROJECTILE
+  +NOEXTREMEDEATH
+  RenderStyle "Add"
+  Translation "0:255=%[0,0,0]:[1.1,1.8,1.3]"
+  Alpha 1
+   States
+   {
+   Spawn:
+		MSHO AABBCCDDEE 2 BRIGHT A_CustomMissile ("MagicWandPart", 1, 0, random (0, 360), 2, random (0, 360))
+		Loop
+    Death: Crash:
+		MSHO AAAABBBBBCCCCDDDDEEEE 1 BRIGHT A_FadeOut(0.05)
+		Stop
+    XDeath:
+	  TNT1 A 0 A_GiveToTarget ("MagicAmmo", 1)
+	  TNT1 A 0 A_CustomMissile ("BlueManaPoint", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+      Stop
+   }
+}
+
+ACTOR WandShot2 : WandShot
+{
+   States
+   {
+   Spawn:
+		MSHO ABCDE 4 BRIGHT
+		Loop
+    XDeath:
+	  TNT1 AAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+      Stop
+   }
+}
+
+ACTOR ManaSap: FastProjectile
+{
+	Radius 10
+	Height 10
+	Projectile 
+	+FORCEXYBILLBOARD
+	+NOEXTREMEDEATH
+	RenderStyle Add
+	Alpha 0.6
+	Scale 0.7
+    Damage 0
+	+BLOODLESSIMPACT
+    Speed 60
+	SeeSound "none"
+	DeathSound "none"
+	Decal "none"
+	+FORCEPAIN
+	States
+	{
+	Spawn:
+		TNT1 A 2 BRIGHT
+		Goto Death
+	Death: Crash:
+		TNT1 AAAAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+		Stop
+	XDeath:
+		TNT1 A 0 A_CustomMissile ("SapBreak", 0, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_GiveToTarget ("MagicAmmo", 1)
+		TNT1 A 0 A_CustomMissile ("BlueManaPoint", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_Explode(10,50,false,0,50)
+		Stop
+	}
+}
+
+ACTOR ManaSap2: ManaSap
+{
+	+PAINLESS
+	States
+	{
+	Spawn:
+		TNT1 A 2 BRIGHT
+	Death: Crash: XDeath:
+		TNT1 AAAAAA 0 A_CustomMissile ("MagicStarHit", 1, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_CustomMissile ("SapBreak", 0, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_Explode(100,100, false, 0, 100)
+		Stop
+	}
+}
+
+ACTOR ManaSap3: ManaSap
+{
+	States
+	{
+	XDeath:
+		TNT1 A 0 A_CustomMissile ("SapBreak", 0, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_GiveToTarget ("MagicAmmo", 2)
+		TNT1 A 0 A_CustomMissile ("BlueManaPoint", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_CustomMissile ("BlueManaPoint2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_Explode(10,50,false,0,50)
+		Stop
+	}
+}

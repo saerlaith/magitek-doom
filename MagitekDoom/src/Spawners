@@ -1,0 +1,918 @@
+//// --------------------------------------------------------------------------
+//
+// Barrels
+//
+// ----------------------------------------------------------------------------
+
+ACTOR MagitekBarrel Replaces ExplosiveBarrel
+{
+Radius 1
+Height 1
+-NOGRAVITY
+States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (255, "LightBarrel")
+		TNT1 A 5
+		Stop
+	FireBarrel:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("MagitekBarrelFire", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	IceBarrel:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("MagitekBarrelIce", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	LightBarrel:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("MagitekBarrelLight", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	ShockBarrel:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("MagitekBarrelShock", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	EarthBarrel:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("MagitekBarrelEarth", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	DarkBarrel:
+		TNT1 A 5
+		Stop
+	}
+}
+
+Actor MagitekBarrel2 : MagitekBarrel Replaces BurningBarrel
+{
+
+}
+
+ACTOR MagitekBarrelLight
+{
+	Translation "0:255=%[0,0,0]:[2.0,2.0,2.0]"
+    damagefactor "Trample", 0.0
+    damagefactor "Kick", 0.1
+    damagefactor "Melee", 10.1
+	damagefactor "Fatality", 10
+	damagefactor "SuperPunch", 10
+	damagefactor "Extremepunches", 10
+	damagefactor "Fire", 3.5
+	damagefactor "Blood", 0.0    damagefactor "GreenBlood", 0.0    damagefactor "BlueBlood", 0.0    damagefactor "Taunt", 0.0    damagefactor "KillMe", 0.0  damagefactor "Avoid", 0.0  damagefactor "Taunt", 0.0 damagefactor "Head", 0.0 damagefactor "minorhead", 0.0
+	SpawnID 125
+	Health 40
+	Radius 10
+	Height 34
+    Mass 200
+	DamageType ExplosiveImpact
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+ACTIVATEMCROSS
+	+NOICEDEATH
+    +PUSHABLE
+	PushFactor 1
+	+SLIDESONWALLS
+    +WINDTHRUST
+    +TELESTOMP
+	+NOBLOCKMONST
+	+FLOORCLIP
+	PainChance "Kick", 255
+	PainChance "Melee", 255
+	PainChance "Fatality", 255
+	PainChance "Extremepunches", 255
+	PainChance "SuperPunch", 255
+	DeathSound "Explosion"
+	Obituary "$OB_BARREL"
+	States
+	{
+	Spawn:
+	    TNT1 A 0 A_CheckSight("Spawn2")
+		BAR1 A 4  A_SpawnItem("greenlensflarealtsmall",0,27)
+		TNT1 A 0 A_CheckSight("Spawn2")
+		BAR1 A 4  A_SpawnItem("greenlensflarealtsmall",0,27)
+		TNT1 A 0 A_CheckSight("Spawn2")
+		BAR1 B 4  A_SpawnItem("greenlensflarealtsmall",0,27)
+		TNT1 A 0 A_CheckSight("Spawn2")
+		BAR1 B 4  A_SpawnItem("greenlensflarealtsmall",0,27)
+		Loop
+	Spawn2:
+	    BAR1 A 2
+		Goto Spawn
+    Pain.Kick:
+	    BAR1 A 1 A_Pain
+        BAR1 A 1 A_FaceTarget
+		TNT1 A 0 HealThing(100)
+		TNT1 A 0 ThrustThing(angle*256/360+128, 30, 0, 0)
+		TNT1 A 0 ThrustThingZ(0,10,0,1)
+        Goto Spawn
+		
+	Death:
+        BAR1 A 2 BRIGHT
+        BEXP ABCD 2 BRIGHT
+	    TNT1 A 0 A_NoBlocking
+	    TNT1 A 0 A_Fall
+        TNT1 A 0 A_SpawnItemEx ("BarrelExplosionLight",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		Stop
+	
+	Pain.Melee:
+    Death.Melee:
+	Pain.Extremepunches:
+    Death.Extremepunches:
+	Pain.Fatality:
+    Death.Fatality:
+	Death.SuperPunch:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+        TNT1 A 0 A_GiveToTarget("HasBarrel", 1)
+        Stop
+	}
+}
+
+actor BarrelExplosionLight
+{
+	projectile
+	DamageType ExplosiveImpact
+	radius 3
+	height 3
+	speed 0
+	damage (0)
+	states
+	{
+	Spawn: 
+		TNT1 A 0
+		Goto Death
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("BarrelKaboom",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		
+		TNT1 AA 0 A_CustomMissile ("HolyExplosionStrong", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_Explode (250, 200, false)
+		TNT1 A 0 A_Explode (40, 100, true)
+		
+        TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+	    EXPL A 0 Radius_Quake (2, 24, 0, 15, 0)
+		BEXP B 0 BRIGHT A_Scream
+        
+		TNT1 AA 0 A_CustomMissile ("MetalShard1", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard2", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard3", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		
+		TNT1 A 0 A_SpawnItem("BarrelExplosionSmokeColumn")
+		
+		Stop
+	}
+}
+
+Actor MagitekBarrelFire : MagitekBarrelLight
+{
+states
+	{
+	Spawn:
+		TNT1 A 0 bright A_CustomMissile ("FastExplosionSmoke", 48, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 bright A_CustomMissile ("RealFlameTrailsSmallLong", 38, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("ImBallGettingReady2", 35, 0, random (0, 140), 2, random (0, 160))
+		BURB A 3 bright A_SpawnItem("RedFlare3",0,32)
+
+		TNT1 A 0 bright A_CustomMissile ("FastExplosionSmoke", 48, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 bright A_CustomMissile ("RealFlameTrailsSmallLong", 38, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("ImBallGettingReady2", 35, 0, random (0, 140), 2, random (0, 160))
+		BURB A 3 bright A_SpawnItem("RedFlare3",0,32)
+
+		TNT1 A 0 bright A_CustomMissile ("FastExplosionSmoke", 48, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 bright A_CustomMissile ("RealFlameTrailsSmallLong", 38, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("ImBallGettingReady2", 35, 0, random (0, 140), 2, random (0, 160))
+		BURB A 3 bright A_SpawnItem("RedFlare3",0,32)
+
+		TNT1 A 0 bright A_CustomMissile ("FastExplosionSmoke", 48, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 bright A_CustomMissile ("RealFlameTrailsSmallLong", 38, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("ImBallGettingReady2", 35, 0, random (0, 140), 2, random (0, 160))
+		BURB A 3 bright A_SpawnItem("RedFlare3",0,32)
+		
+        TNT1 A 0 A_Playsound("props/redfire")
+		TNT1 A 0 bright A_CustomMissile ("FastExplosionSmoke", 48, 0, random (40, 180), 2, random (50, 130))
+		TNT1 A 0 bright A_CustomMissile ("RealFlameTrailsSmallLong", 30, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_CustomMissile ("ImBallGettingReady2", 35, 0, random (0, 140), 2, random (0, 160))
+		BURB A 3 bright A_SpawnItem("RedFlare3",0,32)
+		
+		Loop
+
+	Spawn2:
+		BURB A 1
+		TNT1 A 0 A_CustomMissile ("ImBallGettingReady2", 35, 0, random (0, 140), 2, random (0, 160))
+		Goto Spawn
+		
+	Pain.Kick:
+	    BURB A 1 A_Pain
+        BURB A 1 A_FaceTarget
+		TNT1 A 0 HealThing(100)
+		TNT1 A 0 ThrustThing(angle*256/360+128, 30, 0, 0)
+		TNT1 A 0 ThrustThingZ(0,10,0,1)
+        Goto Spawn
+		
+	Death:
+	    TNT1 A 0 A_Pain
+		TNT1 A 1 A_FaceTarget
+		TNT1 A 0 A_NoBlocking
+        TNT1 AAAA 0 A_CustomMissile ("FlyingBurningFuel2", 24, 0, random (0, 360), 2, random (0, 40))
+		TNT1 AAAA 0 A_CustomMissile ("FlyingBurningFuel3", 24, 0, random (0, 360), 2, random (0, 40))
+		TNT1 AAAA 0 A_CustomMissile ("FlyingBurningFuel4", 24, 0, random (0, 360), 2, random (0, 40))
+        BARK DE 3
+		BARK F -1
+		Stop
+		
+	Pain.Melee:
+    Death.Melee:
+	Pain.Extremepunches:
+    Death.Extremepunches:
+	Pain.Fatality:
+    Death.Fatality:
+	Death.SuperPunch:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+        TNT1 A 0 A_GiveToTarget("HasFlameBarrel", 1)
+        Stop
+	
+	}
+}
+
+Actor MagitekBarrelIce : MagitekBarrelLight
+{
+Translation "0:255=%[0,0,0]:[1.5,1.8,2.0]"
+states
+	{
+	Spawn:
+		BURB A 3 bright A_SpawnItem("BlueFlare3",0,30)
+		TNT1 A 0 A_CustomMissile ("IceCloud", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("BlueFlare3",0,30)
+		TNT1 A 0 A_CustomMissile ("IceCloud", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("BlueFlare3",0,30)
+		TNT1 A 0 A_CustomMissile ("IceCloud", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("BlueFlare3",0,30)
+		TNT1 A 0 A_CustomMissile ("IceCloud", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("BlueFlare3",0,30)
+		TNT1 A 0 A_CustomMissile ("IceCloud", 30, 0, random (0, 360), 2, random (10, 45))
+		
+		Loop
+		
+	Pain.Kick:
+	    BURB A 1 A_Pain
+        BURB A 1 A_FaceTarget
+		TNT1 A 0 HealThing(100)
+		TNT1 A 0 ThrustThing(angle*256/360+128, 30, 0, 0)
+		TNT1 A 0 ThrustThingZ(0,10,0,1)
+        Goto Spawn
+		
+	Death:
+	    BAR1 A 2 BRIGHT
+        BEXP ABCD 2 BRIGHT
+		TNT1 A 0 A_CustomMissile ("BarrelExplosionIce", 0, 0, random (0, 360), 2, random (0, 360))
+		Stop
+		
+	Pain.Melee:
+    Death.Melee:
+	Pain.Extremepunches:
+    Death.Extremepunches:
+	Pain.Fatality:
+    Death.Fatality:
+	Death.SuperPunch:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+        TNT1 A 0 A_GiveToTarget("HasIceBarrel", 1)
+        Stop
+	
+	}
+}
+
+actor BarrelExplosionIce : BarrelExplosionLight
+{
+	DamageType Ice
+	states
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Death
+	Death: 
+		TNT1 A 0 
+		
+		TNT1 A 0 A_Explode (100, 200, false)
+		TNT1 A 0 A_Explode (50, 500, false)
+		TNT1 A 0 A_SpawnItemEx ("BarrelExplosionFrost",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_CustomMissile ("IceExplosion", 0, 0, random (0, 360), 2, random (0, 180))
+        
+	    EXPL A 0 Radius_Quake (2, 24, 0, 15, 0)
+		BEXP B 0 BRIGHT A_Scream
+        
+		TNT1 AA 0 A_CustomMissile ("MetalShard1", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard2", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard3", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		
+		TNT1 AAAAA 8 A_CustomMissile ("IceCloud", 1, 0, random (0, 360), 2, random (50, 130))
+		
+		Stop
+	}
+}
+
+actor BarrelExplosionFrost : BarrelExplosionLight
+{
+	DamageType Frost
+	states
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Death
+	Death: 
+		TNT1 A 0 
+		TNT1 A 0 A_Explode (20, 150, false)
+		Stop
+	}
+}
+
+Actor MagitekBarrelShock : MagitekBarrelLight
+{
+Translation "0:255=%[0,0,0]:[2.0,2.0,1.5]"
+states
+	{
+	Spawn:
+		BURB A 3 bright A_SpawnItem("YellowFlareMedium",0,30)
+		TNT1 A 0 A_CustomMissile ("ShockBurst", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("YellowFlareMedium",0,30)
+		TNT1 A 0 A_CustomMissile ("ShockBurst2", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("YellowFlareMedium",0,30)
+		TNT1 A 0 A_CustomMissile ("ShockBurstB", 30, 0, random (0, 360), 2, random (10, 45))
+		Loop
+		
+	Pain.Kick:
+	    BURB A 1 A_Pain
+        BURB A 1 A_FaceTarget
+		TNT1 A 0 HealThing(100)
+		TNT1 A 0 ThrustThing(angle*256/360+128, 30, 0, 0)
+		TNT1 A 0 ThrustThingZ(0,10,0,1)
+        Goto Spawn
+		
+	Death:
+	    BAR1 A 2 BRIGHT
+        BEXP ABCD 2 BRIGHT
+		TNT1 A 0 A_CustomMissile ("BarrelExplosionShock", 0, 0, random (0, 360), 2, random (0, 360))
+		Stop
+		
+	Pain.Melee:
+    Death.Melee:
+	Pain.Extremepunches:
+    Death.Extremepunches:
+	Pain.Fatality:
+    Death.Fatality:
+	Death.SuperPunch:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+        TNT1 A 0 A_GiveToTarget("HasShockBarrel", 1)
+        Stop
+	
+	}
+}
+
+actor BarrelExplosionShock : BarrelExplosionLight
+{
+	states
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Death
+	Death: 
+		TNT1 A 0 
+		
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx ("ShockOrb",random(-150, 150),random(-150, 150),random(100, -100),0,0,0,random (0, 360))
+        
+	    EXPL A 0 Radius_Quake (2, 24, 0, 15, 0)
+		BEXP B 0 BRIGHT A_Scream
+        
+		TNT1 AA 0 A_CustomMissile ("MetalShard1", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard2", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard3", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("ShockBurstB", 1, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("ShockBurst2", 1, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("ShockSpark", 1, 0, random (0, 360), 2, random (50, 130))
+		TNT1 AAAAAAAAAA 0 A_CustomMissile ("ShockSpark2", 1, 0, random (0, 360), 2, random (50, 130))
+		
+		Stop
+	}
+}
+
+ACTOR ShockOrb
+{
+  RenderStyle "Add"
+  Scale 0.7
+  Alpha 0
+  PROJECTILE
+  Speed 0
+  BounceType Hexen
+  height 15
+  radius 15
+  Health 40
+  Mass 10000000
+  damage (60)
+  damageType Kick
+  +THRUGHOST
+  +BLOODSPLATTER
+  +NOEXTREMEDEATH
+  -NOBLOCKMAP
+  -MISSILE
+  -ACTIVATEIMPACT
+  -ACTIVATEPCROSS
+  +SHOOTABLE
+  +NOBLOOD
+  
+  DamageFactor "Head", 0
+  DamageFactor "MinorHead", 0
+  DamageFactor "FireHead", 0
+  DamageFactor "IceHead", 0
+  DamageFactor "Plasma2", 0
+  DamageFactor "KickHead", 0
+  DamageFactor "Decaptate", 0
+  DamageFactor "Laser", 0.0
+  DamageFactor "Kick", 0.0
+
+  States
+  {
+  Spawn:
+	MIRR AAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_FadeIn(0.06)
+	TNT1 A 0 A_ChangeFlag("MISSILE", 1)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 1)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 1)
+	Goto Spawn2
+  Spawn2:
+    MIRR ABCDEDCB 4 Bright Light ("MIRROR") 
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR") 
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR") 
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+	MIRR ABCDEDCB 4 Bright Light ("MIRROR")
+    MIRR AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_FadeOut(0.03)
+    Stop
+  Death:
+	TNT1 A 0 A_PlaySound("Magic/Mirror2", 1, 1.0)
+	TNT1 A 0 A_SpawnItemEx ("BarrelExplosionSpark",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	TNT1 AAA 0 A_CustomMissile ("ShockBurst", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+	TNT1 AAAAAA 0 A_CustomMissile ("GreenPLSSpark", random (10, 70), random (-70, 70), random (0, 360), 2 | 4, random (-80, 80))
+	MIRB ABCD 2 Bright Light ("MIRRORBREAK")
+	TNT1 AAAA 0 A_CustomMissile ("ShockBurst", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+	TNT1 AAA 0 A_CustomMissile ("GreenPLSSpark", random (10, 70), random (-70, 70), random (0, 360), 2 | 4, random (-80, 80))
+	TNT1 AAA 0 A_CustomMissile ("ShockSpark", random (10, 70), random (-70, 70), random (0, 360), 2 | 4, random (-80, 80))
+	MIRB EFGH 2 Bright Light ("MIRRORBREAK")
+	Stop
+  }
+}
+
+actor BarrelExplosionSpark : BarrelExplosionLight
+{
+	DamageType Laser
+	states
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Death
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_Explode (40, 50, false, 0, 50)
+		stop
+	}
+}
+
+Actor MagitekBarrelEarth : MagitekBarrelLight
+{
+Translation "0:255=%[0,0,0]:[1.0,1.0,0.5]"
+states
+	{
+	Spawn:
+		BURB A 3 bright A_SpawnItem("BrownFlare",0,30)
+		Loop
+		
+	Pain.Kick:
+	    BURB A 1 A_Pain
+        BURB A 1 A_FaceTarget
+		TNT1 A 0 HealThing(100)
+		TNT1 A 0 ThrustThing(angle*256/360+128, 30, 0, 0)
+		TNT1 A 0 ThrustThingZ(0,10,0,1)
+        Goto Spawn
+		
+	Death:
+	    BAR1 A 2 BRIGHT
+        BEXP ABCD 2 BRIGHT
+		TNT1 A 0 A_CustomMissile ("BarrelExplosionEarth", 0, 0, random (0, 360), 2, random (0, 360))
+		Stop
+		
+	Pain.Melee:
+    Death.Melee:
+	Pain.Extremepunches:
+    Death.Extremepunches:
+	Pain.Fatality:
+    Death.Fatality:
+	Death.SuperPunch:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+        TNT1 A 0 A_GiveToTarget("HasEarthBarrel", 1)
+        Stop
+	
+	}
+}
+
+actor BarrelExplosionEarth : BarrelExplosionLight
+{
+	states
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Death
+	Death: 
+		TNT1 A 0 
+		
+		TNT1 AAAAA 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 AAAAA 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 0, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 22, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 45, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 67, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 90, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 112, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 135, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 157, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 180, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 202, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 225, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 247, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 270, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 292, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 315, 2 | 4, random (10, 40))
+		RBXP A 0 Bright A_CustomMissile ("EarthProjectile", 0, 0, 337, 2 | 4, random (10, 40))
+        
+	    EXPL A 0 Radius_Quake (2, 24, 0, 15, 0)
+		BEXP B 0 BRIGHT A_Scream
+        
+		TNT1 AA 0 A_CustomMissile ("MetalShard1", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard2", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard3", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		
+		stop
+	}
+}
+
+ACTOR EarthProjectile : GrenadeBomb
+{
+    Radius 9
+	Height 9
+	Speed 10
+	Scale .5
+	Damage (100)
+	DamageType Earth
+	Projectile
+	BounceType "Doom" 
+    BounceFactor 0.5
+	BounceCount 5
+	-NOGRAVITY
+	+CANBOUNCEWATER
+	+USEBOUNCESTATE
+	+NOEXTREMEDEATH
+	Gravity 0.4
+	SeeSound "Grenade/Shrapnel"
+	DeathSound ""
+	States
+	{
+	Spawn:
+		RKSH D 3
+	Continue:
+		RKSH ABCD 3 
+		Loop
+	Death:
+		TNT1 AAA 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 AAA 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		TNT1 AAA 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		Stop
+	Bounce.Actor:
+		TNT1 A 0 A_ChangeVelocity(velx*0, vely*0, velz*0, CVF_REPLACE)
+		Goto Death
+  }
+}
+
+actor BrownFlare : YellowFlareMedium
+{
+	Translation "0:255=%[0,0,0]:[1.0,1.0,0.5]"
+}
+
+actor PurpleFlare : YellowFlareMedium
+{
+	Translation "0:255=%[0,0,0]:[2.0,1.0,2.0]"
+}
+
+Actor MagitekBarrelDark : MagitekBarrelLight
+{
+Translation "0:255=%[0,0,0]:[1.0,1.0,0.5]"
+states
+	{
+	Spawn:
+		BURB A 3 bright A_SpawnItem("PurpleFlare",0,30)
+		TNT1 A 0 A_CustomMissile ("DarkSpark", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("PurpleFlare",0,30)
+		TNT1 A 0 A_CustomMissile ("GargoyleCloud", 30, 0, random (0, 360), 2, random (10, 45))
+		BURB A 3 bright A_SpawnItem("PurpleFlare",0,30)
+		TNT1 A 0 A_CustomMissile ("GargoyleCloud2", 30, 0, random (0, 360), 2, random (10, 45))
+		TNT1 A 0
+		Stop
+		
+	Pain.Kick:
+	    BURB A 1 A_Pain
+        BURB A 1 A_FaceTarget
+		TNT1 A 0 HealThing(100)
+		TNT1 A 0 ThrustThing(angle*256/360+128, 30, 0, 0)
+		TNT1 A 0 ThrustThingZ(0,10,0,1)
+        Goto Spawn
+		
+	Death:
+	    BAR1 A 2 BRIGHT
+        BEXP ABCD 2 BRIGHT
+		TNT1 A 0 A_CustomMissile ("BarrelExplosionDark", 0, 0, random (0, 360), 2, random (0, 360))
+		Stop
+		
+	Pain.Melee:
+    Death.Melee:
+	Pain.Extremepunches:
+    Death.Extremepunches:
+	Pain.Fatality:
+    Death.Fatality:
+	Death.SuperPunch:	
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_GiveToTarget("GoSpecial", 1)
+        TNT1 A 0 A_GiveToTarget("HasDarkBarrel", 1)
+        Stop
+	
+	}
+}
+
+actor BarrelExplosionDark : BarrelExplosionLight
+{
+	states
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Death
+	Death: 
+        
+	    EXPL A 0 Radius_Quake (2, 24, 0, 15, 0)
+        
+		TNT1 AA 0 A_CustomMissile ("MetalShard1", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard2", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 AA 0 A_CustomMissile ("MetalShard3", 5, 0, random (0, 360), 2, random (30, 160))
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		
+		TNT1 A 0 A_CustomMissile ("BlackHoleGenShort", 10, 0, 0, 2 | 4, 0)
+		TNT1 AAAABBBBCCCCDDDDAAAABBBBCCCCDDDDAAAABBBBCCCCDDDDAAAABBBBCCCC 1 A_RadiusThrust(-500, 300, false | RTF_NOIMPACTDAMAGE)
+		TNT1 AAAABBBBCCCCDDDDAAAABBBBCCCCDDDDAAAABBBBCCCCDDDDAAAABBBBCCCC 1 A_RadiusThrust(-500, 300, false | RTF_NOIMPACTDAMAGE)
+		
+		stop
+	}
+}
+
+
+
+//// --------------------------------------------------------------------------
+//
+// Monsters
+//
+// ----------------------------------------------------------------------------
+
+ACTOR ZombieManSlot Replaces ZombieMan {
+	Radius 1
+	Height 1
+	-NOGRAVITY
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (100, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Zombie_Man", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("ToxicMan", -15, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		TNT1 A 0 A_SpawnItemEx ("ToxicMan", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		TNT1 A 0 A_SpawnItemEx ("ToxicMan", 15, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR SergeantSlot : ZombieManSlot Replaces ShotgunGuy {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (50, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("ShotgunGuy1", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Major", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR BaronSlot : ZombieManSlot Replaces BaronofHell {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (150, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("BaronofHell2", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Centaur", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR HellKnightSlot : ZombieManSlot Replaces HellKnight {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (40, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("HellKnight2", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Centaur", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR CacodemonSlot : ZombieManSlot Replaces Cacodemon {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (100, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Cacodemon_", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Gargoyle", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR ChaingunGuySlot : ZombieManSlot Replaces ChaingunGuy {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (80, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("ChaingunGuy1", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Missler", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR DemonSlot : ZombieManSlot Replaces Demon {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (100, "CreateAlternate")
+		TNT1 A 0 A_Jump (50, "CreateNone")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("BullDemon", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("AxeZombie", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateNone:
+		TNT1 A 5
+		Stop
+	}
+}
+
+ACTOR SpectreSlot : ZombieManSlot Replaces Spectre {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (150, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Spectro", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("RockGolem", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR ImpSlot : ZombieManSlot Replaces DoomImp {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (80, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Imp", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("SentryGuy", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR LostSoulSlot : ZombieManSlot Replaces LostSoul {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (150, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("TehLostSoul", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Hellspawn", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR MancubusSlot : ZombieManSlot Replaces Fatso {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (100, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Mancubus", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Succubus", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR PainElementalSlot : ZombieManSlot Replaces PainElemental {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (100, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("PainElemental1", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Golemancer", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR RevenantSlot : ZombieManSlot Replaces Revenant {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (80, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Revenant1", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Wraith", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+ACTOR ArachnotronSlot : ZombieManSlot Replaces Arachnotron {
+	States {
+	Spawn:
+		TNT1 A 1
+		TNT1 A 0 A_Jump (170, "CreateAlternate")
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Arachnotron1", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	CreateAlternate:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItemEx ("Magician", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		Stop
+	}
+}
+
+

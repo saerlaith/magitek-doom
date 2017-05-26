@@ -1,0 +1,893 @@
+ACTOR GLauncherRound : Ammo
+{
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 9
+}
+
+ACTOR RefillGLauncher : Ammo
+{
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 1
+}
+
+ACTOR RocketLoadNegative : GLauncherRound Replaces RocketBox
+{
+  Inventory.Amount -1
+  States
+  {
+	Spawn:
+		TNT1 A -1
+		Stop
+  }
+}
+
+// --------------------------------------------------------------------------
+//
+// Grenade launcher
+//
+// --------------------------------------------------------------------------
+
+ACTOR Grenade_Launcher : MagicBaseSystem //Replaces GrenadeLauncher
+{
+	Weapon.AmmoGive 6
+	Weapon.AmmoType1 "N_RocketAmmo"
+    Inventory.PickupSound "ROCKPKUP"
+    +WEAPON.NOAUTOAIM
+	Inventory.PickupMessage "$GOTLAUNCHER"
+	States
+	{
+	Ready:
+        TNT1 A 0 A_PlaySound("Grenade/Pick")
+        GLSW ABC 1
+        TNT1 AAAAA 0
+		TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		GLAN A 1 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+        Goto Ready+7
+	Deselect:
+        FAST A 0 A_Lower
+		Wait
+	Select:
+		TNT1 A 0 A_Takeinventory("FistsSelected",1)
+	TNT1 A 0 A_Takeinventory("SawSelected",1)
+	TNT1 A 0 A_Takeinventory("ShotgunSelected",1)
+	TNT1 A 0 A_Takeinventory("SSGSelected",1)
+	TNT1 A 0 A_Takeinventory("MinigunSelected",1)
+	TNT1 A 0 A_Takeinventory("PlasmaGunSelected",1)
+	//TNT1 A 0 A_Giveinventory("RocketLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("RocketLauncherSelected",1)
+    TNT1 A 0 A_Giveinventory("GrenadeLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("BFGSelected",1)
+	TNT1 A 0 A_Takeinventory("BFG10kSelected",1)
+	TNT1 A 0 A_Takeinventory("RailGunSelected",1)
+	TNT1 A 0 A_Takeinventory("SubMachineGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RevenantLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("LostSoulSelected",1)
+	TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+	TNT1 A 0 A_Takeinventory("HasBarrel",1)
+	
+		MISG A 0 A_Raise
+		Wait
+MagicEnd:
+		TNT1 A 0
+		goto ready+9
+		
+		
+Fire:
+		TNT1 A 0 A_JumpIfInventory("N_RocketAmmo",1,2)
+		Goto Ready
+        TNT1 AAAA 0
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)
+		
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+		TNT1 A 0 A_AlertMonsters (1000)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 2 BRIGHT A_FireCustomMissile("GrenadeBomb", 0, 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+		GLAF BC 2
+		TNT1 A 0 A_GiveInventory("RefillGLauncher",1)
+		Goto Ready+7
+
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("N_RocketAmmo",1,2)
+		Goto Ready
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1000)
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",1,1)
+		Goto FireSticky1
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",9,"MaxStickies")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",8,"FireSticky9")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",7,"FireSticky8")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",6,"FireSticky7")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",5,"MaxStickies")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",4,"FireSticky5")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",3,"FireSticky4")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",2,"FireSticky3")
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",1,"FireSticky2")
+		Goto Ready
+		
+	MaxStickies:
+		TNT1 A 0 A_Print("Max stickies on field! (Reload to detonate)", 2)
+		GLAF BCB 2
+        Goto Ready+7
+		
+	NoStickies:
+		TNT1 A 0 A_Print("No stickies on field! (Alt Fire to place)", 2)
+		GLAF BCB 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+        Goto Ready+7
+	
+	FireSticky1:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb1", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky2:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb2", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky3:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb3", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky4:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb4", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky5:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb5", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky6:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb6", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky7:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb7", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky8:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb8", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+		
+	FireSticky9:
+		TNT1 A 0 A_JumpIfInventory("RefillGLauncher",1,"Refill")
+		TNT1 A 0 A_FireCustomMissile("RedFlareSpawn",-5,0,0,0)	
+		TNT1 A 0 A_Takeinventory("N_RocketAmmo",1)
+		TNT1 AAAAAA 0 BRIGHT A_FireCustomMissile("ShotgunParticles", random(-16,16), 0, -1, random(-9,9))
+		GLAF A 4 BRIGHT A_FireCustomMissile("ClusterBomb9", random(-3,3), 0, -1, 0, 0, 5)
+		TNT1 A 0 A_PlaySound("Canon/Cluster")
+        
+		GLAF BCCB 4
+		TNT1 A 0 A_GiveInventory("GLauncherRound",1)
+        Goto Ready+7
+
+	Refill:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("RefillGLauncher",1)
+		GLAN A 2
+		GLAN DEFGHIK 2
+		TNT1 A 0 A_PlaySound("Weapons/GrenadeOpen")
+		TNT1 AAAA 0 A_FireCustomMissile("SmokeSpawner",0,0,0,5)
+		GLAN L 2
+		TNT1 AAAA 0 A_FireCustomMissile("SmokeSpawner",0,0,0,5)
+		GLAN L 2
+		GLAN MNOPQ 2
+		TNT1 A 0 A_PlaySound("Weapons/GrenadeLoad")
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		GLAN RST 2
+		GLSW ABC 2
+		TNT1 A 0 A_PlaySound("Weapons/GrenadeClose")
+        Goto Ready+7
+		
+	Reload:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInventory("GLauncherRound",1,2)
+		Goto NoStickies
+		TNT1 AAA 0
+		GLAN AD 2
+		TNT1 A 0 ACS_Execute(4407, 0, 0, 0, 0)
+		GLAN EF 2
+		TNT1 A 0 A_TakeInventory("GLauncherRound",10)
+		GLAN GHIK 2 
+		TNT1 A 0 A_PlaySound("Weapons/GrenadeOpen")
+		GLAN LMNOPQ 2
+		TNT1 A 0 A_PlaySound("Weapons/GrenadeLoad")
+		GLAN R 8
+		GLAN RST 2
+		GLSW ABC 2
+		TNT1 A 0 A_PlaySound("Weapons/GrenadeClose")
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+        Goto Ready+7
+		
+	Spawn:
+		GLAP A -1
+		Stop
+
+    DoKick:
+        TNT1 A 0 A_jumpifinventory("PowerStrength",1,"BerserkerKick")
+		KICK BCD 1
+		RIFF A 0 A_FireCustomMissile("KickAttack", 0, 0, -1, 0)
+        KICK H 4
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		Goto Ready+7
+    BerserkerKick:
+		KICK ABCDEFG 1
+        RIFF A 0 A_FireCustomMissile("SuperKickAttack", 0, 0, -1, 0)
+        KICK H 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		Goto Ready+7
+     Taunt:
+        TNT1 A 5
+		FUCK A 2
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 0, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", -9, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 9, 0, -1, 0)
+        FUCK B 2 A_PlaySound("FUCK", 1)
+        FUCK C 2 A_AlertMonsters
+		FUCK D 15 A_Takeinventory("Taunting",1)
+        FUCK CBA 5
+        TNT1 A 5
+		Goto Ready
+	}
+}
+
+Actor RocketerAmmo: Inventory
+{
+inventory.maxamount 6
+}
+
+ACTOR GrenadeBomb : Rocket
+{
+    Radius 10
+	Height 5
+	Speed 30
+	Scale 1
+	Damage (50)
+	DamageType ExplosiveImpact
+	Projectile
+	BounceType "Doom" 
+    BounceFactor 0.5
+	BounceCount 5
+	-NOGRAVITY
+	+CANBOUNCEWATER
+	+USEBOUNCESTATE
+	Gravity 0.7
+	SeeSound "Weapons/GrenadeBounce"
+	DeathSound "FAREXPL"
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52", 2, 0, random (70, 110), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		GRNP A 8 Bright A_SpawnItem("RedFlareSmall",0,0)
+		Loop
+	Death:
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		EXPL AAAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+		RBXP A 0 Bright A_CustomMissile ("ClusterDetonate", 0, 0, 0, 2 | 4, 0)
+		RBXP A 0 Bright A_Explode(100, 100, false)
+		TNT1 A 0 A_RadiusThrust(250, 150, RTF_AFFECTSOURCE | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+		RBXP A 3 Bright A_Explode(50, 100, true)
+		
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 0, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 20, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 40, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 60, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 80, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 100, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 120, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 140, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 160, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 180, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 200, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 220, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 240, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 260, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 280, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 300, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 320, 2 | 4, random (10, 20))
+		RBXP A 0 Bright A_CustomMissile ("ShrapnelShard", 0, 0, 340, 2 | 4, random (10, 20))
+		
+		RBXP A 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		RBXP CDE 3
+		Stop
+	Bounce.Actor:
+		Goto Death
+  }
+}
+
+ACTOR ShrapnelShard : GrenadeBomb
+{
+    Radius 20
+	Height 10
+	Speed 30
+	Scale .5
+	Damage (50)
+	DamageType Shrapnel
+	Projectile
+	BounceType "Doom" 
+    BounceFactor 0.5
+	BounceCount 5
+	-NOGRAVITY
+	+CANBOUNCEWATER
+	+USEBOUNCESTATE
+	+NOEXTREMEDEATH
+	Gravity 0.7
+	SeeSound "Grenade/Shrapnel"
+	DeathSound ""
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		JNK3 A 4
+		TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+	Continue:
+		JNK3 ABCDEFGH 2
+		Loop
+	XDeath:
+		TNT1 A 0
+		TNT1 A 0 A_PlaySound("Melee/SlashLight")
+		Stop
+	Crash:
+		TNT1 A 0
+		TNT1 A 0 A_PlaySound("Melee/Clash")
+		Stop
+	Death:
+		JNK3 A 500
+		JNK3 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 A_FadeOut(0.03)
+		Stop
+	Bounce.Actor:
+		TNT1 A 0 A_ChangeVelocity(velx*0, vely*0, velz*0, CVF_REPLACE)
+		Goto Death
+  }
+}
+
+ACTOR ClusterBomb1
+{
+  Radius 8
+  Height 10
+  Scale 0.9
+  Speed 40
+  Damage (10)
+  Projectile
+  -NOGRAVITY
+  Gravity 0.9
+  +RANDOMIZE
+  +DEHEXPLOSION
+  +ROCKETTRAIL
+  +NOTIMEFREEZE
+  +NODAMAGETHRUST
+  DeathSound "Canon/Boom"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4001)
+	Goto Continue
+  Continue:
+    ROBM ABCDEFGH 3 Bright
+    Loop
+  XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick1", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick1", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Explode:
+	TNT1 A 0
+	TNT1 A 0 A_ChangeVelocity(velx*0, vely*0, velz*0, CVF_REPLACE)
+	TNT1 A 0 A_ChangeFlag("NOGRAVITY", TRUE)
+	EXPL A 0 Radius_Quake (1, 4, 0, 4, 0)
+	TNT1 A 0 A_AlertMonsters (2000)
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreakSound", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	EXPL AAAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+    RBXP A 3 Bright A_Explode(200, 250, false, 0, 150)
+	RBXP A 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP CDE 3
+    Stop
+  }
+}
+
+ACTOR ClusterStick1
+{
+  Radius 8
+  Height 10
+  Scale 0.9
+  Speed 0
+  Damage 0
+  DamageType ExplosiveImpact
+  Projectile
+  BounceType Hexen
+  +RANDOMIZE
+  +DEHEXPLOSION
+  +ROCKETTRAIL
+  +CANBOUNCEWATER
+  +NOTIMEFREEZE
+  +NODAMAGETHRUST
+  -MISSILE
+  +NORADIUSDMG
+  -COUNTKILL
+  -ISMONSTER
+  -SOLID
+  +BLOODLESSIMPACT
+  -NOBLOCKMAP
+  +SHOOTABLE
+  +NOBLOOD
+  Health 10
+  DamageFactor "Normal", 0.0
+  damagefactor "Kick", 5.0
+  DeathSound "Canon/Boom"
+  Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4001)
+	Goto Continue
+  Continue:
+    ROBM A 2 Bright A_SetScale(0.9)
+	ROBM B 2 Bright A_SetScale(1.1)
+	ROBM C 2 Bright A_SetScale(1.3)
+	ROBM D 2 Bright A_SetScale(1.5)
+	ROBM E 2 Bright A_SetScale(1.3)
+	ROBM F 2 Bright A_SetScale(1.1)
+	ROBM G 2 Bright A_SetScale(0.9)
+    Loop
+  Explode:
+	TNT1 A 0
+	Goto Death
+  Death:
+	EXPL A 0 Radius_Quake (1, 4, 0, 4, 0)
+	TNT1 A 0 A_AlertMonsters (2000)
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreakSound", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	EXPL AAAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 A 0 A_RadiusThrust(250, 300, RTF_AFFECTSOURCE | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+    RBXP A 3 Bright A_Explode(200, 250, false, 0, 150)
+	RBXP A 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP B 3 Bright A_CustomMissile ("ClusterBreak", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP A 0 Bright A_CustomMissile ("ClusterBreak2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	RBXP CDE 3
+    Stop
+   Death.Kick:
+	EXPL A 0
+	EXPL A 0 A_CustomMissile ("N_RocketAmmo", 0)
+	EXPL A 0 A_CustomMissile ("RocketLoadNegative", 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStickFall1 : ClusterStick1
+{
+  -NOGRAVITY
+  Gravity 0.9
+  BounceFactor 0
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4001)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb2 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4002)
+	Goto Continue
+  XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick2", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick2", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick2 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4002)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall2 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4002)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb3 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4003)
+	Goto Continue
+  XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick3", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick3", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick3 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4003)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall3 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4003)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb4 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4004)
+	Goto Continue
+XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick4", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick4", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick4 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4004)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall4 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4004)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb5 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4005)
+	Goto Continue
+XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick5", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick5", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick5 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4005)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall5 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4005)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb6 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4006)
+	Goto Continue
+XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick6", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick6", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick6 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4006)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall6 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4006)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb7 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4007)
+	Goto Continue
+XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick7", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick7", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick7 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4007)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall7 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4007)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb8 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4008)
+	Goto Continue
+XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick8", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick8", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick8 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4008)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall8 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4008)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterBomb9 : ClusterBomb1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4009)
+	Goto Continue
+XDeath:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick9", 0, 0, 0, 2 | 4, 0)
+	Stop
+  Death:
+	EXPL A 0 
+	EXPL A 0 A_CustomMissile ("ClusterStick9", 0, 0, 0, 2 | 4, 0)
+	Stop
+  }
+}
+
+ACTOR ClusterStick9 : ClusterStick1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4009)
+	Goto Continue
+  }
+}
+
+ACTOR ClusterStickFall9 : ClusterStickFall1
+{
+  States
+  {
+  Spawn:
+	TNT1 A 0 
+	ROBM A 1 Bright Thing_ChangeTID(0, 4009)
+	Goto Continue
+  }
+}

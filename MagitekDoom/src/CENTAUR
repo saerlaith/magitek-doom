@@ -1,0 +1,1723 @@
+//// --------------------------------------------------------------------------
+//
+// Centaur
+//
+// --------------------------------------------------------------------------
+
+ACTOR Centaur : MagitekMonsterBase
+{
+    Health 1000
+    Radius 25
+    Height 70
+    Mass 500
+    Speed 12
+	MinMissileChance 150
+	damagefactor "Avoid", 0.0
+	damagefactor "MINORHEAD", 1
+	damagefactor "HEAD", 1
+	damagefactor "Frenemy", 0.0
+	damagefactor "Freeze", 0.0
+	PainChance "Frenemy", 0
+    PainChance 50
+	PainChance "Stun", 255
+	PainChance "Kick", 255
+	PainChance "Ice", 255
+	Painchance "IceHead", 255
+	PainChance "Charm", 50
+	PainChance "KickHead", 255
+	damagefactor "KickHead", 1
+	MeleeRange 150
+	MaxStepHeight 24
+	MaxDropOffHeight 32
+	Scale 1.2
+    Monster
+    +FLOORCLIP
+    +QUICKTORETALIATE
+	+DONTHURTSPECIES
+    SeeSound "Centaur/See"
+    PainSound "Centaur/Pain"
+    DeathSound "Centaur/Death"
+    ActiveSound "Centaur/See"
+    HitObituary "%o got stomped on by a Centaur."
+    Obituary "%o got stomped on by a Centaur."
+	Translation 2
+    States
+    {
+    Spawn: SpawnNormal:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget20b", 5, 70,0)
+        CNTR B 18 A_Look
+		CNTR C 2 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR C 2 A_Look
+		CNTR DA 4 A_Look
+        Loop
+    See:
+		TNT1 A 0 A_JumpIfInventory("AngryToggle",1,2)
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"Rage")
+		TNT1 AA 0
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"RageSee")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR AA 2 A_Chase
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR AA 2 A_Chase
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR BB 2 A_Chase
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR BB 2 A_Chase
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR CC 2 A_Chase
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR CC 2 A_Chase
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR DD 2 A_Chase
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR DD 2 A_Chase
+		
+        Loop
+	WalkAfter:
+		TNT1 A 0 A_JumpIfInventory("AngryToggle",1,2)
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"Rage")
+		TNT1 AA 0
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"RageAfter")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR AA 2 A_Chase ("", "")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR AA 2 A_Chase ("", "")
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR BB 2 A_Chase ("", "")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR BB 2 A_Chase ("", "")
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR CC 2 A_Chase ("", "")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR CC 2 A_Chase ("", "")
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR DD 2 A_Chase ("", "")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget4b", 5, 70,0)
+        CNTR DD 2 A_Chase ("", "")
+		
+        Goto See
+	RageSee:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+		TNT1 A 0 Thing_SetTranslation(0, 1)
+        CNTR AA 1 A_Chase
+		TNT1 A 0 A_CustomMissile ("DangerMark", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR AA 1 A_Chase 
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR BB 1 A_Chase
+		TNT1 A 0 A_CustomMissile ("DangerMark", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR BB 1 A_Chase
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR CC 1 A_Chase
+		TNT1 A 0 A_CustomMissile ("DangerMark", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR CC 1 A_Chase
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame3", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR DD 1 A_Chase
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR DD 1 A_Chase
+		
+        Loop
+	RageAfter:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR AA 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("DangerMark", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR AA 1 A_Chase ("", "") 
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR BB 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("DangerMark", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR BB 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR CC 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("DangerMark", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR CC 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame3", random (30, 70), 0, random (0, 360), 2 | 4, random (-50, 50))
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR DD 1 A_Chase ("", "")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR DD 1 A_Chase ("", "")
+		
+        Goto RageSee
+	Rage:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_GiveInventory("AngryToggle",1)
+		TNT1 A 0 A_ChangeFlag("NOPAIN", 1)
+		TNT1 A 0 Thing_SetTranslation(0, 1)
+		TNT1 A 0 A_PlaySound("Centaur/Rage", CHAN_NOPAUSE, .7, 0, ATTN_NONE)
+		TNT1 A 0 A_Quake(4, 100, 0, 1000)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",80,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",-40,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,40,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,-40,0,0,0,0,0,32,0)
+		CNTR E 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR E 8
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",80,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",-40,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,40,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,-40,0,0,0,0,0,32,0)
+		CNTR E 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR F 8
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",80,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",-40,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,40,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,-40,0,0,0,0,0,32,0)
+		CNTR F 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR F 8
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",80,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",-40,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,40,0,0,0,0,0,32,0)
+		TNT1 A 0 A_SpawnItemEx("CentaurRage",0,-40,0,0,0,0,0,32,0)
+		CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR G 8
+        CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR G 8
+		TNT1 A 0 A_GiveInventory("Health",250)
+		TNT1 AA 0 A_CustomMissile ("GreenPLSHeal2", 70, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR A 8
+		TNT1 A 0 A_GiveInventory("Health",250)
+		TNT1 AA 0 A_CustomMissile ("GreenPLSHeal", 70, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR A 8
+		TNT1 A 0 A_GiveInventory("Health",250)
+		TNT1 AA 0 A_CustomMissile ("GreenPLSHeal2", 70, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR A 8
+		TNT1 A 0 A_GiveInventory("Health",250)
+		TNT1 AA 0 A_CustomMissile ("GreenPLSHeal", 70, 0, random (0, 360), 2 | 4, random (-50, 50))
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+        CNTR A 8
+		Goto See
+    Melee: 
+		TNT1 A 0 A_Jump(100, "Missile")
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"RageMelee")
+		TNT1 A 0 A_PlaySound("Hellion/Charge")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		
+		CNTR A 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR A 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR B 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR B 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR C 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR C 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR D 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR D 2 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("RedGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("HellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		
+		CNTR F 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR F 10
+		CNTR F 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR F 10
+        Goto WalkAfter
+	RageMelee: 
+		TNT1 A 0 A_PlaySound("Hellion/Charge")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR E 2 A_FaceTarget
+		
+		CNTR AA 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR BB 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR CC 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR DD 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		
+		TNT1 A 0 A_PlaySound("Hellion/Charge")
+		CNTR AA 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR BB 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR CC 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR DD 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		
+		TNT1 A 0 A_PlaySound("Hellion/Charge")
+		CNTR AA 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR BB 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR CC 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		CNTR DD 1 A_Chase ("", "")
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 50, 0, random (0, 40), 2, random (0, 160))
+		
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+        CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		CNTR F 1 A_CustomMissile ("RageHellSpinSlash", 50, 0, 0, 2 | 4, 0)
+		BFSF B 0 A_SetAngle(20 + angle)
+		
+		CNTR F 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR F 10
+		CNTR F 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR F 10
+		CNTR F 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR F 10
+		CNTR F 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR F 10	
+        Goto WalkAfter
+	Missile:
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"RageMissile")
+		TNT1 A 0 A_Jump(100, "GeyserShot")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		CNTR E 4 A_CustomMissile ("RedCentaurCharge", 55, 20, 0, 8, 0)
+		CNTR E 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 4 A_CustomMissile ("RedCentaurCharge", 55, 20, 0, 8, 0)
+		CNTR E 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR F 4 A_FaceTarget
+		CNTR F 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_JumpIfInventory("AngryToggle",1,2)
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"Rage")
+		TNT1 AA 0
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("CentaurShot", 40, 0, random (-8, 8), 8, random (-8, 8))
+		CNTR GGEF 1 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+        Goto See
+	RageMissile:
+		TNT1 A 0 A_JumpIfInventory("AngryToggle",1,2)
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"Rage")
+		TNT1 AA 0
+		TNT1 A 0 A_Jump(100, "RageGeyserShot")
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		CNTR E 4 A_CustomMissile ("CentaurCharge", 55, 20, 0, 8, 0)
+		CNTR E 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 4 A_CustomMissile ("CentaurCharge", 55, 20, 0, 8, 0)
+		CNTR E 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 4 A_CustomMissile ("CentaurCharge", 55, 20, 0, 8, 0)
+		CNTR E 4 A_FaceTarget
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR F 4 A_FaceTarget
+		CNTR F 4 A_FaceTarget
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile("RageCentaurShot", 36, 15, 6, 11) 
+		TNT1 A 0 A_CustomMissile("RageCentaurShot", 36, 15, -6, 11)
+		CNTR G 8 A_CustomMissile("RageCentaurShot", 36, 15, 0, 11)
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 4 A_FaceTarget
+		CNTR F 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile("RageCentaurShot", 36, 15, 6, 11) 
+		TNT1 A 0 A_CustomMissile("RageCentaurShot", 36, 15, -6, 11)
+		CNTR G 8 A_CustomMissile("RageCentaurShot", 36, 15, 0, 11)
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 4 A_FaceTarget
+		CNTR F 4 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_CustomMissile("RageCentaurShot", 36, 15, 6, 11) 
+		TNT1 A 0 A_CustomMissile("RageCentaurShot", 36, 15, -6, 11)
+		CNTR G 8 A_CustomMissile("RageCentaurShot", 36, 15, 0, 11)
+		
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8 A_FaceTarget
+        Goto See
+	GeyserShot:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 ThrustThingZ(0,40,0,1)
+		CNTR F 8 
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR F 8 
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR F 8 
+		TNT1 A 0 A_JumpIfInventory("AngryToggle",1,2)
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"Rage")
+		TNT1 AA 0
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		CNTR FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF 1 A_CheckFloor("GeyserLand")
+	GeyserLand:
+		TNT1 A 0 A_Quake(6, 10, 0, 400)
+		TNT1 A 0 A_CustomMissile ("GeyserShot", 40, 0, 0, 8, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+        Goto See
+	RageGeyserShot:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 ThrustThingZ(0,20,0,1)
+		CNTR E 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR E 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 ThrustThingZ(0,20,0,1)
+		CNTR E 8 A_FaceTarget
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 ThrustThingZ(0,50,0,1)
+		CNTR F 8 
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR F 8 
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR F 8 
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		TNT1 A 0 A_FaceTarget
+		CNTR FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF 1 A_CheckFloor("RageGeyserLand")
+	RageGeyserLand:
+		TNT1 A 0 A_Quake(8, 10, 0, 600)
+		TNT1 A 0 A_CustomMissile ("RageGeyserShot", 40, 0, 15, 8, 0)
+		TNT1 A 0 A_CustomMissile ("RageGeyserShot", 40, 0, 0, 8, 0)
+		TNT1 A 0 A_CustomMissile ("RageGeyserShot", 40, 0, -15, 8, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR G 8
+        Goto See
+    Pain:
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b", 5, 70,0)
+        CNTR H 6 A_Pain
+        Goto See
+	Pain.Kick:
+	Pain.KickHead:
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"Pain.Cancel")
+		TNT1 A 0 A_ChangeFlag("NOPAIN", 1)
+		TNT1 A 0 ThrustThing(angle*256/360+128,3,0,0)
+		TNT1 A 0 ThrustThingZ(0,20,0,1)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+        CNTR H 10 A_Pain
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR H 10
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR H 10
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR AAHHA 2
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10b", 5, 70,0)
+		CNTR AHAHA 2
+		TNT1 A 0 A_ChangeFlag("NOPAIN", 0)
+        TNT1 A 0 A_Giveinventory("Kicking",1)
+		Goto See
+	Pain.Stun:
+		TNT1 A 0 A_ChangeFlag("NOPAIN", 1)
+		TNT1 A 0 A_CustomMissile ("StunStarGen", 80, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b0b", 5, 70,0)
+        CNTR H 20 A_Pain
+		TNT1 A 0 A_CustomMissile ("StunStarGen", 80, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b0b", 5, 70,0)
+		CNTR H 20
+		TNT1 A 0 A_CustomMissile ("StunStarGen", 80, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b0b", 5, 70,0)
+		CNTR H 20 A_Pain
+		TNT1 A 0 A_CustomMissile ("StunStarGen", 80, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b0b", 5, 70,0)
+		CNTR H 20
+		TNT1 A 0 A_CustomMissile ("StunStarGen", 80, 0, 0, 2 | 4, 0)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b0b", 5, 70,0)
+		CNTR H 20 A_Pain
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget2b0b", 5, 70,0)
+		CNTR H 20
+        Goto See
+	Raise:
+        CNTR M 1 A_KillChildren
+        CNTR L 4
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget8b", 5, 70,0)
+		CNTR JI 4
+        Goto See
+    Death:
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+		TNT1 A 0 A_CustomMissile ("XDeathCentaurArm", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeath1", 30, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeath2", 30, 0, random (0, 360), 2, random (0, 160))
+        CNTR I 8 
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+        CNTR I 8 A_Scream
+        CNTR J 8 A_NoBlocking
+		CNTR J 8 A_NoBlocking
+		CNTR L 8 A_NoBlocking
+        TNT1 A 0 A_SpawnItem ("DeadCentaur")
+        Stop
+	Death.Head: Death.MinorHead:
+	Death.KickHead:
+	    TNT1 A 0
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+	    TNT1 A 0 A_Scream
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+		CNTR N 5 A_CustomMissile ("MuchBlood2", 70, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("Brains1", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Brains2", 70, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("Brains3", 70, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Brains7", 70, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Teeth", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("TeethNoBounce", 70, 0, random (0, 360), 2, random (0, 160))
+		CNTR N 5 A_CustomMissile ("MuchBlood", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SmallBrainPieceFast", random (65, 75), random (5, -5), random (170, 190), 2, random (-10, 10))
+		TNT1 AA 0 A_CustomMissile ("SmallBrainPiece", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 66, 0, random (170, 190), 2, random (0, 40))
+		TNT1 A 0 A_CustomMissile ("MuchBlood", 60, 0, random (0, 360), 2, random (0, 160))
+		CNTR NNOO 10 A_NoBlocking 
+		TNT1 L 0 A_CustomMissile ("MuchBlood", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("MuchBlood", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		TNT1 A 0 A_SpawnItem ("DeadCentaur_NoHead")
+		Stop
+	Death.decaptate:
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+        TNT1 A 0 A_XScream
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+        TNT1 A 0 A_CustomMissile ("XDeathCentaurHead", 70, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAA 0 A_CustomMissile ("MuchBlood2", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		CNTR NNNNNNNN 5 A_CustomMissile ("MuchBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_SpawnItem ("BigBloodSpot")
+		CNTR OO 10 A_NoBlocking
+		TNT1 A 0 A_SpawnItem ("DeadCentaur_NoHead")
+		Stop
+	Death.Tear: Death.cutless: Death.cut: Death.HKFT:
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+        TNT1 AA 0 A_CustomMissile ("MuchBlood2", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_JumpIfInventory("AngryCharge",1,"Death.RageCut")
+		SENT A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+		CNTR QQQQ 5 A_CustomMissile ("MuchBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("MuchBlood2", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("RipCentaurCalm", 0, 0, random (0, 360), 2, random (0, 160))
+        TNT1 A 0 A_SpawnItem ("CentaurLowerHalf")
+		TNT1 A 0 A_SpawnItem ("MediumBloodSpot")
+		Stop
+	Death.RageCut:
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		SENT A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+		CNTR QQQQ 5 A_CustomMissile ("MuchBlood", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("MuchBlood2", 35, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("RipCentaur", 0, 0, random (0, 360), 2, random (0, 160))
+        TNT1 A 0 A_SpawnItem ("CentaurLowerHalf")
+		TNT1 A 0 A_SpawnItem ("MediumBloodSpot")
+		Stop
+	Death.Fire: Death.FireHead: 
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+        TNT1 A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+		TNT1 A 0 A_Scream
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItem("BurningCentaur")
+        Stop
+	Death.Ice: Death.IceHead:  Death.Freeze: Death.Frost:
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("FrozenCentaur")
+		Stop
+	Death.LandMine: Death.ExplosiveImpact: Death.ExtremePunches: XDeath:
+		TNT1 A 0
+		TNT1 A 0 ThrustThingZ(0,70,0,1)
+		TNT1 A 0 A_Recoil(10)
+		TNT1 A 0 A_StopSound("Centaur/Rage")
+		TNT1 A 0 A_Jump (65, 2)
+		TNT1 A 0 A_SpawnItemEx ("MagitekChestSpawn", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_RadiusGive("AngryCharge", 500, RGF_MONSTERS | RGF_NOMASTER, 1)
+		SENT A 0 A_Jump (50, 2)
+		SENT A 0 A_SpawnItemEx ("RocketAmmo", 0, 0, 15)
+		TNT1 A 0 ThrustThingZ(0,30,0,1)
+		TNT1 AAAAAAAA 0 A_CustomMissile ("XDeath1", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAA 0 A_CustomMissile ("XDeath2", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("XDeath3", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath4", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAA 0 A_CustomMissile ("XDeath5", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("Brains1", 60, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("Brains2", 70, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("Brains3", 70, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAA 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("BrainBlood", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathCentaurLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("XDeathCentaurArm", 62, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_SpawnItem ("DeadCentaur_NoLeg")
+		Stop
+    }
+}
+
+ACTOR DeadCentaur: DeadImp_NoLeg
+{
+	Scale 1.2
+	States 
+	{
+	Spawn:
+		CNTR M -1
+        Stop
+       Death:
+         TNT1 A 0
+         TNT1 A 0 A_SpawnItem("DeadCentaur_NoLeg")
+		 TNT1 A 0 A_CustomMissile ("XDeathCentaurHead", 70, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAAAA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 A 0 A_CustomMissile ("XDeathCentaurLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeathCentaurArm", 62, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath3", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath5", 5, 0, random (0, 360), 2, random (0, 160))
+		Stop
+		}
+}
+
+ACTOR DeadCentaur_NoHead: DeadImp_NoLeg
+{
+	Scale 1.2
+	States 
+	{
+	Spawn:
+		CNTR P -1
+        Stop
+       Death:
+         TNT1 A 0
+         TNT1 A 0 A_SpawnItem("DeadCentaur_NoLeg")
+		 TNT1 AAAAAAA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 A 0 A_CustomMissile ("XDeathCentaurLeg", 32, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("XDeathCentaurArm", 62, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath3", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath5", 5, 0, random (0, 360), 2, random (0, 160))
+		Stop
+		}
+}
+
+ACTOR DeadCentaur_NoLeg: DeadImp_NoLeg
+{
+	Scale 1.0
+	States 
+	{
+	Spawn:
+		CNTG ABCDE 6
+        CNTG F -1
+        Stop
+       Death:
+         TNT1 A 0
+         TNT1 A 0 A_SpawnItem("GibsZ")
+		 TNT1 AAAAAAA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAA 0 A_CustomMissile ("XDeath2", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAA 0 A_CustomMissile ("XDeath3", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAA 0 A_CustomMissile ("XDeath4", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAAAA 0 A_CustomMissile ("XDeath5", 5, 0, random (0, 360), 2, random (0, 160))
+		Stop
+		}
+}
+
+ACTOR RipCentaur
+{
+    Radius 1
+    Height 1
+    Scale 0.8
+	Speed 0
+	Mass 1
+	Decal BloodSuper
+	BounceFactor 0.5
+	+DOOMBOUNCE
+	+MISSILE
+    +NOBLOCKMAP
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +NOGRAVITY
+    +NOCLIP
+    +DONTSPLASH
+    States
+    {
+    Spawn:
+        TNT1 AAA 0 A_CustomMissile ("NashGore_FlyingBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 A 0 A_CustomMissile ("XDeathHalfCentaur", 32, 0, random (0, 360), 2, random (0, 160))
+	Death:
+	    TNT1 A 0
+        Stop
+    }
+}
+
+ACTOR XDeathHalfCentaur
+{
+    Radius 8
+    Height 8
+    Speed 7
+	Mass 8
+	BounceFactor 0.2
+	+DOOMBOUNCE
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +DONTSPLASH
+    +MOVEWITHSECTOR
+    DeathSound "misc/xdeath1"
+	Decal BrutalBloodSplat
+	Scale 1.2
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        CNTT A 8 A_CustomMissile("BloodTrails",0,0,180,2)
+        Goto SpawnOther
+    SpawnOther:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        CNTT B 12 A_CustomMissile("BloodTrails",0,0,180,2)
+        Loop
+    Death:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+        CNTT B 0 A_SpawnItem("GibHalfCentaur",0,0,0,1)
+        Stop
+    }
+}
+
+actor GibHalfCentaur: BigGibBase
+{
+    States
+    {
+    Spawn:
+		CNTT C 1900 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+		Loop    
+	}
+}
+
+ACTOR RipCentaurCalm
+{
+    Radius 1
+    Height 1
+    Scale 1.2
+	Speed 0
+	Mass 1
+	Decal BloodSuper
+	BounceFactor 0.5
+	+DOOMBOUNCE
+	+MISSILE
+    +NOBLOCKMAP
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +NOGRAVITY
+    +NOCLIP
+    +DONTSPLASH
+	Translation 2
+    States
+    {
+    Spawn:
+        TNT1 AAA 0 A_CustomMissile ("NashGore_FlyingBlood", 40, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAA 0 A_CustomMissile ("Instestin2", 32, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 A 0 A_CustomMissile ("XDeathHalfCentaurCalm", 32, 0, random (0, 360), 2, random (0, 160))
+	Death:
+	    TNT1 A 0
+        Stop
+    }
+}
+
+ACTOR XDeathHalfCentaurCalm
+{
+    Radius 8
+    Height 8
+    Speed 7
+	Mass 8
+	BounceFactor 0.2
+	+DOOMBOUNCE
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +DONTSPLASH
+    +MOVEWITHSECTOR
+    DeathSound "misc/xdeath1"
+	Decal BrutalBloodSplat
+	Translation 2
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        CNTT A 8 A_CustomMissile("BloodTrails",0,0,180,2)
+        Goto SpawnOther
+    SpawnOther:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+        CNTT B 12 A_CustomMissile("BloodTrails",0,0,180,2)
+        Loop
+    Death:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+        CNTT B 0 A_SpawnItem("GibHalfCentaurCalm",0,0,0,1)
+        Stop
+    }
+}
+
+actor GibHalfCentaurCalm: BigGibBase
+{
+	Translation 2
+    States
+    {
+    Spawn:
+		CNTT C 1900 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+		Loop    
+	}
+}
+
+Actor CentaurLowerHalf: ZombieManTorso {
+		Mass 300 
+		Health 200 
+		
+		States 
+		{
+	  Spawn:
+		CNTT DE 15
+        CNTT F -1
+        Stop	
+      Death:
+		 TNT1 A 0 A_SpawnItem("GibsZ")
+		 TNT1 AAA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AA 0 A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 A 0 A_CustomMissile ("XDeath3", 5, 0, random (0, 360), 2, random (0, 160))
+		 TNT1 AAA 0 A_CustomMissile ("XDeath4", 5, 0, random (0, 360), 2, random (0, 160))
+		 Stop
+		}
+}
+
+ACTOR XDeathCentaurHead: XDeathBullArm1
+{
+-CLIENTSIDEONLY
+Scale 1
+BounceCount 3
+    Scale 1.2
+    States
+    {
+	Spawn:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+		TNT1 A 0 A_JumpIf(momz == 0, "Death")
+		CNHD ABCD 6
+		Loop
+   	Death:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    CNHD D 1
+        CNHD D 1 A_SpawnItem("CentaurHead",0,0,0,1)
+        Stop
+}
+}
+
+actor CentaurHead: LimbBase
+{
+damagefactor "Kick", 9.0
+damagefactor "Melee", 9.0
+damagefactor "SuperPunch", 9.0
+-CLIENTSIDEONLY
++SHOOTABLE
++SOLID
++THRUACTORS
+Scale 0.8
+damagefactor "Crush", 50.0
+    Radius 10
+    
+	Mass 12
+	Health 40
+    Scale 1.2
+    States
+    {
+    Spawn:
+	CNHD D 1900 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+       Loop
+    Death:    
+    TNT1 AAAA 0 A_CustomMissile ("NashGore_FlyingBloodTrail", 0, 0, random (0, 360), 2, random (0, 360))
+    TNT1 A 0 A_CustomMissile ("GibDemonHand", 0, 0, random (0, 180), 2, random (0, 180))
+    TNT1 A 0 A_CustomMissile ("GibDemonArmPart", 0, 0, random (0, 180), 2, random (0, 180))
+Stop
+    Death:
+        TNT1 AAAAA 0 A_CustomMissile ("NashGore_FlyingBloodTrail5", 0, 0, random (0, 360), 2, random (60, 140))
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+		TNT1 AAAA 0 A_CustomMissile ("Brains1", 5, 0, random (0, 360), 2, random (60, 140))
+		TNT1 A 0 A_CustomMissile ("Brains2", 5, 0, random (0, 360), 2, random (60, 140))
+		TNT1 A 0 A_CustomMissile ("Brains3", 5, 0, random (0, 360), 2, random (60, 140))
+		TNT1 A 0 A_CustomMissile ("Brains4", 5, 0, random (0, 360), 2, random (60, 140))
+		TNT1 A 0 A_CustomMissile ("Brains5", 5, 0, random (0, 360), 2, random (60, 140))
+		TNT1 AAAAAA 0 A_CustomMissile ("SmallBrainPiece", 5, 0, random (0, 360), 2, random (60, 140))
+        Stop
+    Death.Trample:
+	Crush:
+        TNT1 AAAAAAAA 0 A_CustomMissile ("NashGore_FlyingBloodTrail5", 0, 0, random (0, 360), 2, random (60, 140))
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+        CRS1 B 5
+        CRS1 B 2002
+        Stop
+    Death.plasma:
+        TNT1 A 0
+	    TNT1 A 0 A_CustomMissile ("XDeathBurnedSkull", 32, 0, random (0, 360), 2, random (0, 160))
+		EXPL A 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+        TNT1 A 0
+        Stop
+	Death.Melee:
+	Death.SuperPunch:
+	Death.Kick:
+	    XHE2 EE 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("XDeathCentaurHeadHead", 5, 0, random (170, 190), 2, random (20, 40))
+		Stop
+	
+	Pain:
+	TNT1 A 0
+	TNT1 A 0 ThrustThingZ(0,20,0,1)
+	XHE2 ABCD 3
+	Goto Spawn
+	
+	Death.ExplosiveImpact:
+	TNT1 A 0
+	TNT1 A 0 A_ChangeFlag("NOBLOCKMAP", 0)
+	TNT1 A 0 ThrustThingZ(0,50,0,1)
+	XHE2 ABCD 6
+	XDT5 I 0 A_SpawnItem("CentaurHead")
+	Stop
+
+}}
+
+ACTOR XDeathCentaurLeg: XDeathImpLeg
+{
+	Scale 1.2
+	States
+    {
+    Spawn:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+		CNTL ABCD 5 A_CustomMissile ("NashGore_FlyingBloodTrail5", 0, 0, random (0, 360), 2, random (0, 360))
+		Loop
+	Death:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    CNTL C 1
+        CNTL A 0 A_SpawnItem("Gib_CentaurLeg",0,0,0,1)
+        Stop
+		
+    }
+}
+
+ACTOR Gib_CentaurLeg: Gib_ImpLeg
+{
+	Scale 1.2
+	States
+    {
+    Spawn:
+		CNTL C 1900 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+       Loop
+Death.plasma: Death.Burn: Death.Flames:	    TNT1 A 0 A_CustomMissile ("XDeathBurnedImpLeg", 32, 0, random (0, 360), 2, random (0, 160))        Stop
+    Death:    
+    TNT1 AAAA 0 A_CustomMissile ("NashGore_FlyingBloodTrail", 0, 0, random (0, 360), 2, random (0, 360))
+    TNT1 A 0 A_CustomMissile ("GibImpLegPart", 0, 0, random (0, 180), 2, random (0, 180))
+    TNT1 A 0 A_CustomMissile ("GibImpPaw", 0, 0, random (0, 180), 2, random (0, 180))
+Stop
+	Death.Kick:
+	Death.Melee:
+	Death.SuperPunch:
+	    CNTL A 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("XDeathCentaurLeg", 5, 0, random (170, 190), 2, random (20, 40))
+		Stop
+		
+	Pain:
+	TNT1 A 0
+	TNT1 A 0 ThrustThingZ(0,20,0,1)
+	CNTL ABCD 2
+	Goto Spawn
+	
+	Death.ExplosiveImpact:
+	TNT1 A 0
+	TNT1 A 0 A_ChangeFlag("NOBLOCKMAP", 0)
+	TNT1 A 0 ThrustThingZ(0,50,0,1)
+	CNTL C 5
+	CNTL ABCDABCDABCDABCDABCD 5 A_CheckFloor("Landz")
+	Goto Landz
+	Landz:
+	XDT5 I 0 A_SpawnItem("Gib_CentaurLeg")
+	Stop
+	}
+}
+
+ACTOR XDeathCentaurArm: XDeathImpArm
+{
+	Scale 1.2
+	States
+    {
+    Spawn:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
+		CNTA ABCD 5 A_CustomMissile ("NashGore_FlyingBloodTrail5", 0, 0, random (0, 360), 2, random (0, 360))
+		Loop
+    Death.plasma:	    TNT1 A 0 A_CustomMissile ("XDeathBurnedImpArm", 32, 0, random (0, 360), 2, random (0, 160))        Stop
+	Death:
+        TNT1 A 0 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+	    CNTA B 1
+        CNTA B 0 A_SpawnItem("Gib_CentaurArm",0,0,0,1)
+        Stop
+    }
+}
+
+ACTOR Gib_CentaurArm: Gib_ImpArm
+{
+	Scale 1.2
+    Translation "0:255=%[0,0,0]:[1.5,0.3,0.3]"
+	States
+    {
+    Spawn:
+        CNTA B 1900 A_SpawnItem("NashGore_BloodSpot",0,0,0,1)
+       Loop
+Death.plasma: Death.Burn: Death.Flames:	    TNT1 A 0 A_CustomMissile ("XDeathBurnedImpArm", 32, 0, random (0, 360), 2, random (0, 160))        Stop
+    Death:    
+    TNT1 AAAA 0 A_CustomMissile ("NashGore_FlyingBloodTrail", 0, 0, random (0, 360), 2, random (0, 360))
+    TNT1 A 0 A_CustomMissile ("GibImpHand", 0, 0, random (0, 180), 2, random (0, 180))
+    TNT1 A 0 A_CustomMissile ("GibImpArmPart", 0, 0, random (0, 180), 2, random (0, 180))
+Stop
+Stop
+	Death.Kick:
+	Death.Melee:
+	Death.SuperPunch:
+	    CNTA BB 1 A_FaceTarget
+		TNT1 A 0 A_CustomMissile ("XDeathCentaurArm", 5, 0, random (170, 190), 2, random (20, 40))
+		Stop
+	
+	Pain:
+	TNT1 A 0
+	TNT1 A 0 ThrustThingZ(0,20,0,1)
+	CNTA ABCDABCD 3
+	Goto Spawn
+	
+	Death.ExplosiveImpact:
+	TNT1 A 0
+	TNT1 A 0 A_ChangeFlag("NOBLOCKMAP", 0)
+	TNT1 A 0 ThrustThingZ(0,50,0,1)
+	CNTA B 5
+	CNTA ABCDABCDABCDABCDABCD 5 A_CheckFloor("Landz")
+	Goto Landz
+	Landz:
+	XDT5 I 0 A_SpawnItem("Gib_CentaurArm")
+	Stop	
+	}
+}
+
+ACTOR BurningCentaur
+{
+    Radius 25
+    Height 65
+    Speed 8
+    Scale 1.2
+	Health 150
+	GibHealth 25
+	damagefactor "Burn", 0.5
+	damagefactor "Fire", 0.5
+	damagefactor "Flames", 0.5
+	damagefactor "Flame", 0.5
+	damagefactor "ExplosiveImpact", 10.0
+	MONSTER
+	-COUNTKILL
+	+NOICEDEATH
+	+FRIENDLY
+    +FLOORCLIP
+	+SHOOTABLE
+	+NOBLOCKMONST
+	+DONTSPLASH
+	Gravity 0.7
+	bloodtype "DeadBlood"
+    Obituary "%o was near someone in flames."
+	MaxDropOffHeight 6000
+   
+	Mass 999999
+    States
+    {
+    Spawn:
+        CNTR B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_PlaySound("Centaur/Death")
+		Goto Suffer
+	Suffer:
+        CNTR AAA 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        CNTR BBB 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		CNTR CCC 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        CNTR DDD 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 20, "Death")
+		TNT1 A 0 A_JumpIf(momz < 0, "Falling")
+		Loop
+	Falling:	
+	    CNTR AA 1 Bright
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        CNTR BB 1 Bright
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		CNTR CC 1 Bright
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        CNTR DD 1 Bright
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+		Loop
+	
+	Death.ExplosiveImpact:
+	TNT1 A 0
+	TNT1 A 0 ThrustThingZ(0,60,0,1)
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+	TNT1 A 0
+	Goto Looping
+	
+	Looping:	
+	    CNTR AAAA 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        CNTR BBBB 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		CNTR CCCC 1 Bright A_JumpIf(momz == 0, "fallDeath")
+		BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        CNTR DDDD 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		Loop	
+	
+	FallDeath:
+	    TNT1 AAAAAAAAAA 0 A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (20, 150))
+		TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("ExplosionParticleHeavy", 10, 0, random (0, 360), 2, random (20, 150))
+	    TNT1 AAAA 0 A_CustomMissile("XDeath1", 10, 0, random (0, 360), 2, random (20, 150))
+		TNT1 A 0 A_PlaySound("misc/xdeath")
+		TNT1 A 0 A_Explode(100, 128)
+		Goto Death
+    Death:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		
+        CNTR IIIIJJJJJJJJLLLL 5 Bright A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        CNTR RRRRRRRRRRRRRRRRRR 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		CNTR RRRRRRRRRRRRRRRRRR 10 Bright A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		CNTR R -1
+        Stop
+	XDEATH:
+	DEATH.SSG:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+	TNT1 A 0 A_PlaySound("misc/xdeath")
+	     TNT1 AA 0 A_CustomMissile ("XDeathBurnedArm", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathCentaurLeg", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_CustomMissile ("XDeathBurnedSkull", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("MuchMeatDeath", 35, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+	Stop
+    }
+}
+
+ACTOR FrozenCentaur: FrozenZombieman
+{
+Translation Ice
+Height 70
+Radius 25
+Scale 1.2
+States
+	{
+	Spawn:
+		CNTR A 200
+		TNT1 A 0 A_PlaySound("ICEBRK1")
+		CNTR A 50
+		CNTR F 2
+		CNTR A 50
+		CNTR F 2
+		CNTR A 50
+		CNTR F 2
+		CNTR A 25
+		CNTR F 2
+		CNTR A 25
+		CNTR F 2
+		CNTR A 10
+		CNTR F 2
+		CNTR A 10
+		CNTR F 2
+		CNTR A 10
+		CNTR FAFAFAFAFAF 2
+		Goto Death.Burn
+		Death.Fire: Death.FireHead: 
+		Death.Flames:
+		Death.Burn:
+	Death:	
+	TNT1 A 0 A_NoBlocking
+	TNT1 A 0 A_PlaySound ("DSBOTTLE")
+	TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 48, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 48, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 48, 0, random (0, 360), 2, random (40, 120))
+	TNT1 AAA 0 A_CustomMissile ("XDeath1", 48, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath2", 48, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeath3", 48, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAA 0 A_CustomMissile ("Instestin", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAA 0 A_CustomMissile ("MuchBlood", 48, 0, random (0, 360), 2, random (0, 160))
+	Stop
+	Death.Freeze:
+	Death.Ice: Death.IceHead: 
+	Death.Frost:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("COUNTKILL", 0)
+	TNT1 A 0 A_SpawnItem("FrozenCentaur")
+	Stop
+	}
+}
+
+ACTOR AngryCharge : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 1
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 1
+}
+
+ACTOR AngryToggle : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 1
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 1
+}
+
+ACTOR CentaurShot
+{
+	Radius 4
+	Height 3
+	Speed 30
+	DamageType GreenFire
+	Projectile 
+	+RANDOMIZE
+	+FORCEXYBILLBOARD
+    +THRUGHOST
+    Damage (12)
+	RenderStyle Add
+	Alpha 1
+	Scale .5
+	SeeSound "baron/attack"
+	DeathSound "baron/shotx"
+	Decal "Scorch"
+	Translation "0:255=%[0,0,0]:[1.0,0.0,0.0]"
+	+THRUSPECIES
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SpawnItemEx("SmallRedFlameTrails", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG J 1 BRIGHT A_SpawnItem("RedFlareSmall",0,0)
+		TNT1 A 0 A_SpawnItemEx("SmallRedFlameTrails", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG K 1 BRIGHT A_SpawnItem("RedFlareSmall",0,0)
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG ABCDEFGH 2 BRIGHT  A_SpawnItem("RedFlare",0,0)
+		TNT1 AAAAA 19 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	XDeath:
+		TNT1 A 0 A_SpawnItemEx("PlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG ABCDEFGH 2  A_SpawnItem("RedFlare",0,0)
+		Stop
+	}
+}
+
+ACTOR RageCentaurShot : CentaurShot
+{
+	Translation 0
+	Radius 8
+	Height 6
+	Scale 1.2
+	Damage (25)
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SpawnItemEx("SmallGreenFlameTrails", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG J 1 BRIGHT A_SpawnItem("GreenFlareSmall",0,0)
+		TNT1 A 0 A_SpawnItemEx("SmallGreenFlameTrails", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG K 1 BRIGHT A_SpawnItem("GreenFlareSmall",0,0)
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx("PlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG ABCDEFGH 2 BRIGHT  A_SpawnItem("GreenFlare",0,0)
+		TNT1 AAAAA 19 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	XDeath:
+		TNT1 A 0 A_SpawnItemEx("PlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128)
+		FRPG ABCDEFGH 2  A_SpawnItem("GreenFlare",0,0)
+		Stop
+	}
+}
+
+ACTOR GeyserShot
+{
+	Radius 6
+	Height 8
+	Speed 15
+	Damage 0
+	Projectile
+	DeathSound ""
+	Decal ""
+	+RIPPER
+	+BLOODLESSIMPACT
+	+stepmissile
+	+NOEXPLODEFLOOR
+	-NoGravity
+	Gravity 10.0
+	maxstepheight 50
+	States
+	{
+	Spawn:
+		GRND ABCDE 1 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("GeyserExplosion",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_Quake(3, 20, 0, 200)
+		GRND FEDCB 1 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("GeyserExplosion",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_Quake(3, 20, 0, 200)
+		Loop
+	Death:
+		TNT1 A 0 A_Quake(6,40,0,500)
+		Stop
+	}
+}
+
+ACTOR RageGeyserShot : GeyserShot
+{
+	States
+	{
+	Spawn:
+		GRND ABCDE 1 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("RageGeyserExplosion",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_Quake(5, 20, 0, 200)
+		GRND FEDCB 1 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("RageGeyserExplosion",0,0,0,0,0,0,0,32,0)
+		TNT1 A 0 A_Quake(5, 20, 0, 200)
+		Loop
+	}
+}
+
+ACTOR BaronGeyserShot : GeyserShot
+{
+	Speed 15
+	States
+	{
+	Spawn:
+		GRND ABC 2 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("RageGeyserExplosion",0,0,0,0,0,0,0,32,0)
+		GRND DEF 2 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("RageGeyserExplosion",0,0,0,0,0,0,0,32,0)
+		GRND FDE 2 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("RageGeyserExplosion",0,0,0,0,0,0,0,32,0)
+		GRND ABC 2 A_CustomMissile ("RockBreakPart", 0, 0, random (0, 360), 2 | 4, random (0, 40))
+		TNT1 A 0 A_SpawnItemEx("RageGeyserExplosion",0,0,0,0,0,0,0,32,0)
+		Goto Death
+	}
+}
+
+ACTOR GeyserExplosion
+{
+	Scale 0.5
+	Radius 6
+	Height 8
+	Speed 0
+	Damage 0
+	Projectile
+	Renderstyle Translucent
+	DamageType "Frenemy"
+	Alpha 1
+	+FLOORHUGGER
+	+NOCLIP
+	Translation "0:255=%[0,0,0]:[1.0,0.0,0.0]"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Explode(50,80,0)
+		TNT1 A 0 A_CustomMissile ("RedGeyserBall", 0, 0, 0 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserBall", 0, 0, 90 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserBall", 0, 0, 180 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserBall", 0, 0, 270 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("RedGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1
+		Stop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR RageGeyserExplosion : GeyserExplosion
+{
+	Translation 0
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Explode(40,80,0)
+		TNT1 A 0 A_CustomMissile ("GreenGeyserBall", 0, 0, 0 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserBall", 0, 0, 90 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserBall", 0, 0, 180 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserBall", 0, 0, 270 + random (-20, 20), 2 | 4, random (60, 80))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (110, 70))
+		TNT1 A 1
+		Stop
+	}
+}
+
+ACTOR HellSpinSlash
+{
+  damage (20)
+  speed 20
+  Scale 2
+  Height 10
+  Radius 20
+  DamageType Cut
+  Translation "0:255=%[0,0,0]:[1.0,0.0,0.0]"
+  PROJECTILE
+  +THRUSPECIES
+   States
+   {
+    Spawn:
+      SWAV A 10 Bright
+      Goto FadeD
+	FadeD:
+	  TNT1 A 0 A_CustomMissile ("RedHellWaveBreak2", 0, 0, 0, 2 | 4, 0)
+	  Stop
+    Death:
+      SWAV A 1 Bright
+	  TNT1 A 0 A_CustomMissile ("RedHellWaveBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("RedHellWaveBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("RedHellWaveBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+      Stop
+   }
+}
+
+ACTOR RageHellSpinSlash : HellSpinSlash
+{
+	Translation "0:255=%[0,0,0]:[0.5,1.5,0.5]"
+   States
+   {
+    Spawn:
+      SWAV A 10 Bright
+      Goto FadeD
+	FadeD:
+	  TNT1 A 0 A_CustomMissile ("HellWaveBreak2", 0, 0, 0, 2 | 4, 0)
+	  Stop
+    Death:
+      SWAV A 1 Bright
+	  TNT1 A 0 A_CustomMissile ("HellWaveBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("HellWaveBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("HellWaveBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+      Stop
+   }
+}
+
+ACTOR CentaurRage
+{
+	Scale 0.5
+	Radius 6
+	Height 8
+	Speed 0
+	Damage 0
+	Projectile
+	Renderstyle Translucent
+	+NOCLIP
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_CustomMissile ("GreenGeyserBall", 0, 0, 0 + random (-45, 45), 2 | 4, random (40, 80))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame3", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame3", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 1 A_CustomMissile ("GreenGeyserBall", 0, 0, 180 + random (-45, 45), 2 | 4, random (40, 80))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame3", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame3", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		TNT1 A 0 A_CustomMissile ("GreenGeyserFlame2", 0, 0, random (0, 360), 2 | 4, random (130, 50))
+		Stop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}

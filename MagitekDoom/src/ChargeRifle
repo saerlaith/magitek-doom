@@ -1,0 +1,1117 @@
+//// --------------------------------------------------------------------------
+//
+// Charge Rifle
+//
+// --------------------------------------------------------------------------
+
+
+ACTOR ChargeRifle : MagicBaseSystem
+{
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 40
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+   	Inventory.PickupSound "PLSDRAW"
+	Weapon.AmmoType1 "N_Cell"
+	Weapon.AmmoType2 "ChargeAmmo"
+    	+WEAPON.NOAUTOAIM
+	+WEAPON.NOAUTOFIRE
+	Inventory.PickupMessage "You got the Charge Rifle!"
+	States
+	{
+	Steady:
+	TNT1 A 1
+	Goto Ready
+	Ready:
+        LRIG CBA 1 A_JumpIfInventory("GoFatality", 1, "Steady")
+        TNT1 A 0 A_PlaySound("LightRifle/Pick")
+        TNT1 AA 0
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		LRIG A 1 A_WeaponReady
+		LRIF A 0 A_TakeInventory("ChargeShot", 999)
+		Goto Ready+6
+		
+	DontNeedToReload:
+	Goto Ready+6
+	MagicEnd:
+		TNT1 A 0
+		goto ready+9
+	Deselect:
+        LRIG ABC 1
+		FAST A 0 A_Lower
+		Wait
+	Select:
+	TNT1 A 0 A_Takeinventory("FistsSelected",1)
+	TNT1 A 0 A_Takeinventory("SawSelected",1)
+	TNT1 A 0 A_Takeinventory("ShotgunSelected",1)
+	TNT1 A 0 A_Takeinventory("SSGSelected",1)
+	TNT1 A 0 A_Takeinventory("MinigunSelected",1)
+	TNT1 A 0 A_Giveinventory("PlasmaGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RocketLauncherSelected",1)
+    TNT1 A 0 A_Takeinventory("GrenadeLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("BFGSelected",1)
+	TNT1 A 0 A_Takeinventory("BFG10kSelected",1)
+	TNT1 A 0 A_Takeinventory("RailGunSelected",1)
+	TNT1 A 0 A_Takeinventory("SubMachineGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RevenantLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("LostSoulSelected",1)
+	TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+	TNT1 A 0 A_Takeinventory("HasBarrel",1)
+	
+		FAST A 0 A_Raise
+		Wait
+		
+	Spawn:
+		LRIP A -1
+		Stop
+        DoKick:
+	    TNT1 A 0
+		TNT1 A 0 A_Takeinventory("Zoomed",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+		NULL A 0 A_JumpIf (momZ > 0, "AirKick")
+		NULL A 0 A_JumpIf (momZ < 0, "AirKick")
+		
+        TNT1 A 0 A_jumpifinventory("PowerStrength",1,"BerserkerKick")
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 SetPlayerProperty(0,1,0)
+		KICK BCD 1
+		RIFF A 0 A_FireCustomMissile("KickAttack", 0, 0, 0, -7)
+        KICK H 4
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		TNT1 A 0 SetPlayerProperty(0,0,0)
+		Goto Ready+6
+		
+
+	 Fire:
+	  TNT1 A 0 A_Takeinventory("Reloading",1)
+	  LRIG A 0 A_JumpIfInventory("ChargeAmmo",2,1)
+	  Goto Ready+6
+	  LRIC A 1
+      LRIG A 0 A_Refire
+      Goto FireFullCharge
+     
+	 Hold:
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"ZoomCancel")
+      LRIG A 0 A_JumpIfInventory("ChargeShot", 40, "FireFullCharge")   //check for full charge
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 30, "ChargeHigh")
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 20, "ChargeMid")
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 10, "ChargeLow")
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 12, 1)
+	  TNT1 A 0 A_PlaySound("LightRifle/Charge1",3, .5)
+      LRIC A 3 A_GiveInventory("ChargeShot", 4)
+      LRIG A 1
+      LRIG A 0 A_Refire
+	  Goto FireFullCharge
+   
+	ChargeLow:
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 12, 1)
+	  TNT1 A 0 A_PlaySound("LightRifle/Charge2",3, .5)
+	  LRIC B 3 A_GiveInventory("ChargeShot", 3)
+      LRIG A 1
+      LRIG A 0 A_Refire
+	  Goto FireFullCharge
+	  
+	ChargeMid:
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 22, 1)
+	  TNT1 A 0 A_PlaySound("LightRifle/Charge3",3, .5)
+	  LRIC C 3 A_GiveInventory("ChargeShot", 3)
+      LRIG A 1
+      LRIG A 0 A_Refire
+	  Goto FireFullCharge
+	  
+	ChargeHigh:
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 32, 1)
+	  TNT1 A 0 A_PlaySound("LightRifle/Charge4",3, .5)
+	  LRIC D 3 A_GiveInventory("ChargeShot", 2)
+      LRIG A 1
+      LRIG A 0 A_Refire
+	  Goto FireFullCharge
+	  
+	ZoomCancel:
+		LRIG A 4
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+		Goto Ready+10
+
+    FireFullCharge:
+      LRIF B 0 A_JumpIfInventory("ChargeShot", 40, 1)  //full charge?
+      Goto FireHighCharge
+      LRIF B 0 A_JumpIfInventory("ChargeAmmo", 40, 1)   //don't have enough ammo?
+      Goto FireHighCharge
+	  TNT1 A 0 A_PlaySound("LightRifle/MegaShot",1)
+	  TNT1 A 0 A_AlertMonsters(3000)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+      LRIF E 1 A_FireCustomMissile("FusionBlast", 0, 1, 0, 0)
+	  LRIF E 0 A_SetAngle(frandom(7.5, -7.5) + angle)
+	  LRIF E 0 A_SetPitch(frandom(-9, -7) + pitch)
+      LRIF E 8 A_TakeInventory("ChargeAmmo", 40)
+      LRIF ABC 10
+      LRIF B 0 A_TakeInventory("ChargeShot",999)
+      Goto Reload
+
+    FireHighCharge:
+      LRIF B 0 A_JumpIfInventory("ChargeShot", 30, 1) //is the gun charged enough?
+      Goto FireMidCharge
+      LRIF A 0 A_JumpIfInventory("ChargeAmmo", 20, 1)  //Enough ammo?
+      Goto FireMidCharge
+	  TNT1 A 0 A_PlaySound("LightRifle/StrongShot",1)
+	  LRIF A 0 A_FireCustomMissile("RailTrail", 0, 0, -1, 0)
+	  TNT1 A 0 A_AlertMonsters(2500)
+      LRIF A 2 A_RailAttack (600, 0, 1, "00 40 00", "700 900 700", RGF_SILENT, 1, "SuperRailPuff")
+	  TNT1 A 0 A_SetAngle(frandom(3.5, -3.5) + angle)
+	  TNT1 A 0 A_SetPitch(frandom(-7, -5) + pitch)
+      LRIF A 0 A_TakeInventory("ChargeAmmo", 20)
+      LRIF BC 2
+      LRIF A 0 A_TakeInventory("ChargeShot", 999)
+      Goto Ready + 8
+	  
+	FireMidCharge:
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 20, 1) //is the gun charged enough?
+      Goto FireLowCharge
+      LRIF A 0 A_JumpIfInventory("ChargeAmmo", 10, 1)  //Enough ammo?
+      Goto FireLowCharge
+	  TNT1 A 0 A_PlaySound("LightRifle/MidShot",1)
+	  TNT1 A 0 A_AlertMonsters(2000)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+      LRIF A 1 BRIGHT A_FireCustomMissile("HealShot", 0, 1, 0, 0)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("SpiralShot", 0, 1, 0, 20)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("SpiralShot2", 0, 1, 0, 20)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("SpiralShot3", 0, 1, 0, 20)
+	  LRIF A 1 BRIGHT A_FireCustomMissile("HealShot", 0, 1, 0, 0)
+	  LRIF A 1 BRIGHT A_FireCustomMissile("HealShot", 0, 1, 0, 0)
+	  LRIF B 2 BRIGHT
+	  TNT1 A 0 A_SetAngle(frandom(1.5, -1.5) + angle)
+	  TNT1 A 0 A_SetPitch(frandom(-3, -1) + pitch)
+	  LRIF A 0 A_TakeInventory("ChargeAmmo", 10)
+      LRIF C 2
+	  LRIF A 0 A_TakeInventory("ChargeShot", 999)
+      Goto Ready + 8
+	  
+	FireLowCharge:
+	  LRIF B 0 A_JumpIfInventory("ChargeShot", 10, 1) //is the gun charged enough?
+      Goto FireNoCharge
+      LRIF A 0 A_JumpIfInventory("ChargeAmmo", 5, 1)  //Enough ammo?
+      Goto FireNoCharge
+	  TNT1 A 0 A_AlertMonsters(1500)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+	  TNT1 A 0 A_PlaySound("LightRifle/RapidShot",1)
+      LRIF A 0 A_FireCustomMissile("PlasmaVolley", 3, 0, -1, 0)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 0, 0, -1, 12)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 0, 0, -1, -12)
+	  LRIF A 1 A_FireCustomMissile("PlasmaVolley", -3, 0, -1, 0)
+	  TNT1 A 0 A_SetAngle(frandom(0.9, -0.9) + angle)
+	  TNT1 A 0 A_SetPitch(frandom(-2, -0) + pitch)
+	  LRIF BC 1
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+	  TNT1 A 0 A_PlaySound("LightRifle/RapidShot",1)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 3, 0, -1, 0)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 0, 0, -1, 12)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 0, 0, -1, -12)
+	  LRIF A 1 A_FireCustomMissile("PlasmaVolley", -3, 0, -1, 0)
+	  TNT1 A 0 A_SetAngle(frandom(0.9, -0.9) + angle)
+	  TNT1 A 0 A_SetPitch(frandom(-2, -0) + pitch)
+	  LRIF BC 1
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+	  TNT1 A 0 A_PlaySound("LightRifle/RapidShot",1)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 3, 0, -1, 0)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 0, 0, -1, 12)
+	  LRIF A 0 A_FireCustomMissile("PlasmaVolley", 0, 0, -1, -12)
+	  LRIF A 1 A_FireCustomMissile("PlasmaVolley", -3, 0, -1, 0)
+	  TNT1 A 0 A_SetAngle(frandom(0.9, -0.9) + angle)
+	  TNT1 A 0 A_SetPitch(frandom(-2, -0) + pitch)
+	  LRIF BC 1
+      LRIF A 2 A_TakeInventory("ChargeAmmo", 5)
+      LRIF BC 2
+      LRIF A 0 A_TakeInventory("ChargeShot", 999)
+      Goto Ready + 8
+	  
+	FireNoCharge:
+	  LRIF A 0 A_JumpIfInventory("ChargeAmmo", 2, 1)  //Enough ammo?
+      Goto Ready
+	  TNT1 A 0 A_PlaySound("LightRifle/BasicShot",3, .5)
+	  TNT1 A 0 A_AlertMonsters(1000)
+	  TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
+	  TNT1 A 0 A_SetAngle(frandom(0.7, -0.7) + angle)
+	  TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+	  LRIF A 0 A_FireCustomMissile("WeakPlasma")
+	  LRIF A 2 A_TakeInventory("ChargeAmmo", 2)
+      LRIF B 2 
+	  LRIF A 0 A_TakeInventory("ChargeShot", 999)
+	  LRIF CCCCCC 1 A_Refire
+      Goto Ready + 8
+
+	AltFire:
+        LRIF A 0 A_JumpIfInventory("ChargeAmmo", 10, 1)  //Enough ammo?
+		Goto Ready
+		LRIF A 5 A_PlaySound("LightRifle/Charge3",3, .5)
+		TNT1 A 0 A_AlertMonsters(1000)
+		LRIF AAAAAAAAAAAAAAAAAAAA 0 A_FireCustomMissile("GreenPlasmaGas", random(12, -12), 0, random(5, -5), random(5, -5), 0, random(12, -12))
+		TNT1 A 0 A_Takeinventory("ChargeAmmo",10)
+		LRIF A 0 A_TakeInventory("ChargeShot", 999)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Alerter")
+		LRIF B 10 A_PlaySound("LightRifle/Charge1",3, .5)
+		LRIF C 10 
+		goto Ready+10
+
+
+    Reload:
+	    LRIG A 1 A_WeaponReady
+		TNT1 A 0 A_Takeinventory("Zoomed",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+        TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_JumpIfInventory("ChargeAmmo",40,"DontNeedToReload")
+        TNT1 A 0 A_PlaySound("LightRifle/Charge4",3, .5)
+		LRIG A 0 A_TakeInventory("ChargeShot", 999)
+        TNT1 A 0 A_JumpIfInventory("N_Cell",1,3)
+        Goto Ready+6
+        TNT1 AAAA 0
+       
+
+        
+		TNT1 A 0 A_PlaySound("PLREADY")
+		LRIR AB 3 
+		TNT1 A 0 A_FireCustomMissile("PlasmaCaseSpawn",-30,0,-4,-4)
+		LRIR CD 3
+		LRIR E 8
+		LRIR EFGHIJKL 2
+
+		FinishReload:
+		TNT1 AAAAAAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("ChargeAmmo",40,15)
+		TNT1 A 0 A_JumpIfInventory("N_Cell",1,3)
+		Goto Ready+6
+        TNT1 AAAAAA 0
+		TNT1 A 0 A_Giveinventory("ChargeAmmo",1)
+		TNT1 A 0 A_Takeinventory("N_Cell",1)
+		Goto FinishReload
+		TNT1 AAAAAAAA 0
+		
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+        TNT1 A 0 A_PlaySound("BEPBEP")
+        Goto Ready+6
+
+        DoKick:
+	    TNT1 A 0
+		TNT1 A 0 A_Takeinventory("Zoomed",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+		TNT1 A 0 A_Takeinventory("ADSmode",1)
+		NULL A 0 A_JumpIf (momZ > 0, "AirKick")
+		NULL A 0 A_JumpIf (momZ < 0, "AirKick")
+		
+        TNT1 A 0 A_jumpifinventory("PowerStrength",1,"BerserkerKick")
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 SetPlayerProperty(0,1,0)
+		KICK BCD 1
+		RIFF A 0 A_FireCustomMissile("KickAttack", 0, 0, 0, -7)
+        KICK H 4
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		TNT1 A 0 SetPlayerProperty(0,0,0)
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+6
+    BerserkerKick:
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 SetPlayerProperty(0,1,0)
+		KICK ABCDEFG 1
+        RIFF A 0 A_FireCustomMissile("SuperKickAttack", 0, 0, 0, -7)
+        KICK H 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		TNT1 A 0 SetPlayerProperty(0,0,0)
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+6
+	
+	AirKick:
+	    TNT1 A 0 A_jumpifinventory("PowerStrength",1,"SuperAirKick")
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 A_Recoil (-6)
+		KICK JKLMN 1
+        RIFF A 0 A_FireCustomMissile("AirKickAttack", 0, 0, 0, -31)
+        KICK O 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK PQRST 2
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+6
+		
+	SuperAirKick:
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 A_Recoil (-6)
+		KICK JKLMN 1
+        RIFF A 0 A_FireCustomMissile("SuperAirKickAttack", 0, 0, 0, -31)
+        KICK O 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK PQRST 2
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+6
+
+    Taunt:
+        TNT1 A 5
+		FUCK A 2
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 0, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", -9, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 9, 0, -1, 0)
+        FUCK B 2 A_PlaySound("FUCK", 1)
+        FUCK C 2 A_AlertMonsters
+		FUCK D 15 A_Takeinventory("Taunting",1)
+        FUCK CBA 5
+        TNT1 A 5
+		Goto Ready
+	}
+}
+
+
+/*/
+/ / Ammo types
+/*/
+ACTOR ChargeAmmo : Ammo
+{
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 40
+}
+
+ACTOR ChargeShot : Inventory
+{
+   Inventory.MaxAmount 40
+}
+
+/*/
+/ / Projectiles
+/*/
+
+ACTOR WeakPlasma
+{
+  height 5
+  radius 5
+  damage (10)
+  speed 60
+  Scale .8
+  DamageType PlasmaBall
+  PROJECTILE
+  BounceType "Hexen" 
+  +USEBOUNCESTATE
+  BounceCount 6
+  WallBounceFactor 0.7
+  BounceFactor 0.8
+  BounceSound "LightRifle/BasicDie"
+  DeathSound "LightRifle/BasicDie"
+  Decal "Scorch"
+  +CANBOUNCEWATER
+     States
+   {
+    Spawn:
+      PLS1 A 1 Bright Light ("PLSGREENSMALL")
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  PLS1 A 1 Bright Light ("PLSGREENSMALL")
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+      Loop
+    Death:
+	  TNT1 A 0 A_CustomMissile ("PlasmaBoom", 0, 0)
+	  TNT1 A 0 A_CustomMissile ("GreenPLSBoom", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSBoom2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSBoom2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark3", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark3", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark3", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark3", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+      PLS1 CDEFG 1 Bright Light ("PLSBOOMSMALL")
+      Stop
+	Bounce.Actor:
+		Goto Death
+   }
+}
+
+ACTOR PlasmaBoom: KickAttack
+{
+Damage 0
+Speed 0
+Radius 1
+damageType "Plasma"
+States
+{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 1 A_Explode(60, 50, false, 0, 50)
+		Stop
+	Death:
+		TNT1 A 0
+		Stop
+	XDeath:
+	    TNT1 A 0
+		Stop
+}
+}
+
+
+ACTOR PlasmaVolley
+{
+  height 3
+  radius 3
+  damage (20)
+  speed 60
+  Scale .7
+  DamageType Plasma
+  PROJECTILE
+  DeathSound "LightRifle/BasicDie"
+  Decal "Scorch"
+   States
+   {
+    Spawn:
+      PLS1 A 1 Bright Light ("PLSGREENSMALL")
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  PLS1 A 1 Bright Light ("PLSGREENSMALL")
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+      Loop
+    Death:
+	  TNT1 A 0 A_CustomMissile ("GreenPLSBoom2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark3", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+      PLS1 CDEFG 1 Bright Light ("PLSBOOMSMALL")
+      Stop
+   }
+}
+
+actor HealShot
+{
+  height 7
+  radius 7
+  damage (50)
+  speed 30
+  DamageType "Plasma"
+  renderstyle Add
+  alpha .7
+  Scale 1.2
+  PROJECTILE
+  BounceType "Doom" 
+  BounceFactor 1.0
+  WallBounceFactor 1.0
+  reactionTime 60
+  +CANBOUNCEWATER
+  states
+  {
+  Spawn:
+	PLS1 A 1 Bright Light ("PLSGREENMID") A_CustomMissile ("GreenPLSFlame2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	PLS1 B 1 Bright Light ("PLSGREENMID") A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	Goto Reg
+  Reg:
+    PLS1 A 1 Bright Light ("PLSGREENMID")
+	TNT1 A 0 A_CustomMissile ("GreenPLSFlame2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	PLS1 B 1 Bright Light ("PLSGREENMID")
+	TNT1 A 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_Countdown
+    Loop
+  Death:
+    PLS1 CDEFG 2 Bright Light ("PLSBOOMMID")
+    stop
+  XDeath:
+    ZAP1 A 0 A_GiveToTarget ("Health", 3)
+	TNT1 A 0 A_PlaySound("LightRifle/Primary",3)
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 3
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 3
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 3
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSHeal", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+    Goto Death
+  }
+}
+
+actor SpiralShot
+{
+  height 7
+  radius 7
+  damage (10)
+  speed 30
+  DamageType "PlasmaBall"
+  renderstyle Add
+  alpha .7
+  Scale 0.5
+  PROJECTILE
+  BounceType "Doom" 
+  BounceFactor 1.0
+  WallBounceFactor 1.0
+  reactionTime 30
+  +CANBOUNCEWATER
+  states
+  {
+  Spawn:
+	TNT1 A 0
+	Goto Reg
+  Reg:
+    PBAL C 1 Bright A_BishopMissileWeave
+	TNT1 A 0 A_CustomMissile("SpiralTrail",0,0,0)
+	PBAL C 1 Bright A_BishopMissileWeave
+	TNT1 A 0 A_CustomMissile("SpiralTrail",0,0,0)
+	TNT1 A 0 A_Countdown
+    Loop
+  Death: XDeath: Crash:
+	TNT1 B 0
+	TNT1 A 0 A_CustomMissile ("PlasmaBoom", 0, 0)
+	TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 B 4	
+	TNT2 AAAAAAAAA 4 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+	Stop
+  }
+}
+
+ACTOR SpiralShot2 : SpiralShot
+{
+    States
+    {
+      Spawn:
+        TNT1 A 0
+        TNT1 AAAAAAAAAAAA 0 A_BishopMissileWeave
+        goto Reg
+    }
+}
+
+ACTOR SpiralShot3 : SpiralShot
+{
+    States
+    {
+      Spawn:
+        TNT1 A 0
+        TNT1 AAAAAAAAAAAA 0 A_BishopMissileWeave
+        TNT1 AAAAAAAAAA 0 A_BishopMissileWeave
+        goto Reg
+    }
+}
+
+actor SuperRailPuff : Shotgunpuff
+{
+DamageType SuperRail
++PUFFONACTORS
++ALWAYSPUFF
+states
+  {
+  Spawn: Death: XDeath:
+	TNT1 A 0
+	TNT1 AAAAAAAAAA 0 A_CustomMissile ("SparkXNoModel", 2, 0, random (0, 360), 2, random (0, 360))
+    TNT1 A 0 A_SpawnItem ("RicoChet", 0)
+    TNT1 AAAA 0
+    PUFF A 0 bright A_PlaySound("ricochet/hit")
+	TNT1 A 0 A_Jump (90, "Kickback")
+	Goto Melee5
+ Kickback:
+	TNT1 AAAA 0
+	BAL1 A 0 A_CustomMissile ("ShotgunKickback", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	Goto Melee5
+  Melee5:
+	TNT1 AAA 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (0, 360), 2, random (0, 360))
+	stop
+  }
+}
+
+ACTOR RailTrail : FastProjectile
+{
+  height 1
+  radius 1
+  speed 150
+  Scale 1
+  Decal "Scorch"
+     States
+   {
+    Spawn:
+      TNT1 A 1 Bright Light ("PLSGREENSMALL")
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame4", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame4", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame5", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame5", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame6", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSFlame6", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 A 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+      Loop
+    Death:
+      Stop
+   }
+}
+
+ACTOR FusionBlast
+{
+  height 15
+  radius 15
+  damage (0)
+  speed 40
+  DamageType Plasma
+  Decal "Scorch"
+  PROJECTILE
+  DONTHURTSHOOTER
+  +EXTREMEDEATH
+   States
+   {
+      Spawn:
+      BFS1 A 1 BRIGHT Light ("PLSGREENBIG")
+	  TNT1 AAA 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAA 0 A_CustomMissile ("GreenPLSFlame3", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAA 0 A_CustomMissile ("GreenPLSFlame4", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  BFS1 B 1 BRIGHT Light ("PLSGREENBIG")
+	  TNT1 AAA 0 A_CustomMissile ("GreenPLSFlame", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAA 0 A_CustomMissile ("GreenPLSFlame3", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAA 0 A_CustomMissile ("GreenPLSFlame4", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+      Loop
+      Death:
+	  TNT1 A 0 A_PlaySound("lightrifle/boom", 1, 2.0)
+	  TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("GreenPLSBoom", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("GreenPLSBoom2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("GreenPLSBoom2", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	  TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("GreenPLSSpark", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("GreenPLSSpark2", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+	  TNT1 AAAAAAAAAAAA 0 A_CustomMissile ("GreenPLSSpark3", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+      
+	  TNT1 A 0 A_Explode(50, 250, false)
+	  
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 0, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 10, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 20, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 30, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 40, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 50, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 60, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 70, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 80, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 90, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 100, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 110, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 120, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 130, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 140, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 150, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 160, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 170, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 180, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 190, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 200, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 210, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 220, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 230, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 240, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 250, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 260, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 270, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 280, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 290, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 300, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 310, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 320, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 330, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 340, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 350, 2 | 4, 0)
+	  
+	  BFE1 C 5 BRIGHT Light ("PLSBOOMBIG") 
+	  
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 0, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 10, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 20, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 30, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 40, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 50, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 60, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 70, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 80, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 90, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 100, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 110, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 120, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 130, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 140, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 150, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 160, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 170, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 180, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 190, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 200, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 210, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 220, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 230, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 240, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 250, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 260, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 270, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 280, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 290, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 300, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 310, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 320, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 330, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 340, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 350, 2 | 4, random(30, -30))
+	  
+	  BFE1 D 5 BRIGHT Light ("PLSBOOMBIG") 
+	  
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 0, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 10, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 20, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 30, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 40, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 50, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 60, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 70, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 80, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 90, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 100, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 110, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 120, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 130, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 140, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 150, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 160, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 170, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 180, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 190, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 200, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 210, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 220, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 230, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 240, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 250, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 260, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 270, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 280, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 290, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 300, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 310, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 320, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 330, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 340, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 350, 2 | 4, random(30, -30))
+	  
+	  BFE1 E 5 BRIGHT Light ("PLSBOOMBIG") 
+	  
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 0, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 10, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 20, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 30, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 40, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 50, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 60, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 70, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 80, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 90, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 100, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 110, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 120, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 130, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 140, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 150, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 160, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 170, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 180, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 190, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 200, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 210, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 220, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 230, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 240, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 250, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 260, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 270, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 280, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 290, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 300, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 310, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 320, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 330, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 340, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 350, 2 | 4, random(30, -30))
+	  
+	  BFE1 F 5 BRIGHT Light ("PLSBOOMBIG") 
+	  
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 0, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 10, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 20, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 30, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 40, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 50, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 60, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 70, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 80, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 90, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 100, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 110, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 120, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 130, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 140, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 150, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 160, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 170, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 180, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 190, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 200, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 210, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 220, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 230, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 240, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 250, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 260, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 270, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 280, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 290, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 300, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 310, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 320, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 330, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 340, 2 | 4, random(30, -30))
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 350, 2 | 4, random(30, -30))
+	  
+	  BFE1 G 5 BRIGHT Light ("PLSBOOMBIG") 
+	  
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 0, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 10, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 20, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 30, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 40, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 50, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 60, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 70, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 80, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 90, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 100, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 110, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 120, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 130, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 140, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 150, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 160, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 170, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 180, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 190, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 200, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 210, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 220, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 230, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 240, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 250, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 260, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 270, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 280, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 290, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 300, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 310, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 320, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 330, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 340, 2 | 4, 0)
+	  TNT1 A 0 A_CustomMissile ("ExtraPlasma", 10, 0, 350, 2 | 4, 0)
+      Stop
+   }
+}
+
+ACTOR ExtraPlasma: FastProjectile
+{
+  height 15
+  radius 15
+  damage (0)
+  speed 2
+  Scale .4
+  DamageType Plasma
+  PROJECTILE
+  +NODAMAGETHRUST
+  Translation "0:255=%[0.1,0.3,0.1]:[1.5,2,1.5]"
+  DeathSound "LightRifle/BasicDie"
+     States
+   {
+    Spawn:
+      MIRR ACDE 2 Bright Light ("PLSGREENSMALL") 
+	  TNT1 A 0 A_ChangeVelocity(velx*1.2, vely*1.2, velz*1.2, CVF_REPLACE)
+      Loop
+    Death:
+      TNT1 A 0 A_Explode(50, 100, false)
+	  TNT1 A 0 A_CustomMissile ("GreenPlasmaFireBreak", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+      Stop
+   }
+}
+
+Actor GreenPlasmaGas
+{
+	Projectile
+  +NoGravity
+  -DOOMBOUNCE
+  -NOCLIP
+  -NOBLOCKMAP
+  Damage (2)
+  Damagetype Stun
+  RenderStyle Add
+  Scale 0.3
+  Alpha 0.9
+  Speed 20
+  -NOGRAVITY
+  Gravity 0.2
+  +RIPPER
+  +NOEXTREMEDEATH
+  +DONTGIB
+  +THRUGHOST
+  +NODAMAGETHRUST
+  Decal "Scorch"
+  SeeSound "PLSTHRW"
+  DeathSound "imp/shotx"
+  Radius 10
+  Height 5
+  +THRUGHOST
+  Translation "0:255=%[0,0,0]:[1.0,2.0,1.0]"
+  States
+  {
+  Spawn:
+    FIR5 A 1 BRIGHT
+	FIR5 BBCCDDEEFFGGHHIIJJKKLLMMNNOOPP 1 Bright A_CustomMissile ("GreenPlasmaFireMove", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAA 0 A_CustomMissile ("GreenPlasmaFireBreak", 0, 0, random (0, 360), 2, random (0, 360))
+	Stop
+  Death:
+	TNT1 A 0
+	TNT1 A 0 A_Explode (15, 50, false, 0, 50)
+	TNT1 AAA 0 A_CustomMissile ("GreenPlasmaFireBreak", 0, 0, random (0, 360), 2, random (0, 360))
+	FIR5 CEHJLNP 1 Bright A_CustomMissile ("GreenPlasmaFireMove", 0, 0, random (0, 360), 2, random (0, 360))
+    Stop
+  XDeath:
+	FIR5 CEHJLNP 1 Bright A_CustomMissile ("GreenPlasmaFireMove", 0, 0, random (0, 360), 2, random (0, 360))
+    Stop
+  }
+}
+
+
+ACTOR ToxicGrenade
+{
+	Radius 8
+	Height 8
+	Speed 20
+	Damage (50)
+	DamageType "Plasma"
+	PROJECTILE
+	RenderStyle "Add"
+	Alpha 1
+	+SEEKERMISSILE
+	+DONTGIB
+	+BOUNCEONWALLS
+	+BOUNCEONFLOORS
+	+BOUNCEONCEILINGS
+	+THRUGHOST
+	BounceFactor 1
+	WallBounceFactor 1
+	DeathSound "imp/shotx"
+	Decal "Scorch"
+	Scale 2
+	Translation "0:255=%[0,0,0]:[0.8,2,0.8]"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0
+		TNT1 A 0 A_Giveinventory("TimerTick",5)
+		Goto InitialShot
+	InitialShot:
+		FR7X A 1 BRIGHT A_SpawnItem("GreenFlare",0,0)
+		FR7X B 1 BRIGHT A_SpawnItem("GreenFlare",0,0)
+		TNT1 A 0 A_JumpIfInventory("TimerTick",1,2)
+		TNT1 A 0 A_Giveinventory("TimerTick",5)
+		Goto SeekingInitial
+		TNT1 A 0 A_Takeinventory("TimerTick",1)
+		Loop
+	SeekingInitial:
+		TNT1 A 0 A_JumpIfInventory("TimerTick",1,1)
+		Goto SeekingTransition
+		TNT1 A 0 A_Takeinventory("TimerTick",1)
+		TNT1 A 0 A_CustomMissile ("ToxicCloud4", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		FR7X A 1 BRIGHT
+		TNT1 A 0 A_CustomMissile ("ToxicCloud4", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		FR7X B 1 BRIGHT A_SeekerMissile (2,20, SMF_PRECISE | SMF_LOOK,256,8)
+		TNT1 A 0 A_Takeinventory("TimerTick",1)
+		Loop
+	SeekingTransition:
+		TNT1 A 0 A_ChangeFlag("BOUNCEONWALLS", FALSE)
+		TNT1 A 0 A_ChangeFlag("BOUNCEONFLOORS", FALSE)
+		TNT1 A 0 A_ChangeFlag("BOUNCEONCEILINGS", FALSE)
+		Goto Seeking
+	Seeking:
+		TNT1 A 0 A_CustomMissile ("ToxicCloud4", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		FR7X A 1 BRIGHT
+		TNT1 A 0 A_CustomMissile ("ToxicCloud4", 0, 0, random (0, 360), 2 | 4, random (10, 50))
+		FR7X B 1 BRIGHT A_SeekerMissile (2,20, SMF_PRECISE | SMF_LOOK,256,8)
+		Loop
+	Death:
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", TRUE)
+		TNT1 A 0 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 10 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 10 A_CustomMissile ("ToxicCloudGen", 0, 0, random (0, 360), 2 | 4, random (-30, 30))
+		TNT1 A 20 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		TNT1 A 0 A_CustomMissile ("PoisonGas", 10, 0, 0, 2 | 4)
+		Stop
+  }
+}
+
+ACTOR PoisonGas
+{
+  Speed 0
+  Radius 200
+  Height 30
+  Damage 0
+  Scale 5
+  PoisonDamage 80, 3
+  Projectile
+  +RIPPER
+  +BLOODLESSIMPACT
+  +THRUGHOST
+  SeeSound "baron/attack"
+  DeathSound "baron/shotx"
+  States
+ {
+  Spawn:
+    TNT1 A 1
+    Goto Death
+  Death:
+    TNT1 A 1
+    Stop
+  }
+}

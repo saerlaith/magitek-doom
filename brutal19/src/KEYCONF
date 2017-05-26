@@ -1,0 +1,72 @@
+clearplayerclasses
+addplayerclass Doomer
+
+weaponsection "Brutal_Doom"
+
+setslot 1 Chain_Saw Melee_Attacks 
+setslot 2 Rifle BrutalPistol
+setslot 3 Shot_Gun SSG
+setslot 4 Mini_Gun Mini_Gun2
+setslot 5 Grenade_Launcher Rocket_Launcher 
+setslot 6 Rail_Gun Plasma_Gun
+setslot 7 BFG10000 BIG_FUCKING_GUN 
+setslot 8 HellishMissileLauncher
+setslot 9 FlameCannon
+setslot 0 SecretWeapon_MP40  
+
+   addkeysection "BrutalDoom - Actions" BrutalDoomActions               // the last unquoted bit used to say MySampleKeysection
+   
+   addmenukey "Kick" kickem
+   alias kickem "puke 301"
+   defaultbind Q kickem
+
+   addmenukey "Reload" reloader
+   alias reloader "puke 303"
+   defaultbind R reloader
+
+   addmenukey "Offend" brutaltaunt
+   alias brutaltaunt "puke 302"
+   defaultbind F brutaltaunt
+   
+   addmenukey "Advanced Taunt" advtaunt
+   alias advtaunt "puke 304"
+   defaultbind J advtaunt
+   
+   addmenukey "One-Liners" oneliner
+   alias oneliner "puke 305"
+   defaultbind K oneliner
+
+
+   addkeysection "Magic Stuff" MagicStuffSection               // here too
+
+   addmenukey "Magic Action" magicA
+   alias magicA "puke 431"
+   defaultbind V magicA
+   
+   addmenukey "Quick Switch 1" wepSwitch1
+   alias wepSwitch1 "puke 441"	
+   defaultbind B wepSwitch1
+   
+   addmenukey "Quick Switch 2" wepSwitch2
+   alias wepSwitch2 "puke 442"
+   defaultbind N wepSwitch2
+   
+   addmenukey "Quick Switch 3" wepSwitch3
+   alias wepSwitch3 "puke 443"
+   defaultbind M wepSwitch3
+   
+   addmenukey "Quick Switch 4" wepSwitch4
+   alias wepSwitch4 "puke 444"
+   defaultbind , wepSwitch4
+   
+   addmenukey "Quick Switch Clear" wepClear
+   alias wepClear "puke 445"
+   defaultbind . wepClear
+   
+   addmenukey "Magic Elemental Swap" magicB
+   alias magicB "puke 432"
+   defaultbind X magicB
+   
+   addmenukey "Magic Type Swap" magicC
+   alias magicC "puke 440"
+   defaultbind X magicC

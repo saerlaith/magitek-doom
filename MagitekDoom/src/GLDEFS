@@ -1,0 +1,273 @@
+// Custom Stuff
+
+pulselight KEYLIGHTBLUE
+{
+    color 0.0 0.0 0.7
+    size 100
+    secondarySize 1000
+    interval 5.0
+    offset 0 0 0
+}
+
+pulselight KEYLIGHTRED
+{
+    color 0.7 0.0 0.0
+    size 100
+    secondarySize 1000
+    interval 5.0
+    offset 0 0 0
+}
+
+pulselight KEYLIGHTYELLOW
+{
+    color 0.9 0.9 0.4
+    size 100
+    secondarySize 1000
+    interval 5.0
+    offset 0 0 0
+}
+
+object MagicFlameShot
+{
+    frame MANFA { light IMPBALL   }
+    frame MANFB { light IMPBALL   }
+	frame FLME { light IMPBALL   }
+	frame F1RE { light IMPBALL   }
+	frame F2RE { light IMPBALL   }
+	frame FRFX { light ROCKETLIGHT }
+	
+    frame MISLB { light ROCKET_X1 }
+    frame MISLC { light ROCKET_X2 }
+    frame MISLD { light ROCKET_X3 }
+}
+
+pulselight SPECTRELIGHT
+{
+    color 0.7 0.0 0.0
+    size 150
+    secondarySize 250
+    interval 0.5
+    offset 0 0 0
+}
+
+pulselight ICEBOUNCEBALL
+{
+    color 0.4 0.4 1.0
+    size 70
+    secondarySize 100
+    interval 0.5
+    offset 0 0 0
+}
+
+pulselight HOMEFIREBALL
+{
+    color 1 0.4 0.2
+    size 50
+    secondarySize 100
+    interval 1.0
+    offset 0 0 0
+}
+
+pulselight FIRETRAPGLOW
+{
+    color 1 0.4 0.2
+    size 70
+    secondarySize 140
+    interval 2.0
+    offset 0 0 0
+}
+
+flickerlight ECHOFLICKER
+{
+    color 0.3 0.0 0.5
+    size 150
+    secondarySize 60
+    chance 0.5
+}
+
+flickerlight HOLYLIGHT
+{
+    color 1 1 1
+    size 70
+    secondarySize 90
+    chance 0.2
+}
+
+flickerlight SMALLHOLYLIGHT
+{
+    color 1 1 1
+    size 50
+    secondarySize 50
+    chance 0
+}
+
+flickerlight SENTRYWARNING
+{
+    color 1 1 1
+    size 80
+    secondarySize 80
+    chance 0
+}
+
+pulselight ECHOWARN
+{
+    color 0.3 0.0 0.5
+    size 60
+    secondarySize 60
+    interval 2.0
+    offset 0 0 0
+}
+
+pulselight PLSGREENSMALL
+{
+    color 0.3 0.9 0.3
+    size 50
+    secondarySize 70
+    interval 0.3
+    offset 0 0 0
+}
+
+pulselight PLSGREENMID
+{
+    color 0.3 0.9 0.3
+    size 120
+    secondarySize 150
+    interval 0.3
+    offset 0 0 0
+}
+
+pulselight PLSGREENBIG
+{
+    color 0.3 0.9 0.3
+    size 200
+    secondarySize 250
+    interval 0.3
+    offset 0 0 0
+}
+
+flickerlight PLSBOOMSMALL
+{
+    color 0.3 0.9 0.3
+    size 80
+    secondarySize 100
+    chance 0.8
+}
+
+flickerlight PLSBOOMMID
+{
+    color 0.3 0.9 0.3
+    size 120
+    secondarySize 160
+    chance 0.8
+}
+
+flickerlight PLSBOOMBIG
+{
+    color 0.3 0.9 0.3
+    size 300
+    secondarySize 400
+    chance 0.8
+}
+
+flickerlight ECHOWAVE
+{
+    color 0.1 0.0 0.3
+    size 70
+    secondarySize 100
+    chance 0.5
+}
+
+pulselight BLIZZARD
+{
+    color 0.7 0.7 1.0
+    size 120
+    secondarySize 200
+    interval 5
+    offset 0 0 0
+}
+
+flickerlight MIRROR
+{
+    color 0.8 1 0.7
+    size 80
+    secondarySize 100
+    chance 0.4
+}
+
+flickerlight MIRRORBREAK
+{
+    color 0.6 1 0.5
+    size 100
+    secondarySize 150
+    chance 0.8
+}
+
+flickerlight ICESHOT
+{
+    color 0.4 0.4 1.0
+    size 120
+    secondarySize 150
+    chance 0.8
+}
+
+flickerlight ICESHOTPUFF
+{
+    color 0.4 0.4 1.0
+    size 40
+    secondarySize 60
+    chance 0.8
+}
+
+flickerlight FIRESHOT
+{
+    color 1 0.4 0.2
+    size 120
+    secondarySize 150
+    chance 0.8
+}
+
+flickerlight FIRESHOTPUFF
+{
+    color 1 0.4 0.2
+    size 40
+    secondarySize 60
+    chance 0.8
+}
+
+flickerlight NORMALSHOT
+{
+    color 0.9 0.9 0.7
+    size 120
+    secondarySize 150
+    chance 0.8
+}
+
+flickerlight MAGICSHOT
+{
+    color 0.3 0.0 0.5
+    size 120
+    secondarySize 150
+    chance 0.8
+}
+
+flickerlight MAGICSHOTPUFF
+{
+    color 0.3 0.0 0.5
+    size 40
+    secondarySize 60
+    chance 0.8
+}
+
+pointlight BURNPART
+{
+    color 1 0.4 0.2
+    size 5
+}
+
+flickerlight MAGNUMPUFF
+{
+    color 0.3 0.3 0.8
+    size 20
+    secondarySize 30
+    chance 0.5
+}

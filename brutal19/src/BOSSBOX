@@ -1,0 +1,63 @@
+actor MasterMindHitBox : HeadshotTargetBase
+{
+	+NOTARGET
+damagefactor "Cut", 1.0
+damagefactor "Cutless", 1.0
+damagefactor "Plasma", 1.0
+damagefactor "Blast", 3.0
+damagefactor "Magnum", 3.0
+damagefactor "Head", 0.0
+damagefactor "Explosive", 10.0
+damagefactor "MiniBoom", 10.0
+damagefactor "MINORHead", 0.0
+damagefactor "Control", 0.0
+damagefactor "NoHead", 0.0
+damagefactor "Stun", 0.0
+damagefactor "Shock", 0.4
+damagefactor "Freeze", 0.0
+Health 50
+Radius 70
+Height 60
+DamageType head    
+BloodType "Blood"
+PainChance 255
+PainChance "Shock", 50
++NOGRAVITY
++SHOOTABLE
++NOTELEPORT
++NODAMAGETHRUST
++GHOST
++THRUGHOST
++NORADIUSDMG
++FORCERADIUSDMG
++SERVERSIDEONLY
+damagefactor "Trample", 0
+}
+
+actor CybersHitBox : HeadshotTargetBase
+{
+Radius 24
+Height 32
+Scale 2
+States
+{
+Spawn:
+TNT1 A 5
+TNT1 A 5
+Stop
+}
+}
+
+actor CybersHitBoxShort : CybersHitBox
+{
+Radius 24
+Height 32
+Scale 2
+States
+{
+Spawn:
+TNT1 A 2
+TNT1 A 3
+Stop
+}
+}

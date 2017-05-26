@@ -1,0 +1,2019 @@
+ACTOR MinigunLoadRound : Ammo
+{
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 50
+}
+
+ACTOR AttunedMGMagicCost : Ammo
+{
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 10
+}
+
+// --------------------------------------------------------------------------
+//
+// Attuned Minigun
+//
+// --------------------------------------------------------------------------
+
+ACTOR Mini_Gun : MagicBaseSystem Replaces Chaingun
+{
+Game Doom
+SpawnID 28
+Weapon.SelectionOrder 700
+Weapon.AmmoType "N_Clip"
+Weapon.AmmoGive 30
+Weapon.AmmoUse 1
+    +WEAPON.NOAUTOAIM
+Inventory.PickupSound "CBOXPKUP"
+Inventory.PickupMessage "You got the Minigun!"
+Obituary "%o was mowed down by %k's Minigun."
+//AttackSound "weapons/minigunfire"
+AttackSound "none"
+States
+{
+Steady:
+	TNT1 A 1
+	Goto Ready
+Ready:
+      TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+      TNT1 A 0 A_PlaySound("CHGNPKUP")
+      TNT1 AAAAAAAAAAA 0
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"SpinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  TNT1 A 0 A_JumpIfInventory("MinigunLoadRound",1,"ReadySpin")
+	  
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto ReadyFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"ReadyLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"ReadyDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"ReadyEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"ReadyShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"ReadyIce")
+		
+ReadyFlame:
+      1MGG A 2 A_WeaponReady
+      Goto Ready+13
+ReadyIce:
+      2MGG A 2 A_WeaponReady
+      Goto Ready+13
+ReadyShock:
+      3MGG A 2 A_WeaponReady
+      Goto Ready+13
+ReadyEarth:
+      4MGG A 2 A_WeaponReady
+      Goto Ready+13
+ReadyDark:
+      5MGG A 2 A_WeaponReady
+      Goto Ready+13
+ReadyLight:
+      6MGG A 2 A_WeaponReady
+      Goto Ready+13
+
+ReadySpin:
+      TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+      TNT1 A 0 A_PlaySound("CHGNPKUP")
+      TNT1 AAAAAAAAAAA 0
+SpinReset:
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto SpinningFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"SpinningLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"SpinningDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"SpinningEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"SpinningShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"SpinningIce")
+SpinningFlame:
+	  TNT1 A 0 A_PlaySound("CHAINSPI")
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  1MGG A 2 A_WeaponReady
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+      1MGG B 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  1MGG C 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  1MGG D 2 A_WeaponReady
+      Goto SpinReset
+SpinningIce:
+	  TNT1 A 0 A_PlaySound("CHAINSPI")
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  2MGG A 2 A_WeaponReady
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+      2MGG B 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  2MGG C 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  2MGG D 2 A_WeaponReady
+      Goto SpinReset
+SpinningShock:
+	  TNT1 A 0 A_PlaySound("CHAINSPI")
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  3MGG A 2 A_WeaponReady
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+      3MGG B 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  3MGG C 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  3MGG D 2 A_WeaponReady
+      Goto SpinReset
+SpinningEarth:
+	  TNT1 A 0 A_PlaySound("CHAINSPI")
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  4MGG A 2 A_WeaponReady
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+      4MGG B 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  4MGG C 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  4MGG D 2 A_WeaponReady
+      Goto SpinReset
+SpinningDark:
+	  TNT1 A 0 A_PlaySound("CHAINSPI")
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  5MGG A 2 A_WeaponReady
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+      5MGG B 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  5MGG C 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  5MGG D 2 A_WeaponReady
+      Goto SpinReset
+SpinningLight:
+	  TNT1 A 0 A_PlaySound("CHAINSPI")
+	  TNT1 A 0 A_AlertMonsters (1000)
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  6MGG A 2 A_WeaponReady
+      TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+      6MGG B 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  6MGG C 2 A_WeaponReady
+	  TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+	  TNT1 A 0 A_JumpIfInventory("Reloading",1,"UnspinBarrel")
+	  TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+	  TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+	  TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+      TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+	  6MGG D 2 A_WeaponReady
+      Goto SpinReset
+
+
+	Deselect:
+		TNT1 A 0 SetPlayerProperty(0,0,0)
+		TNT1 A 0 A_TakeInventory("MinigunLoadRound",50)
+		FAST A 0 A_Lower
+		Wait
+	MagicEnd:
+		TNT1 A 0
+		goto ready+9
+    Select:
+	TNT1 A 0 A_Takeinventory("FistsSelected",1)
+	TNT1 A 0 A_Takeinventory("SawSelected",1)
+	TNT1 A 0 A_Takeinventory("ShotgunSelected",1)
+	TNT1 A 0 A_Takeinventory("SSGSelected",1)
+	TNT1 A 0 A_Giveinventory("MinigunSelected",1)
+	TNT1 A 0 A_Takeinventory("PlasmaGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RocketLauncherSelected",1)
+    	TNT1 A 0 A_Takeinventory("GrenadeLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("BFGSelected",1)
+	TNT1 A 0 A_Takeinventory("BFG10kSelected",1)
+	TNT1 A 0 A_Takeinventory("RailGunSelected",1)
+	TNT1 A 0 A_Takeinventory("SubMachineGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RevenantLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("LostSoulSelected",1)
+	TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+	TNT1 A 0 A_Takeinventory("HasBarrel",1)
+	
+    FAST A 0 A_Raise
+    Wait
+	
+	Reload:
+		TNT1 A 0
+		Goto Ready+5
+
+    NoAmmo:
+        MNGG A 10 A_PlaySound("weapons/empty")
+        Goto Ready+13
+		
+	SpinBarrel:
+		TNT1 A 0 A_PlaySound("CHAINSTA")
+		TNT1 A 0 A_GiveInventory("MinigunLoadRound",1)
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto SpinBarrelFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"SpinBarrelLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"SpinBarrelDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"SpinBarrelEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"SpinBarrelShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"SpinBarrelIce")
+	SpinBarrelFlame:
+		1MGG ABCD 2
+		TNT1 A 0 A_AlertMonsters (1500)
+		1MGG ABCD 2
+		1MGG ABCD 2
+		1MGG ABCD 2
+		TNT1 A 0 A_PlaySound("CHAINSPI")
+		1MGG ABCD 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready+7
+	SpinBarrelIce:
+		2MGG ABCD 2
+		TNT1 A 0 A_AlertMonsters (1500)
+		2MGG ABCD 2
+		2MGG ABCD 2
+		2MGG ABCD 2
+		TNT1 A 0 A_PlaySound("CHAINSPI")
+		2MGG ABCD 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready+7
+	SpinBarrelShock:
+		3MGG ABCD 2
+		TNT1 A 0 A_AlertMonsters (1500)
+		3MGG ABCD 2
+		3MGG ABCD 2
+		3MGG ABCD 2
+		TNT1 A 0 A_PlaySound("CHAINSPI")
+		3MGG ABCD 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready+7
+	SpinBarrelEarth:
+		4MGG ABCD 2
+		TNT1 A 0 A_AlertMonsters (1500)
+		4MGG ABCD 2
+		4MGG ABCD 2
+		4MGG ABCD 2
+		TNT1 A 0 A_PlaySound("CHAINSPI")
+		4MGG ABCD 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready+7
+	SpinBarrelDark:
+		5MGG ABCD 2
+		TNT1 A 0 A_AlertMonsters (1500)
+		5MGG ABCD 2
+		5MGG ABCD 2
+		5MGG ABCD 2
+		TNT1 A 0 A_PlaySound("CHAINSPI")
+		5MGG ABCD 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready+7
+	SpinBarrelLight:
+		6MGG ABCD 2
+		TNT1 A 0 A_AlertMonsters (1500)
+		6MGG ABCD 2
+		6MGG ABCD 2
+		6MGG ABCD 2
+		TNT1 A 0 A_PlaySound("CHAINSPI")
+		6MGG ABCD 2
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		Goto Ready+7
+		
+	UnspinBarrel:
+		TNT1 A 0 A_TakeInventory("Reloading",1)
+		TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_TakeInventory("MinigunLoadRound",50)
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto UnspinBarrelFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"UnspinBarrelLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"UnspinBarrelDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"UnspinBarrelEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"UnspinBarrelShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"UnspinBarrelIce")
+	UnspinBarrelFlame:
+		1MGG BCD 2
+		1MGG BCD 2
+		Goto Ready+7
+	UnspinBarrelIce:
+		2MGG BCD 2
+		2MGG BCD 2
+		Goto Ready+7
+	UnspinBarrelShock:
+		3MGG BCD 2
+		3MGG BCD 2
+		Goto Ready+7
+	UnspinBarrelEarth:
+		4MGG BCD 2
+		4MGG BCD 2
+		Goto Ready+7
+	UnspinBarrelDark:
+		5MGG BCD 2
+		5MGG BCD 2
+		Goto Ready+7
+	UnspinBarrelLight:
+		6MGG BCD 2
+		6MGG BCD 2
+		Goto Ready+7
+
+	Fire:
+	    TNT1 A 0
+		TNT1 A 0 A_PlaySound("CHAINSTA")
+		TNT1 A 0 A_JumpIfInventory("MinigunLoadRound",1,"Hold")
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto FireFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"FireLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"FireDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"FireEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"FireShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"FireIce")
+		
+	FireFlame:
+		1MGG A 2
+		1MGG ABC 4
+		1MGF D 4
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		1MGG BCD 2
+		1MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		1MGG BCD 2
+		1MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		1MGG BCD 2
+        Goto Hold
+	FireIce:
+		2MGG A 2
+		2MGG ABC 4
+		2MGF D 4
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		2MGG BCD 2
+		2MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		2MGG BCD 2
+		2MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		2MGG BCD 2
+        Goto Hold
+	FireShock:
+		3MGG A 2
+		3MGG ABC 4
+		3MGF D 4
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		3MGG BCD 2
+		3MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		3MGG BCD 2
+		3MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		3MGG BCD 2
+        Goto Hold
+	FireEarth:
+		4MGG A 2
+		4MGG ABC 4
+		4MGF D 4
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		4MGG BCD 2
+		4MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		4MGG BCD 2
+		4MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		4MGG BCD 2
+        Goto Hold
+	FireDark:
+		5MGG A 2
+		5MGG ABC 4
+		5MGF D 4
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		5MGG BCD 2
+		5MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		5MGG BCD 2
+		5MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		5MGG BCD 2
+        Goto Hold
+	FireLight:
+		6MGG A 2
+		6MGG ABC 4
+		6MGF D 4
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		6MGG BCD 2
+		6MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		6MGG BCD 2
+		6MGF A 2
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1.5, -1.5), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		6MGG BCD 2
+        Goto Hold
+    Hold:
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_TakeInventory("MinigunLoadRound",50)
+		
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto HoldFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"HoldLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"HoldDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"HoldEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"HoldShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"HoldIce")
+		
+	HoldFlame:
+		TNT1 A 0 A_JumpIfInventory("IsHasted", 1, "HasteFlame")
+		TNT1 A 0 A_AlertMonsters (2500)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        1MGF BC 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        1MGF EF 1
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        1MGF H 1 
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		1MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	HasteFlame:
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        1MGF B 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		
+        MNGG B 0 A_ReFire
+		1MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+		
+	HoldIce:
+		TNT1 A 0 A_JumpIfInventory("IsHasted", 1, "HasteIce")
+		TNT1 A 0 A_AlertMonsters (2500)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        2MGF BC 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        2MGF EF 1
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        2MGF H 1 
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		2MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	HasteIce:
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        2MGF B 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		
+        MNGG B 0 A_ReFire
+		2MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	
+	HoldShock:
+		TNT1 A 0 A_JumpIfInventory("IsHasted", 1, "HasteShock")
+		TNT1 A 0 A_AlertMonsters (2500)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        3MGF BC 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        3MGF EF 1
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        3MGF H 1 
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		3MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	HasteShock:
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        3MGF B 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		
+        MNGG B 0 A_ReFire
+		3MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	
+	HoldEarth:
+		TNT1 A 0 A_JumpIfInventory("IsHasted", 1, "HasteEarth")
+		TNT1 A 0 A_AlertMonsters (2500)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        4MGF BC 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        4MGF EF 1
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        4MGF H 1 
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		4MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	HasteEarth:
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        4MGF B 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		
+        MNGG B 0 A_ReFire
+		4MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	
+	HoldDark:
+		TNT1 A 0 A_JumpIfInventory("IsHasted", 1, "HasteDark")
+		TNT1 A 0 A_AlertMonsters (2500)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        5MGF BC 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        5MGF EF 1
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        5MGF H 1 
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		5MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	HasteDark:
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        5MGF B 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		
+        MNGG B 0 A_ReFire
+		5MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	
+	HoldLight:
+		TNT1 A 0 A_JumpIfInventory("IsHasted", 1, "HasteLight")
+		TNT1 A 0 A_AlertMonsters (2500)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        6MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        6MGF BC 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        6MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        6MGF EF 1
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        6MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.2)
+        6MGF H 1 
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		6MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	HasteLight:
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        6MGF A 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        6MGF B 1
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+        TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        6MGF D 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 5, FPF_NOAUTOAIM, frandom(2, -2))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        6MGF G 1 BRIGHT A_FireCustomMissile("MinigunBullet", frandom(1, -1), 1, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        TNT1 A 0 A_SetAngle(random(2, -2) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.5, 0) + pitch)
+		TNT1 A 0 A_Recoil(0.2)
+		
+        MNGG B 0 A_ReFire
+		6MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG AC 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+
+	AltFire:
+		TNT1 A 0
+		TNT1 A 0 A_PlaySound("CHAINSTA")
+		TNT1 A 0 A_JumpIfInventory("MinigunLoadRound",1,"AltHold")
+		
+		TNT1 A 0 A_TakeInventory("MinigunLoadRound",50)
+		TNT1 A 0 A_JumpIfInventory("N_Clip",1,3)
+        Goto Ready+6
+		TNT1 AAA 0
+		
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,3)
+		Goto NoMana
+        TNT1 AAAAA 0
+		TNT1 A 0 A_JumpIfInventory("AttunedMGMagicCost",1,3)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		TNT1 A 0 A_GiveInventory("AttunedMGMagicCost",99)
+		TNT1 AAAAA 0
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto AltFireFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"AltFireLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"AltFireDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"AltFireEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"AltFireShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"AltFireIce")
+		
+	AltHold:
+		TNT1 A 0 A_TakeInventory("MinigunLoadRound",50)
+		TNT1 A 0 A_JumpIfInventory("N_Clip",1,3)
+        Goto Ready+6
+		TNT1 AAA 0
+		
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,3)
+		Goto NoMana
+        TNT1 AAAAA 0
+		TNT1 A 0 A_JumpIfInventory("AttunedMGMagicCost",1,3)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		TNT1 A 0 A_GiveInventory("AttunedMGMagicCost",99)
+		TNT1 AAAAA 0
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto AltHoldFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"AltHoldLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"AltHoldDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"AltHoldEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"AltHoldShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"AltHoldIce")
+		
+	AltFireFlame:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		1MGG A 4
+		1MGG ABC 4
+		1MGG D 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("BurningShot", 1, 0, 0, 0, 0, -2)
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		1MGG BCD 4
+		1MGS A 4 
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("BurningShot", 0, 0, 0, 0, 0, 2)
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		1MGG BCD 4
+		1MGS A 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("BurningShot", -1, 0, 0, 0, 0, -2)
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		1MGG BCD 4
+        TNT1 A 0
+		Goto AltHold
+	AltHoldFlame:	
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",4)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGS A 2 BRIGHT A_FireCustomMissile("BurningShot", 1, 0, 0, 0, 0, -2)
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        1MGF BC 2
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGS D 2 BRIGHT A_FireCustomMissile("BurningShot", 0, 0, 0, 0, 0, 2)
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        1MGF EF 2
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        1MGS G 2 BRIGHT A_FireCustomMissile("BurningShot", -1, 0, 0, 0, 0, -2)
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        1MGF H 2 
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		1MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		1MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+		
+	AltFireIce:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		2MGG A 2
+		2MGG ABC 4
+		2MGG D 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FreezeShot", 1, 0, 0, 0, 0, -2)
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		2MGG BCD 2
+		2MGS A 2 
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FreezeShot", 0, 0, 0, 0, 0, 2)
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		2MGG BCD 2
+		2MGS A 2
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FreezeShot", -1, 0, 0, 0, 0, -2)
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		2MGG BCD 2
+        TNT1 A 0
+		Goto AltHold
+	AltHoldIce:	
+        TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGS A 1 BRIGHT A_FireCustomMissile("FreezeShot", 1, 0, 0, 0, 0, -2)
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        2MGF BC 1
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGS D 1 BRIGHT A_FireCustomMissile("FreezeShot", 0, 0, 0, 0, 0, 2)
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        2MGF EF 1
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        2MGS G 1 BRIGHT A_FireCustomMissile("FreezeShot", -1, 0, 0, 0, 0, -2)
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        2MGF H 1 
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		2MGF I 1 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		2MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+		
+	AltFireShock:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		3MGG A 4
+		3MGG ABC 4
+		3MGG D 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("ElectricalShot", frandom(5, -5), 1, 0, 0, FPF_NOAUTOAIM, frandom(5, -5))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		3MGG BCD 4
+		3MGS A 4 
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("ElectricalShot", frandom(5, -5), 1, 0, 0, FPF_NOAUTOAIM, frandom(5, -5))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		3MGG BCD 4
+		3MGS A 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("ElectricalShot", frandom(5, -5), 1, 0, 0, FPF_NOAUTOAIM, frandom(5, -5))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		3MGG BCD 4
+        TNT1 A 0
+		Goto AltHold
+	AltHoldShock:	
+        TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",4)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGS A 2 BRIGHT A_FireCustomMissile("ElectricalShot", frandom(5, -5), 1, 0, 0, FPF_NOAUTOAIM, frandom(5, -5))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        3MGF BC 2
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGS D 2 BRIGHT A_FireCustomMissile("ElectricalShot", frandom(5, -5), 1, 0, 0, FPF_NOAUTOAIM, frandom(5, -5))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        3MGF EF 2
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        3MGS G 2 BRIGHT A_FireCustomMissile("ElectricalShot", frandom(5, -5), 1, 0, 0, FPF_NOAUTOAIM, frandom(5, -5))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        3MGF H 2 
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		3MGF I 2 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		3MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	AltFireEarth:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		4MGG A 4
+		4MGG ABC 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("EarthOrb",0, 1, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2.0, 0) + pitch)
+		4MGS A 4
+		4MGG BCD 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("EarthOrb",0, 1, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2.0, 0) + pitch)
+		4MGS A 4 
+		4MGG BCD 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("EarthOrb",0, 1, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2.0, 0) + pitch)
+		4MGS A 4
+		4MGG BCD 4
+        TNT1 A 0
+		Goto AltHold
+	AltHoldEarth:	
+        TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",4)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGS A 2 BRIGHT A_FireCustomMissile("EarthOrb",0, 1, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        4MGF BC 2
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2.0, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGS D 2 BRIGHT A_FireCustomMissile("EarthOrb",0, 1, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        4MGF EF 2
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2.0, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        4MGS G 2 BRIGHT A_FireCustomMissile("EarthOrb",0, 1, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        4MGF H 2 
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-2.0, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		4MGF I 2 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		4MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+	
+	AltFireDark:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		5MGG A 4
+		5MGG ABC 4
+		5MGG D 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("SuctionOrb", frandom(3, -3), 0, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		5MGG BCD 4
+		5MGS A 4 
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("SuctionOrb", frandom(3, -3), 0, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		5MGG BCD 4
+		5MGS A 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("SuctionOrb", frandom(3, -3), 0, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+        TNT1 A 0 A_Recoil(0.1)
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		5MGG BCD 4
+        TNT1 A 0
+		Goto AltHold
+	AltHoldDark:	
+        TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",4)
+		
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGS A 2 BRIGHT A_FireCustomMissile("SuctionOrb", frandom(3, -3), 0, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        5MGF BC 2
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGS D 2 BRIGHT A_FireCustomMissile("SuctionOrb", frandom(3, -3), 0, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        5MGF EF 2
+		TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+        5MGS G 2 BRIGHT A_FireCustomMissile("SuctionOrb", frandom(3, -3), 0, 0, 0, FPF_NOAUTOAIM, frandom(3, -3))
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",1)
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+		TNT1 A 0 A_Recoil(0.1)
+        5MGF H 2
+        TNT1 A 0 A_SetAngle(frandom(1.0, -1.0) + angle)
+		TNT1 A 0 A_SetPitch(frandom(-1.0, 0) + pitch)
+		
+        MNGG B 0 A_ReFire
+		5MGF I 2 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		5MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+		
+	AltFireLight:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",2)
+		
+		6MGG A 4
+		6MGG ABC 4
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("LightLaser", frandom(1, -1), 0, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+		6MGS A 2
+		6MGG BCD 2
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("LightLaser", frandom(1, -1), 0, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+		6MGS A 1 
+		6MGG BCD 1
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("LightLaser", frandom(1, -1), 0, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+		6MGS A 1
+		6MGG BCD 1
+        TNT1 A 0
+		Goto AltHold
+	AltHoldLight:
+		TNT1 A 0
+		TNT1 A 0 A_Takeinventory("AttunedMGMagicCost",3)
+		
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+		TNT1 A 0 A_FireCustomMissile("LightLaser", frandom(1, -1), 0, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        6MGF BC 1
+        TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+		TNT1 A 0 A_FireCustomMissile("LightLaser", frandom(1, -1), 0, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        6MGF EF 1
+		TNT1 A 0 A_TakeInventory("N_Clip",1)
+		TNT1 A 0 A_PlaySound("weapons/minigunfire", 1, .4)
+		TNT1 A 0 A_FireCustomMissile("YellowFlareSpawn",0,0,0,0)
+		TNT1 A 0 A_FireCustomMissile("LightLaser", frandom(1, -1), 0, 0, 0, FPF_NOAUTOAIM, frandom(1, -1))
+        TNT1 A 0 A_Firecustommissile("50CaseSpawn",0,0,-12,-18)
+        6MGF H 1 
+		
+		MNGG B 0 A_ReFire
+		6MGF I 2 A_WeaponReady
+        TNT1 A 0 A_PlaySound("CHAINSTO")
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG ABCD 1 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+		6MGG ABCD 2 A_FireCustomMissile("SmokeSpawner11",0,0,0,0)
+		TNT1 A 0 A_Refire
+		TNT1 A 0 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        goto Ready+13
+    DoKick: 
+	    TNT1 A 0
+		TNT1 A 0 A_Takeinventory("Zoomed",1)
+        TNT1 A 0 A_ZoomFactor(1.0)
+		TNT1 A 0 A_Takeinventory("ADSmode",1)
+		NULL A 0 A_JumpIf (momZ > 0, "AirKick")
+		NULL A 0 A_JumpIf (momZ < 0, "AirKick")
+		
+        TNT1 A 0 A_jumpifinventory("PowerStrength",1,"BerserkerKick")
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 SetPlayerProperty(0,1,0)
+		KICK BCD 1
+		RIFF A 0 A_FireCustomMissile("KickAttack", 0, 0, 0, -7)
+        KICK H 4
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		TNT1 A 0 SetPlayerProperty(0,0,0)
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+6
+    BerserkerKick:
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 SetPlayerProperty(0,1,0)
+		KICK ABCDEFG 1
+        RIFF A 0 A_FireCustomMissile("SuperKickAttack", 0, 0, 0, -7)
+        KICK H 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK IGFEDCBA 1 
+		TNT1 A 0 SetPlayerProperty(0,0,0)
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+6
+	
+	AirKick:
+	    TNT1 A 0 A_jumpifinventory("PowerStrength",1,"SuperAirKick")
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 A_Recoil (-6)
+		KICK JKLMN 1
+        RIFF A 0 A_FireCustomMissile("AirKickAttack", 0, 0, 0, -31)
+        KICK O 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK PQRST 2
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+13
+		
+	SuperAirKick:
+		TNT1 A 0 A_PlaySound("KICK")
+		TNT1 A 0 A_Recoil (-6)
+		KICK JKLMN 1
+        RIFF A 0 A_FireCustomMissile("SuperAirKickAttack", 0, 0, 0, -31)
+        KICK O 3
+		KICK A 0 A_Takeinventory("Kicking",1)
+		KICK PQRST 2
+		TNT1 A 0 A_JumpIfInventory("GoFatality", 1, "Steady")
+		Goto Ready+13
+    Taunt:
+        TNT1 A 5
+		FUCK A 2
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 0, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", -9, 0, -1, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("Taunter", 9, 0, -1, 0)
+        FUCK B 2 A_PlaySound("FUCK", 1)
+        FUCK C 2 A_AlertMonsters
+		FUCK D 15 A_Takeinventory("Taunting",1)
+        FUCK CBA 5
+        TNT1 A 5
+		Goto Ready
+	}
+}
+
+ACTOR MinigunBullet : PistolBullet
+{
+  Height 1
+  Radius 1
+  Speed 400
+  Damage (30)
+  DamageType Cutless
+  Scale .5
+  Translation "0:255=%[0,0,0]:[1.5,1.0,0.5]"
+  States
+  {
+  Spawn:
+	SCBL A 1 BRIGHT LIGHT ("FIRESHOT")
+	Loop
+  Death: Crash:
+	TNT1 A 0
+	TNT1 A 0 A_CustomMissile ("BulletPart", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+    NRXP A 3 Light ("FIRESHOTPUFF") A_PlaySound("custom/fireBreak", 2)
+    NRXP BCDEF 2 BRIGHT Light ("FIRESHOTPUFF")
+	Stop
+  }
+}
+
+actor BurningShot
+{
+  height 5
+  radius 5
+  damage (3)
+  speed 60
+  DamageType "Fire"
+  reactiontime 20
+  seesound "custom/fireThrow"
+  deathsound "custom/fireBreak"
+  PROJECTILE
+  +SEEKERMISSILE
+  +NODAMAGETHRUST
+  +PAINLESS 
+  Scale .7
+  states
+  {
+  Spawn:
+    FRSH AABB 1 Bright Light("HOMEFIREBALL") A_CustomMissile ("FireShotTrail", 0, 0, 0, 2 | 4, 0)
+    Loop
+  Death: Crash:
+	TNT1 AAA 0
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 A 0 A_PlaySound("custom/fireBreak", 2)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	NRXP A 3 BRIGHT Light ("FIRESHOTPUFF") A_Fire(30)
+    NRXP BC 2 BRIGHT Light ("FIRESHOTPUFF") A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	NRXP DEF 2 BRIGHT Light ("FIRESHOTPUFF") A_Fire(30)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	TNT1 AAAAA 1 BRIGHT A_Fire(30)
+	TNT1 A 0 A_Explode(2, 100, false, 0,100)
+	stop
+  XDeath:
+    TNT1 A 0
+	TNT1 A 0 A_SeekerMissile(90,90,1,255,0)
+	SLSH A 0 A_PlaySound("custom/fireBreak", 1, 1.0)
+	TNT1 A 0 A_ChangeFlag("MISSILE", FALSE)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", FALSE)
+	TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", FALSE)
+	TNT1 A 0 A_ChangeFlag("SOLID", FALSE)
+	Goto Death+11
+  }
+}
+
+actor FreezeShot
+{
+  height 5
+  radius 5
+  damage (20)
+  speed 60
+  DamageType "Ice"
+  reactiontime 20
+  seesound "custom/fireThrow"
+  deathsound "custom/fireBreak"
+  PROJECTILE
+  +NODAMAGETHRUST
+  Scale .7
+  Translation "0:255=%[0,0,0]:[1.0,2.0,2.0]"
+  states
+  {
+  Spawn:
+    FRSH AABB 1 Bright Light("HOMEFIREBALL") A_CustomMissile ("FreezeShotTrail", 0, 0, 0, 2 | 4, 0)
+    Loop
+  Death:
+	TNT1 AAA 0
+	EXPL A 0 A_CustomMissile ("IceBreakPart", 1, 0, random (0, 360), 2, random (0, 360))
+	EXPL A 0 A_CustomMissile ("IceBreakPart2", 1, 0, random (0, 360), 2, random (0, 360))
+	EXPL A 0 A_CustomMissile ("IceSpark", 1, 0, random (0, 360), 2, random (0, 360))
+	stop
+  }
+}
+
+actor ElectricalShot
+{
+  height 8
+  radius 8
+  damage (60)
+  speed 20
+  DamageType "Shock"
+  reactiontime 40
+  seesound "custom/fireThrow"
+  deathsound "custom/fireBreak"
+  PROJECTILE
+  +FORCEPAIN
+  BounceType Hexen
+	+BOUNCEONWALLS
+	+BOUNCEONFLOORS
+	+BOUNCEONCEILINGS
+	+CANBOUNCEWATER
+	BounceFactor 1
+	WallBounceFactor 1
+	BounceCount 10
+  Scale .7
+  Translation "0:255=%[0,0,0]:[2.0,2.0,1.0]"
+  states
+  {
+  Spawn:
+    FRSH AABB 1 Bright Light("HOMEFIREBALL") A_CustomMissile ("ShockShotTrail", 0, 0, 0, 2 | 4, 0)
+	TNT1 A 0 A_Countdown
+    Loop
+  Death:
+	TNT1 AAA 0
+	TNT1 A 0 A_CustomMissile ("ShockSpark2", random (0, 30), random (-30, 30), random (0, 360), 2 | 4, random (-40, 40))
+	TNT1 A 0 A_CustomMissile ("ShockBurst2", random (0, 30), random (-30, 30), random (0, 360), 2 | 4, random (-40, 40))
+	stop
+  }
+}
+
+
+ACTOR EarthOrb
+{
+  Radius 10
+  Height 10
+  Speed 60
+  Damage (30)
+  Projectile
+  DamageType "Earth"
+  reactiontime 20
+  Scale 0.8
+  +DONTGIB
+  +NOEXTREMEDEATH
+  SeeSound "custom/iceThrow"
+  DeathSound "custom/iceBreak"
+  Translation "0:255=%[0,0,0]:[1.0,0.5,0.0]"
+  States
+ {
+  Spawn:
+    ICEB A 0 Bright Light ("ICEBOUNCEBALL") A_Countdown
+    ICEB AA 2 Bright Light ("ICEBOUNCEBALL") 
+	ICEB BB 2 Bright Light ("ICEBOUNCEBALL") 
+	ICEB CC 2 Bright Light ("ICEBOUNCEBALL") 
+	ICEB DD 2 Bright Light ("ICEBOUNCEBALL")
+    Loop
+  XDeath:
+  Death:
+  Crash:
+	TNT1 A 0 A_CustomMissile ("EarthCrystal", 0, 0, 10, 2 | 4, random (0, 30))
+	TNT1 A 0 A_CustomMissile ("EarthCrystal", 0, 0, 0, 2 | 4, random (0, 30))
+	TNT1 A 0 A_CustomMissile ("EarthCrystal", 0, 0, -10, 2 | 4, random (0, 30))
+    Stop
+  }
+}
+
+ACTOR EarthCrystal
+{
+  Radius 5
+  Height 5
+  Speed 20
+  Damage (30)
+  Projectile
+  DamageType "Pistol"
+  -NOGRAVITY
+  Gravity 1
+  BounceType "Doom" 
+  BounceCount 99
+  WallBounceFactor 0.8
+  BounceFactor 0.8
+  Scale 0.4
+  +USEBOUNCESTATE
+  +DONTGIB
+  +NOEXTREMEDEATH
+  +THRUACTORS
+  +CANBOUNCEWATER
+  reactiontime 25
+  SeeSound "custom/iceThrow"
+  DeathSound "custom/iceBreak"
+  Obituary "$OB_MPPLASMARIFLE" // "%o was melted by %k's shotgun."
+  Translation "0:255=%[0,0,0]:[0.8,0.8,0.5]"
+  States
+ {
+  Spawn:
+	ICEB A 4 Bright Light ("ICEBOUNCEBALL")
+	TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+	Goto Continue
+  Continue:
+    ICEB ABCD 4 Bright Light ("ICEBOUNCEBALL") A_Countdown
+    Loop
+  Death:
+    ICPR ABCDEGH 2 Bright Light ("ICEBOUNCEBALL")
+    Stop
+  Bounce.Actor:
+	Goto Death
+  }
+}
+
+ACTOR SuctionOrb
+{
+  Radius 5
+  Height 5
+  Speed 20
+  Damage (0)
+  Projectile
+  DamageType "ExplosiveImpact"
+  -NOGRAVITY
+  Gravity 0.5
+  BounceType "Doom" 
+  BounceCount 99
+  WallBounceFactor 0.6
+  BounceFactor 0.6
+  Scale .2
+  RenderStyle "Translucent"
+  Alpha 0.8
+  +USEBOUNCESTATE
+  +THRUACTORS
+  +CANBOUNCEWATER
+  States
+ {
+  Spawn:
+	BLKH AABBCCDDEEFFGGHH 1 Bright A_RadiusThrust(-100, 120, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	Loop
+  Death:
+	BLKH AABBCCDDEEFFGGHH 1 Bright A_RadiusThrust(-100, 120, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.25)
+    BLKH AA 1 Bright A_RadiusThrust(-100, 130, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.30)
+    BLKH BB 1 Bright A_RadiusThrust(-100, 140, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.35)
+    BLKH CC 1 Bright A_RadiusThrust(-100, 150, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.40)
+    BLKH DD 1 Bright A_RadiusThrust(-100, 160, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.45)
+    BLKH EE 1 Bright A_RadiusThrust(-100, 180, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.50)
+    BLKH FF 1 Bright A_RadiusThrust(-100, 190, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.55)
+    BLKH GG 1 Bright A_RadiusThrust(-100, 200, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.60)
+    BLKH HH 1 Bright A_RadiusThrust(-100, 210, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.65)
+    BLKH AA 1 Bright A_RadiusThrust(-100, 220, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.70)
+    BLKH BB 1 Bright A_RadiusThrust(-100, 230, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.75)
+    BLKH CC 1 Bright A_RadiusThrust(-100, 240, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.80)
+    BLKH DD 1 Bright A_RadiusThrust(-100, 250, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.85)
+    BLKH EE 1 Bright A_RadiusThrust(-100, 260, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.90)
+    BLKH FF 1 Bright A_RadiusThrust(-100, 270, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.95)
+    BLKH GG 1 Bright A_RadiusThrust(-100, 280, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(1)
+    BLKH HH 1 Bright A_RadiusThrust(-100, 290, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	BLKH AABBCCDDEEFFGGHH 1 A_RadiusThrust(-100, 300, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect", 0, 0, 0, 2 | 4, 0)
+	SHOK A 0 bright A_Explode (50, 150, false)
+	BLKH A 2 A_SetScale(0.9)
+	BLKH B 2 A_SetScale(0.8)
+	BLKH C 2 A_SetScale(0.7)
+	BLKH D 2 A_SetScale(0.6)
+	BLKH E 2 A_SetScale(0.5)
+	BLKH F 2 A_SetScale(0.4)
+	BLKH G 2 A_SetScale(0.3)
+	BLKH H 2 A_SetScale(0.2)
+	BLKH A 2 A_SetScale(0.1)
+    Stop
+  }
+}
+
+ACTOR LightLaser : PistolBullet
+{
+  Height 3
+  Radius 3
+  Speed 120
+  Damage (15)
+  DamageType LightCutless
+  Scale 0.7
+  Translation "0:255=%[0,0,0]:[2,2,2]"
+  States
+  {
+  Spawn:
+	SCBL A 1 BRIGHT LIGHT ("FIRESHOT")
+	Loop
+  Death: Crash:
+	TNT1 A 0
+    NRXP A 2 Light ("FIRESHOTPUFF") A_PlaySound("custom/fireBreak", 2)
+    NRXP BCDEF 2 BRIGHT Light ("FIRESHOTPUFF")
+	Stop
+  }
+}

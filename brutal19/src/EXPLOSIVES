@@ -1,0 +1,89 @@
+//Everything that can explode and hurt people goes here.
+
+
+ACTOR CyberRocket: Rocket2
+{
+	Speed 30
+}
+
+Actor DragonBreath
+{
+	Projectile
+	+RANDOMIZE
++FORCEXYBILLBOARD
+-BLOODSPLATTER 
++BLOODLESSIMPACT
++RIPPER
+damage 0
+radius 1
+height 1
+speed 40
+renderstyle ADD
+alpha 0.9
+scale .15
+    DamageType Flames
+	SeeSound "fatso/attack"
+    Decal "BigScorch"
+states
+	{
+	Spawn:
+		TNT1 AAAAA 2 A_SpawnItem("SpawnedFlamers")
+		Stop
+Death:
+    Stop
+XDeath:
+TNT1 A 0
+Stop
+	}
+}
+
+ACTOR MarinesRocket: Rocket2
+{
+	DamageType FriendBullet
+}
+
+ACTOR MarineGrenade
+{
+	Radius 4
+	Height 4
+	Speed 20
+	Damage 20
+    +MISSILE
+    +BLOODSPLATTER
+	+EXTREMEDEATH
+	+DOOMBOUNCE
+	BounceFactor 0.5
+	Damagetype "FriendBullet"
+    Gravity 1.0
+    Decal "Scorch"
+    SeeSound "none"
+	DeathSound "Explosion"
+	Obituary "$OB_MPROCKET"
+	+EXTREMEDEATH
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52", 2, 0, random (70, 110), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		GRNP A 2 Bright A_SpawnItem("RedFlareSmall",0,0)
+		Loop
+		
+		
+		Death:
+        EXPL A 0 Radius_Quake (2, 16, 0, 15, 0)
+        TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+	    TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_SpawnItemEx ("RocketExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+        TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAAAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 1
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		TNT1 AAAAAAAAAAAAA 3 A_CustomMissile ("HeavyExplosionSmoke", 2, 0, random (0, 360), 2, random (0, 360))
+		Stop
+	}
+}

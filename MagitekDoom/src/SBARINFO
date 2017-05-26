@@ -1,0 +1,20 @@
+Statusbar fullscreen, forcescaled
+{
+	DrawImage "HUDBG", 0, 0;
+	drawbar "armfull", "armempt", Armor, vertical, 9, 50;
+	drawbar "hpmfull", "hpmempt", Health, vertical, 12, 50;
+	drawbar "mpmfull", "mpmempt", MagicAmmo, vertical, -25, 50;
+	drawnumber 3, MM2SFNTO, Red, Health, fillzeros, 24, 40;
+	drawnumber 2, MM2SFNTO, Blue, MagicAmmo, fillzeros, -12, 40;
+	drawnumber 3, MM2SFNTO, DarkGreen, Armor, alignment(center), whennotzero, -4, 65;
+	drawnumber 3, METHUDF, Untranslated, Ammo2, alignment(center), 313, 131;
+	drawnumber 3, METHUDF, Untranslated, Ammo1, alignment(center), 317, 144;
+}
+Statusbar normal
+{
+	drawnumber 3, HUDFONT_DOOM, Red, Health, alignment(center), whennotzero, 10, -260;
+	drawnumber 3, HUDFONT_DOOM, DarkGreen, Armor, alignment(center), whennotzero, 10, -235;
+	
+	drawnumber 3, HUDFONT_DOOM, Black, Ammo1, alignment(center), 310, -235;
+	drawnumber 3, HUDFONT_DOOM, White, Ammo2, alignment(center), 310, -260;
+}

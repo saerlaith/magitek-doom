@@ -1,0 +1,48 @@
+clearskills
+
+skill easy
+{
+   AmmoFactor = 1
+   DamageFactor = 1.0
+   SpawnFilter = easy
+   name = "Spell Cadet"
+   mustconfirm = "Monster Stats: Low Spawn Rate, Normal Monsters. Is this OK?"
+}
+
+skill normal
+{
+   AmmoFactor = 1
+   DamageFactor = 1.0
+   SpawnFilter = normal
+   name = "Magic Knight"
+   mustconfirm = "Monster Stats: Medium Spawn Rate, Normal Monsters. Is this OK?"
+}
+
+
+skill Hard
+{
+   AmmoFactor = 1
+   DamageFactor = 1.0
+   SpawnFilter = Hard
+   name = "Mana Marine"
+   mustconfirm = "Monster Stats: High Spawn Rate, Normal Monsters. Is this OK?"
+}
+
+skill Superbad
+{
+   AmmoFactor = 1
+   DamageFactor = 1.0
+   SpawnFilter = Nightmare
+   name = "Magitek Master"
+   mustconfirm = "Monster Stats: Max Spawn Rate, Normal Monsters. Is this OK?"
+}
+
+skill BlackMetal
+{
+   AmmoFactor = 2
+   DamageFactor = 1.5
+   FastMonsters
+   SpawnFilter = Nightmare
+   name = "Supernatural Being"
+   mustconfirm = "Monster Stats: Max Spawn Rate, +STR/+SPD Monsters. Double Ammo. Is this OK?"
+}
