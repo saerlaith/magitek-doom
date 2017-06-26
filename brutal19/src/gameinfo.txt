@@ -1,2 +1,0 @@
-STARTUPTITLE = "Magitek Doom by Tetraflora"
-STARTUPCOLORS = "FF0000", "000000"
