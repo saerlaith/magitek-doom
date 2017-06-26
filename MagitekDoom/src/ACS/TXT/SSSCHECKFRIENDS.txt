@@ -1,0 +1,8 @@
+#include "zcommon.acs"
+#library "CHECKFRIENDS"
+
+script 647 enter
+{
+    //ClearInventory();
+    GiveInventory("CheckMarines", 1);
+}

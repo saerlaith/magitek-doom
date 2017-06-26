@@ -1,0 +1,885 @@
+actor GenericBurningGuy
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+	+NOICEDEATH
+    Mass 1000
+    Health 100
+States    {
+    Spawn:
+       TNT1 A 0 BRIGHT
+       TNT1 A 0 A_Jump(128, "Spawn2")
+       TNT1 A 0 A_PlaySound("DSFDTHE")
+       BUR2 A 1 BRIGHT
+       BUR2 AABBCCDDEE 3 BRIGHT A_CustomMissile ("BurnParticles", 36, 0, random (0, 180), 2, random (0, 180))
+       BURN FFGGHH 3 BRIGHT A_CustomMissile ("BurnParticles", 36, 0, random (0, 180), 2, random (0, 180))
+       BURN IIJJKKLL 3 BRIGHT A_CustomMissile ("BurnParticles", 28, 0, random (0, 180), 2, random (0, 180))
+       BURN MMN 3 BRIGHT A_CustomMissile ("BurnParticles", 32, 0, random (0, 180), 2, random (0, 180))
+       BURN NOOPP 3 BRIGHT A_CustomMissile ("BurnParticles", 22, 0, random (0, 180), 2, random (0, 180))
+       BURN QQ 3 BRIGHT A_CustomMissile ("BurnParticles", 18, 0, random (0, 180), 2, random (0, 180))
+       TNT1 A 0 A_PlaySound("DSFDTHE")
+       BURN RRSSTTSSRRSSTTSSRRSSTTRRSSTTSSRRSSTTSSRRSSTTSSTT 3 BRIGHT A_CustomMissile ("SmallBurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+       BURN UU 3 BRIGHT A_CustomMissile ("BurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+	   TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+       BURN VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 9 A_CustomMissile ("PlasmaSmoke", 8, 0, random (0, 360), 2, random (90, 110))
+       BURN V -1
+
+
+    Spawn2:
+       TNT1 A 0 BRIGHT
+       TNT1 A 0 A_PlaySound("DSFDTHG")
+       TNT1 A 0 BRIGHT
+       BUR2 A 1 BRIGHT
+       BUR2 AABBCCDDEE 3 BRIGHT A_CustomMissile ("BurnParticles", 36, 0, random (0, 180), 2, random (0, 180))
+       BURN FFGGHH 3 BRIGHT A_CustomMissile ("BurnParticles", 36, 0, random (0, 180), 2, random (0, 180))
+       BURN IIJJKKLL 3 BRIGHT A_CustomMissile ("BurnParticles", 28, 0, random (0, 180), 2, random (0, 180))
+       BURN MMN 3 BRIGHT A_CustomMissile ("BurnParticles", 32, 0, random (0, 180), 2, random (0, 180))
+       BURN NOOPP 3 BRIGHT A_CustomMissile ("BurnParticles", 22, 0, random (0, 180), 2, random (0, 180))
+       BURN QQ 3 BRIGHT A_CustomMissile ("BurnParticles", 18, 0, random (0, 180), 2, random (0, 180))
+       TNT1 A 0 A_PlaySound("DSFDTHG")
+       BURN RRSSTTSSRRSSTTSSRRSSTTRRSSTTSSRRSSTTSSRRSSTTSSTT 3 BRIGHT A_CustomMissile ("SmallBurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+       BURN UU 3 BRIGHT A_CustomMissile ("BurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+	   TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+       BURN VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 9 A_CustomMissile ("PlasmaSmoke", 8, 0, random (0, 360), 2, random (90, 110))
+       BURN V -1
+       Stop}}
+
+
+ACTOR BurnParticles
+{
+    Radius 8
+    Height 8
+    Speed 5
+	Mass 6
+	BounceFactor 0.5
+	+DOOMBOUNCE
+    Speed 0
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +DONTSPLASH
+    +MOVEWITHSECTOR
+    +NODAMAGETHRUST
+    +NOCLIP
+    DamageType Laser
+	Translation "0:255=%[0,0,0]:[2.0,1.0,1.0]"
+    States
+    {
+	Spawn:
+		TNT1 A 0
+        XDT3 A 0 A_Explode(10,50, false, 50)
+		TTRB A 0 bright A_CustomMissile ("PlasmaSmoke", 0, 0, random (0, 360), 2, random (60, 130))
+		TTRB A 0 bright A_CustomMissile ("FlameTrails", 0, 0, random (0, 360), 2, random (60, 130))
+		stop
+    }
+}
+
+ACTOR SmallBurnParticles: BurnParticles
+{
+	DamageType Laser
+    States
+    {
+	Spawn:
+		TNT1 A 0
+        XDT3 A 0 A_Explode(2,30)
+		TTRB A 0 bright A_CustomMissile ("PlasmaSmoke", 0, 0, random (0, 360), 2, random (60, 130))
+		TTRB A 0 bright A_CustomMissile ("SmallFlameTrails", 0, 0, random (0, 360), 2, random (60, 130))
+		stop
+    }
+}
+
+
+
+
+actor BurningZombieOld
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+	damagefactor "Laser", 0.0
+    Mass 1000
+    Health 100
+	Scale 1.2
+States    {
+    Spawn:
+       TNT1 A 0 BRIGHT
+       TNT1 A 0 A_PlaySound("BURNZOM")
+       BUR2 A 1 BRIGHT
+       BUR2 ABCDE 6 BRIGHT A_CustomMissile ("BurnParticles", 36, 0, random (0, 180), 2, random (0, 180))
+       BURN FGH 6 BRIGHT A_CustomMissile ("BurnParticles", 36, 0, random (0, 180), 2, random (0, 180))
+       BURN IJKL 6 BRIGHT A_CustomMissile ("BurnParticles", 28, 0, random (0, 180), 2, random (0, 180))
+       BURN MN 6 BRIGHT A_CustomMissile ("BurnParticles", 32, 0, random (0, 180), 2, random (0, 180))
+       BURN OP 6 BRIGHT A_CustomMissile ("BurnParticles", 22, 0, random (0, 180), 2, random (0, 180))
+       BURN Q 6 BRIGHT A_CustomMissile ("BurnParticles", 18, 0, random (0, 180), 2, random (0, 180))
+       TNT1 A 0 A_PlaySound("BURNZOM")
+       BURN RSTSRTSRTRSTSRTSRTST 6 BRIGHT A_CustomMissile ("SmallBurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+       BURN U 6 BRIGHT A_CustomMissile ("BurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+	   BURN VVVVVVVVVVVVVVVVVVV 6 BRIGHT A_CustomMissile ("BurnParticles", 12, 0, random (0, 180), 2, random (0, 180))
+       BURN VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV 9 A_CustomMissile ("PlasmaSmoke", 8, 0, random (0, 360), 2, random (90, 110))
+       BURN V -1
+       Stop}}
+	   
+	   
+	   
+	   
+	   
+	   
+
+
+
+
+
+
+
+
+
+actor DesintegratedHuman
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    Mass 1000
+    Health 100
+	Scale 0.7
+States    {
+    Spawn:
+	   TNT1 AAAAAAA 0 A_CustomMissile ("XDeath1", 50, 0, random (0, 360), 2, random (0, 160))
+	   TNT1 AAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("BrainBlood", 50, 0, random (0, 360), 2, random (0, 160))
+       ID50 ABCDEF 7
+       ID50 GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG 13 A_CustomMissile ("PlasmaSmoke", 8, 0, random (0, 360), 2, random (90, 110))
+       ID50 G -1
+       Stop
+	  }}
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+actor BurningImp
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+	damagefactor "Laser", 0.0
+    Mass 1000
+    Health 100
+States    {
+    Spawn:
+		IZD4 C 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 D 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 C 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 D 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 C 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 D 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 C 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 D 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 C 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 D 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		IZD4 C 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("imp/pain")
+		TROO L 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		
+        
+		TNT1 A 0 A_Playsound("props/redfire")
+		BOSB FFFFFFFFFFFFFFFFFFFFF 6 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF 20 A_CustomMissile ("SmallSmoke", 25, 0, random (0, 360), 2, random (70, 110))
+        BOSB F -1
+		
+    Stop
+	}
+}
+
+actor BurningToxic
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+	damagefactor "Laser", 0.0
+    Mass 1000
+    Health 100
+States    {
+    Spawn:
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		BZGR H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		BZGR I 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("GSWMZombie/Pain")
+		
+		
+		BZGR IIII 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		
+        
+		TNT1 A 0 A_Playsound("props/redfire")
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 0 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		BOSB F 4 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        BOSB F 1 A_FadeOut(0.05)
+		
+    Stop
+	}
+}
+
+actor BurningSuccubus
+{   Radius 1
+    Height 1
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    Mass 1000
+    Health 100
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+	damagefactor "Laser", 0.0
+States    {
+    Spawn:
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/death", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/pain", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/death", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/pain", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/death", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/pain", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/death", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/pain", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/pain", 1, 0.5)
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Succubus/death", 1, 1)
+		SUCC H 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUCC A 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		SUCC H 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+
+		SUC1 BBCCGGHHIIKK 2 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		
+		SUC1 LLL 2 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		
+        
+		TNT1 A 0 A_Playsound("props/redfire")
+		SUC1 LLLLLLLLLLLLLLLLLLLLLLL 6 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        SUC1 LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL 20 A_CustomMissile ("SmallSmoke", 25, 0, random (0, 360), 2, random (70, 110))
+        SUC1 L -1
+		
+    Stop
+	}
+}
+
+actor BurningMissler
+{   Radius 1
+    Height .9
+	Scale 0.9
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+	damagefactor "Laser", 0.0
+    Mass 1000
+    Health 100
+States    {
+    Spawn:
+		MSLR S 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Missler/death", 1, 0.5)
+		MSLR S 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR S 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		MSLR S 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR T 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Missler/death", 1, 0.5)
+		MSLR T 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR U 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		MSLR U 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR V 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Missler/death", 1, 0.5)
+		MSLR V 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		
+		
+		MSLR U 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		MSLR U 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR T 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Missler/death", 1, 0.5)
+		MSLR T 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR U 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		MSLR U 6 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR V 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_PlaySound("Missler/death", 1, 0.5)
+		MSLR V 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR U 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		MSLR U 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+
+		MSLR V 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		MSLR V 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+		
+        
+		TNT1 A 0 A_Playsound("props/redfire")
+		MSLR WWWWWWWWWWWWWWWWWWWWWWWWW 6 A_CustomMissile ("FlameTrails", 15, 0, random (0, 360), 2, random (50, 130))
+        MSLR WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW 20 A_CustomMissile ("SmallSmoke", 25, 0, random (0, 360), 2, random (70, 110))
+        MSLR W -1
+		
+    Stop
+	}
+}
+
+
+actor BurningDemon
+{   Radius 22
+    Height 52
+    +NOTELEPORT
+	+SHOOTABLE
+    +MOVEWITHSECTOR
+	+SOLID
+	+NOBLOCKMONST
+	PainChance 0
+	Speed 15
+	damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Burn", 0.0
+	damagefactor "SSG", 5.0
+	damagefactor "Explosive", 5.0
+	damagefactor "ExplosiveImpact", 2.0
+	damagefactor "Laser", 0.0
+    Mass 1000
+    Health 100
+States    {
+    Spawn:
+		CRB7 M 3 A_Wander
+		TNT1 A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		CRB7 N 3 A_Wander
+		CRB7 O 3 A_Wander
+		TNT1 A 0 A_CustomMissile ("BurnParticles", 25, 0, random (0, 360), 2, random (50, 130))
+		CRB7 P 3 A_Wander
+		
+		TNT1 A 0 A_playsound ("demon/pain")
+		
+		TNT1 A 0 A_GiveInventory("DeathTimer1", 1)
+		TNT1 A 0 A_JumpIfInventory("DeathTimer1", 30, "GotoDeath")
+		Loop
+		
+	GotoDeath:
+	TNT1 A 0
+	Goto Death
+		
+		Death:
+		TNT1 A 0 A_SpawnItem ("BurnedDemon")
+		Stop
+	XDeath:
+	Death.SSG:
+	Death.Explosive:
+	TNT1 A 0 A_NOBlocking
+	TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedDemonArm", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedDemonLeg", 32, 0, random (0, 360), 2, random (0, 160))
+    TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat2", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AA 0 A_CustomMissile ("XDeathBurnedMeat3", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("MuchMeatDeath", 35, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+    Stop
+	}
+}
+
+
+
+Actor BurnedDemon
+{
+Radius 1
+Height 1
+States
+{
+Spawn:
+        CRB7 Q  2
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_playsound ("demon/death")
+        CRB7 Q 6 A_CustomMissile ("FlameTrails", 45, 0, random (0, 360), 2, random (50, 130))
+		CRB7 R 6 A_CustomMissile ("FlameTrails", 30, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_Playsound("props/redfire")
+		CARB JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 6 A_CustomMissile ("FlameTrails", 25, 0, random (0, 360), 2, random (50, 130))
+        CARB JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 20 A_CustomMissile ("SmallSmoke", 35, 0, random (0, 360), 2, random (70, 110))
+        CARB J -1
+        Stop
+}
+}
+
+
+
+
+
+
+
+
+
+ACTOR DyingZombiemanInFlames
+{
+    Radius 12
+    Height 30
+    Speed 5
+	Health 20
+	PainSound "grunt/pain"
+	DeathSound "grunt/death"
+	+SHOOTABLE
+    +FLOORCLIP
+	//+NOBLOCKMAP
+	+NOICEDEATH
+    +LOOKALLAROUND
+	+FRIGHTENED
+	-SOLID
+	damagefactor "Burn", 0.0
+	damagefactor "Fire", 0.0
+	damagefactor "Flames", 0.0
+	damagefactor "Laser", 0.0
+    States
+    {
+
+    Spawn:
+	TNT1 A 0
+	TNT1 A 0 A_Playsound("BurnZom")
+	ZMAB A 1 A_Look
+	Loop
+    See:
+		ZMAB A 5 A_Chase
+		TNT1 A 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        ZMAB A 5 A_Chase
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		
+		ZMAB B 5 A_Chase
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        ZMAB B 5 A_Chase
+		TNT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+
+	    TNT1 A 0 A_GiveInventory("DeathTimer1", 1)
+		TNT1 A 0 A_JumpIfInventory("DeathTimer1", 15, "GotoDeath")
+		Loop
+		
+	GotoDeath:
+	TNT1 A 0
+	Goto Death
+		Death:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_Pain
+		TNT1 A 0 A_SpawnItem ("DeadZombiemanMinorHead")
+		Stop
+    Crush:
+        TNT1 A 0 A_PlaySound("misc/xdeath4")
+        CRS2 A 5
+        CRS2 A -1
+        Stop
+	
+	Death.Stomp:
+	Death.SSG:
+	XDeath:
+	TNT1 AAAAAA 0 bright A_CustomMissile ("SuperGoreSpawner", 5, 0, random (0, 360), 2, random (30, 180))
+	TNT1 AAAAAA 0 bright A_CustomMissile ("XDeath1", 5, 0, random (0, 360), 2, random (30, 180))
+	TNT1 AA 0 bright A_CustomMissile ("XDeath2", 55, 0, random (0, 360), 2, random (30, 180))
+	TNT1 AA 0 bright A_CustomMissile ("XDeath3", 55, 0, random (0, 360), 2, random (30, 180))
+	TNT1 A 0 A_SpawnItem ("CrushedRemains")
+	TNT1 A 1
+	TNT1 A 0 ACS_Execute(477, 0, 0, 0, 0)
+	TNT1 A 1 A_XScream
+    TNT1 A 1 A_NoBlocking
+	TNT1 A -1
+	Stop
+	}
+}
+
+
+
+
+
+
+
+
+ACTOR BurningZombie
+{
+    Radius 12
+    Height 56
+    Speed 5
+    Scale 0.85
+	Health 100
+	GibHealth 25
+	damagefactor "Laser", 0.0
+	damagefactor "Burn", 0.5
+	damagefactor "Fire", 0.5
+	damagefactor "Flames", 0.5
+	damagefactor "Flame", 0.5
+	damagefactor "ExplosiveImpact", 10.0
+	MONSTER
+	-COUNTKILL
+	+NOICEDEATH
+	+FRIENDLY
+    +FLOORCLIP
+	+SHOOTABLE
+	+NOBLOCKMONST
+	+DONTSPLASH
+	Gravity 0.7
+	bloodtype "DeadBlood"
+    Obituary "%o was near someone in flames."
+	MaxDropOffHeight 6000
+   
+	Mass 999999
+    States
+    {
+    Spawn:
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_PlaySound("BURNZOM")
+		Goto Suffer
+	Suffer:
+        BDT1 AA 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BDT1 BB 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+		BDT1 CC 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BDT1 DD 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-2)
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 20, "Death")
+		TNT1 A 0 A_JumpIf(momz < 0, "Falling")
+		Loop
+	Falling:	
+	    BDT2 AA 1 Bright
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BDT2 BB 1 Bright
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		BDT2 CC 1 Bright
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+        BDT2 DD 1 Bright
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT1 B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_JumpIf(momz == 0, "fallDeath")
+		Loop
+	
+	Death.ExplosiveImpact:
+	TNT1 A 0
+	TNT1 A 0 ThrustThingZ(0,60,0,1)
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+	TNT1 A 0
+	Goto Looping
+	
+	Looping:	
+	    BDT3 AAAA 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        BDT3 BBBB 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		BDT3 CCCC 1 Bright A_JumpIf(momz == 0, "fallDeath")
+		BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        BDT3 DDDD 1 Bright A_JumpIf(momz == 0, "fallDeath")
+        BDT1 B 0 A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+		Loop	
+	
+	FallDeath:
+	    TNT1 AAAAAAAAAA 0 A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (20, 150))
+		TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("ExplosionParticleHeavy", 10, 0, random (0, 360), 2, random (20, 150))
+	    TNT1 AAAA 0 A_CustomMissile("XDeath1", 10, 0, random (0, 360), 2, random (20, 150))
+		TNT1 A 0 A_PlaySound("misc/xdeath")
+		Goto Death
+    Death:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		
+		TNT1 A 0 A_Jump(128, "Death2")
+        BDT1 EEFFGGHHiijjkkLLmm 3 Bright A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        NJEX AAAAAAAAAAAAAAAAAA 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		NJEX AAAAAAAAAAAAAAAAAA 10 Bright A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		NJEX A -1
+        Stop
+	Death2:
+	    BDT1 EEFFGGHHiijjkkLLmm 3 Bright A_CustomMissile("BurnParticles", 20, 0, random (0, 360), 2, random (50, 130))
+        NJEX BBBBBBBBBBBBBBBBBB 3 Bright A_CustomMissile("BurnParticles", 10, 0, random (0, 360), 2, random (50, 130))
+        TNT1 A 0 A_SpawnItem("100SmallFireFocusSpawnerz")
+		NJEX BBBBBBBBBBBBBBBBBB 10 Bright A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		NJEX B -1
+        Stop
+	XDEATH:
+	DEATH.SSG:
+	TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+	TNT1 A 0 A_ChangeFlag("SOLID", 0)
+	TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+	TNT1 A 0 A_PlaySound("misc/xdeath")
+	     TNT1 AA 0 A_CustomMissile ("XDeathBurnedArm", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 AA 0 A_CustomMissile ("XDeathBurnedLeg", 32, 0, random (0, 360), 2, random (0, 160))
+	    TNT1 A 0 A_CustomMissile ("XDeathBurnedSkull", 32, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_CustomMissile ("MuchMeatDeath", 35, 0, random (0, 360), 2, random (0, 160))
+	TNT1 AAAAA 0 A_CustomMissile ("BurningFlyingMeatPiece", 64, 0, random (0, 360), 2, random (0, 160))
+	TNT1 A 0 A_SpawnItem ("CrueltyBonus5Health")
+	Stop
+    }
+}
+
+
+Actor PoorGuyBurningLife : Inventory
+{
+inventory.maxamount 20
+}
+
+
+
+
+
+
+
+
+ACTOR BurningCacodemon
+{
+    Radius 12
+    Height 56
+    Speed 3
+    Scale 0.85
+	Health 100
+	GibHealth 25
+	+NOICEDEATH
+	damagefactor "Laser", 0.0
+	damagefactor "Burn", 0.5
+	damagefactor "Fire", 0.5
+	damagefactor "Flames", 0.5
+	damagefactor "Flame", 0.5
+	damagefactor "ExplosiveImpact", 10.0
+	bloodtype "Blue_Blood"
+  bloodcolor DarkBlue
+	MONSTER
+	-COUNTKILL
+	+FLOAT
+	+NOGRAVITY
+	+FRIENDLY
+    +FLOORCLIP
+	+SHOOTABLE
+	+NOBLOCKMONST
+	+DONTSPLASH
+	Gravity 1.0
+	bloodtype "DeadBlood"
+    Obituary "%o was near someone in flames."
+	Mass 100
+    States
+    {
+    Spawn:
+        TNT1 A 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		HEAD NN 1 Bright A_Chase("", "")
+		Goto Suffer
+	Suffer:
+        HEAD EEE 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-1)
+		HEAD EEE 1 Bright A_Wander
+		TNT1 A 0 A_Recoil(-1)
+        BDT1 B 0 A_CustomMissile("BurnParticles", 40, 0, random (0, 360), 2, random (50, 130))
+		HEAD B 0 A_CustomMissile("ExplosionParticleVerySlow", 40, 0, random (0, 360), 2, random (50, 130))
+		TNT1 A 0 A_JumpIfInventory("PoorGuyBurningLife", 20, "Death")
+		TNT1 A 0 A_GiveInventory("PoorGuyBurningLife", 1)
+		Loop
+
+    Death:
+	    TNT1 A 0 A_Fall
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+		HEAD P 1 A_SpawnItem("100SmallFireFocusSpawnerz")
+		TNT1 A 0 A_Playsound("props/redfire")
+		HEAD PPPPPPPPPPPP 16 A_CustomMissile("FireballExplosionFlamesBig", 15, 0, random (0, 360), 2, random (50, 130))
+		HEAD P 1 A_SpawnItem("100SmallFireFocusSpawnerz")
+		HEAD PPPPPPPPPPPPPPPPPPPPPPPP 6 A_CustomMissile("PlasmaSmoke", 15, 0, random (0, 360), 2, random (50, 130))
+		HEAD P -1
+        Stop
+    }
+}

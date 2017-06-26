@@ -176,6 +176,8 @@ ACTOR MagitekFireMarine 4304
 	damageFactor "KickHead", 0.0
 	damageFactor "Plasma2", 0.0
 	DamageFactor "Ice", 0
+	DamageFactor "Shock", 0
+	DamageFactor "ShockForce", 0
 	DamageFactor "Earth", 0
 	DamageFactor "Shrapnel", 0
 	damagefactor "CancelTeleportFog", 0.0
@@ -200,6 +202,7 @@ ACTOR MagitekFireMarine 4304
 	DamageFactor "Shock", 0
 	DamageFactor "BlueFlames", 0
 	DamageFactor "WeakHit", 0
+	DamageFactor "PlayerExplosive", 0
 	damagefactor "Teleport", 999.0
 	SeeSound "none"
 	PainSound "Ally/Hurt"
@@ -1246,7 +1249,7 @@ Actor MagitekMarineRocket
 	alpha 0.9
 	+EXTREMEDEATH
 	scale .15
-	DamageType "ExplosiveImpact"
+	DamageType "PlayerExplosive"
 	species "Marines"
 	+THRUSPECIES
 		states
@@ -1278,7 +1281,7 @@ Actor MagitekMarineRocket
 actor MarineRocketExplosion : MNEFFECT
 {
 Projectile
-DamageType "Laser"
+DamageType "PlayerExplosive"
 Speed 1
 Gravity 0
 BounceType "Doom" 

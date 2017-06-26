@@ -6,12 +6,12 @@
 
 ACTOR ToxicMan : MagitekMonsterBase
 {
-    Health 50
+    Health 200
     Radius 15
     Height 45
     Mass 100
     Speed 4
-    PainChance 200
+    PainChance 100
 	PainChance "Stun", 255
 	PainChance "Kick", 255
 	PainChance "Charm", 250
@@ -21,8 +21,6 @@ ACTOR ToxicMan : MagitekMonsterBase
 	damagefactor "KickHead", 5.0
     Monster
 	damagefactor "Avoid", 0.0
-	damagefactor "MinorHead", 5.0
-	damagefactor "Head", 5.0
 	damagefactor "Freeze", 0.0
     +FLOORCLIP
     -QUICKTORETALIATE
@@ -32,14 +30,18 @@ ACTOR ToxicMan : MagitekMonsterBase
     PainSound "GSWMZombie/Pain"
     DeathSound "GSWMZombie/Death"
     ActiveSound "imp/active"
-    HitObituary "%o got way too close to a Toxic Zombie."
+    HitObituary "%o got way too close to a Toxic Man."
     Obituary "%o's face got in contact with toxic waste"
 	MissileType GreenSwampBall
     States
     {
     Spawn:
-		TNT1 A 0 A_SpawnItem ("HeadshotTarget20", 5, 35,0)
-        BZGR AB 10 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 35,0)
+        BZGR A 10 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 35,0)
+        BZGR B 10 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
         Loop
     See:
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 32,0)
@@ -80,42 +82,42 @@ ACTOR ToxicMan : MagitekMonsterBase
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget8", 5, 35,0)
 		BZGR F 8 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
-        BZGR GGG 1 A_CustomMissile ("ToxicBallAttack", 15, 0, random (-10, 10), 8, random (0, 30))
+        BZGR GG 2 A_CustomMissile ("ToxicBallAttack", 35, 0, random (-10, 10), CMF_ABSOLUTEPITCH , random (10, 30))
 		
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR E 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR F 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
-        BZGR GGG 1 A_CustomMissile ("ToxicBallAttack", 15, 0, random (-10, 10), 8, random (0, 30))
+        BZGR GG 2 A_CustomMissile ("ToxicBallAttack", 35, 0, random (-10, 10), CMF_ABSOLUTEPITCH , random (10, 30))
 		
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR E 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR F 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
-        BZGR GGG 1 A_CustomMissile ("ToxicBallAttack", 15, 0, random (-10, 10), 8, random (0, 30))
+        BZGR GG 2 A_CustomMissile ("ToxicBallAttack", 35, 0, random (-10, 10), CMF_ABSOLUTEPITCH , random (10, 30))
 		
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR E 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR F 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
-        BZGR GGG 1 A_CustomMissile ("ToxicBallAttack", 15, 0, random (-10, 10), 8, random (0, 30))
+        BZGR GG 2 A_CustomMissile ("ToxicBallAttack", 35, 0, random (-10, 10), CMF_ABSOLUTEPITCH , random (10, 30))
 		
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR E 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR F 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
-        BZGR GGG 1 A_CustomMissile ("ToxicBallAttack", 15, 0, random (-10, 10), 8, random (0, 30))
+        BZGR GG 2 A_CustomMissile ("ToxicBallAttack", 35, 0, random (-10, 10), CMF_ABSOLUTEPITCH , random (10, 30))
 		
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR E 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
 		BZGR F 3 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 35,0)
-        BZGR GGG 1 A_CustomMissile ("ToxicBallAttack", 15, 0, random (-10, 10), 8, random (0, 30))
+        BZGR GG 2 A_CustomMissile ("ToxicBallAttack", 35, 0, random (-10, 10), CMF_ABSOLUTEPITCH , random (10, 30))
 		
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget8", 5, 35,0)
 		BZGR G 8
@@ -234,10 +236,8 @@ ACTOR ToxicMan : MagitekMonsterBase
 		TNT1 A 0 A_CustomMissile ("XDeathToxicHead", 50, 0, random (0, 360), 2, random (0, 160))
 		BZGR UUU 5 A_CustomMissile ("YellowMuchBlood", 40, 0, random (0, 360), 2, random (0, 160))
 		BZGR VV 5 A_CustomMissile ("YellowMuchBlood", 30, 0, random (0, 360), 2, random (0, 160))
-		TNT1 AA 0 A_CustomMissile ("SuperWallYellowBlood", 46, 0, random (170, 190), 2, random (0, 40))
-		TNT1 A 0 A_CustomMissile ("YellowMuchBlood", 30, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_CustomMissile ("SuperWallYellowBlood", 46, 0, random (170, 190), 2, random (0, 40))
 		BZGR W 5 A_NoBlocking 
-		TNT1 A 0 A_CustomMissile ("YellowMuchBlood", 30, 0, random (0, 360), 2, random (0, 160))
 		TNT1 A 0 A_SpawnItem ("YellowBigBloodSpot")
 		BZGR X 5 A_NoBlocking 
         BZGR MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM 1 A_FadeOut(0.05)
@@ -249,11 +249,10 @@ ACTOR ToxicMan : MagitekMonsterBase
         TNT1 AA 0 A_CustomMissile ("YellowMuchBlood", 35, 0, random (0, 360), 2, random (0, 160))
 		TNT1 A 0 A_FaceTarget
 		TNT1 A 0 A_Recoil(5)
-		BZGR YYYYYYYY 2 A_CustomMissile ("YellowMuchBlood", 30, 0, random (0, 360), 2, random (0, 160))
+		BZGR YYYY 4 A_CustomMissile ("YellowMuchBlood", 30, 0, random (0, 360), 2, random (0, 160))
 		TNT1 AA 0 A_CustomMissile ("ToxicCloud", 40, 0, random (0, 360), 2 | 4, random (-50, 50))
 		TNT1 AA 0 A_CustomMissile ("ToxicCloud2", 40, 0, random (0, 360), 2 | 4, random (-50, 50))
 		TNT1 A 0 A_Scream
-		TNT1 A 0 A_CustomMissile ("YellowMuchBlood", 30, 0, random (0, 360), 2, random (0, 160))
 		TNT1 AA 0 A_CustomMissile ("YellowXDeath1", 40, 0, random (0, 360), 2, random (0, 160))
 		TNT1 AA 0 A_CustomMissile ("YellowXDeath2", 40, 0, random (0, 360), 2, random (0, 160))
 		TNT1 AA 0 A_CustomMissile ("YellowXDeath3", 40, 0, random (0, 360), 2, random (0, 160))
@@ -333,8 +332,7 @@ ACTOR ToxicMan : MagitekMonsterBase
 		TNT1 AAA 0 A_CustomMissile ("YellowXDeath1", 40, 0, random (0, 360), 2, random (0, 160))
 		TNT1 AA 0 A_CustomMissile ("YellowXDeath2", 40, 0, random (0, 360), 2, random (0, 160))
 		TNT1 AA 0 A_CustomMissile ("YellowXDeath3", 40, 0, random (0, 360), 2, random (0, 160))
-		TNT1 AA 0 A_CustomMissile ("SuperWallRedBlood", 46, 0, random (170, 190), 2, random (0, 40))
-		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("BrainBlood", 50, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AA 0 A_CustomMissile ("YellowMuchBlood", 50, 0, random (0, 360), 2, random (0, 160))
 		TNT1 A 0 A_CustomMissile ("XDeathToxicLeg", 32, 0, random (0, 360), 2, random (0, 160))
 		TNT1 A 0 A_CustomMissile ("XDeathToxicArm", 62, 0, random (0, 360), 2, random (0, 160))
 		TNT1 A 0 A_Scream
@@ -344,7 +342,7 @@ ACTOR ToxicMan : MagitekMonsterBase
 		TNT1 A 0 A_SpawnItem ("DeadToxic_NoLeg")
 		Stop
 	Dead.Landmine:
-		TNT1 AAAA 0 A_SpawnItem ("Blood")
+		TNT1 AAAA 0 A_SpawnItem ("YellowBigBloodSpot")
 		TNT1 A 0 A_SpawnItem ("Ploft")
 		TNT1 A 0 A_SpawnItem ("DeadToxic_NoLeg")
 		Stop
@@ -683,23 +681,23 @@ ACTOR ToxicBallAttack
 {
 	Radius 5
 	Height 5
-	Speed 5
-	Damage (5)
-	DamageType "Toxic"
+	Speed 20
+	Damage (10)
 	Projectile
 	+RANDOMIZE
 	RenderStyle "Add"
 	Alpha 0.8
 	Scale 1
-	reactiontime 6
+	-NOGRAVITY
+	Gravity 1
 	SeeSound "imp/attack"
 	DeathSound "GSWMZombie/ProjDeath"
 	+THRUSPECIES
+	+THRUGHOST
 	States
 	{
 	Spawn:
 		BZGB AB 4 BRIGHT
-		TNT1 A 0 A_Countdown
 		loop
 	Death:
 		BZGB CDE 6 BRIGHT
@@ -713,7 +711,6 @@ ACTOR ToxicBite
 	Height 18
 	Projectile 
 	+RANDOMIZE
-	DamageType Toxic
     Damage (40)
 	+FORCEXYBILLBOARD
     +THRUGHOST

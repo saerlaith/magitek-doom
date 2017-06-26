@@ -9,7 +9,7 @@ ACTOR RockGolem : MagitekMonsterBase
     Health 500
     Radius 25
     Height 50
-    Mass 500
+    Mass 300
     Speed 10
 	damagefactor "Avoid", 0.0
 	damagefactor "MINORHEAD", 1.0
@@ -52,12 +52,14 @@ ACTOR RockGolem : MagitekMonsterBase
 		TNT1 A 0 A_ChangeFlag("NOPAIN", 0)
         Goto Looking
 	Looking:
-		TNT1 A 0 A_SpawnItem ("HeadshotTarget20", 5, 50,0)
-        MUMM B 18 A_Look
+		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 50,0)
+        MUMM B 8 A_Look
 		MUMM C 2 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget10", 5, 50,0)
 		MUMM C 2 A_Look
 		MUMM DA 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
         Loop
     See:
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget4", 5, 50,0)
@@ -91,6 +93,7 @@ ACTOR RockGolem : MagitekMonsterBase
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget8", 5, 50,0)
 		MUMM E 8 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget8", 5, 50,0)
+		TNT1 A 0 A_PlaySound("weapons/gswing")
         MUMM F 8 A_CustomMissile ("GolemPunch", 30, 0, random (0, 0), 8, random (0, 0))
 		TNT1 A 0 A_SpawnItem ("HeadshotTarget8", 5, 50,0)
 		MUMM G 8
@@ -168,6 +171,13 @@ ACTOR RockGolem : MagitekMonsterBase
         MUMM KLMNO 4 A_NoBlocking
         MUMM P -1
         Stop
+	Death.Ice: Death.IceHead: 
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("FrozenGolem")
+		Stop
     }
 }
 
@@ -777,6 +787,7 @@ ACTOR GolemPunch
 		TNT1 A 2 BRIGHT
 		Stop
 	Death:
+		TNT1 A 0 A_PlaySound("RockGolem/Attack")
 		TNT1 A 0 BRIGHT
 		Stop
 	}

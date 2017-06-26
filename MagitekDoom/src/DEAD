@@ -1,0 +1,259 @@
+actor VeryDeadMarine: DeadMarine Replaces DeadMarine
+{
+
+}
+
+actor VeryVeryDeadMarine: GibbedMarine Replaces GibbedMarine
+{
+
+}
+
+actor VeryVeryDeadMarine2 : VeryVeryDeadMarine Replaces GibbedMarineExtra
+{
+
+}
+
+actor CurbstompedMarine
+{
+
+}
+
+actor RappedMarine: CurbstompedMarine
+{
+
+}
+
+actor AteMarine: CurbstompedMarine
+{
+
+}
+
+
+actor FuckedMarine: CurbstompedMarine
+{
+
+}
+
+
+actor DeadRippedOffMarine: CurbstompedMarine
+{
+
+}
+
+
+actor VeryDeadCivilian: CurbstompedMarine
+{
+
+}
+
+
+actor MarineGotOwnedByImp: CurbstompedMarine
+{
+
+}
+	   
+actor ADoomedSpaceMarine: CurbstompedMarine
+{
+
+}
+	   
+actor ADoomedSpaceMarine2: CurbstompedMarine
+{
+
+}
+
+actor DeadHalfMarine: CurbstompedMarine
+{
+
+}
+
+actor GibsZ
+{
+
+}
+
+// Dead on a stick ---------------
+
+ACTOR DeadDeadStick: DeadStick Replaces DeadStick
+{
+
+}
+
+// Still alive on a stick --------------------------------------------------
+
+ACTOR DeadLiveStick: LiveStick Replaces LiveStick
+{
+
+}
+
+ACTOR DeadBloodyTwitch: BloodyTwitch Replaces BloodyTwitch
+{
+
+}
+
+ACTOR DeadBloodyTwitchB: DeadBloodyTwitch
+{
+
+}
+
+ACTOR DeadBloodyTwitchC: DeadBloodyTwitchB
+{
+
+}
+
+
+
+// Meat 3 ------------------------------------------------------------------
+
+ACTOR HangingDeadGuyNoLeg: Meat3 Replaces Meat3
+{
+
+}
+ACTOR HangingLeg: DeadBloodyTwitchB Replaces Meat5
+{
+
+}
+
+ACTOR Meat3C: DeadBloodyTwitchB
+{
+
+}
+
+ACTOR NSHangingDeadGuyNoLeg : HangingDeadGuyNoLeg Replaces NonsolidMeat3
+{
+	Game Doom
+
+}
+
+ACTOR NSHangingLeg : HangingLeg Replaces NonsolidMeat5
+{
+	Game Doom
+
+}
+
+// Nonsolid bloody twitch --------------------------------------------------
+
+ACTOR DeadNonsolidTwitch : DeadBloodyTwitch Replaces NonsolidTwitch
+{
+	Game Doom
+
+}
+
+// Hanging with no guts ----------------------------------------------------
+
+ACTOR DeadHangNoGuts: HangNoGuts Replaces HangNoGuts
+{
+
+}
+
+// Hanging from bottom with no brain ---------------------------------------
+
+ACTOR DeadHangBNoBrain: HangBNoBrain Replaces HangBNoBrain
+{
+
+}
+
+// Hanging from top, looking down ------------------------------------------
+
+ACTOR DeadHangTLookingDown: HangTLookingDown Replaces HangTLookingDown
+{
+
+}
+
+// Hanging from top, looking up --------------------------------------------
+
+ACTOR DeadHangTLookingUp: HangTLookingUp Replaces HangTLookingUp
+{
+
+}
+
+// Hanging from top, skully ------------------------------------------------
+
+ACTOR DeadHangTSkull: HangTSkull replaces HangTSkull
+{
+
+}
+
+// Hanging from top without a brain ----------------------------------------
+
+ACTOR DeadHangTNoBrain: HangTNoBrain Replaces HangTNoBrain
+{
+
+}
+
+ACTOR DyingComando
+{
+
+}
+
+
+ACTOR DyingRevenant
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+ACTOR ColonGibs2 Replaces ColonGibs
+{
+
+}
+
+
+
+ACTOR SmallBloodPool2 Replaces SmallBloodPool
+{
+
+}
+
+// brain stem lying on the ground ------------------------------------------
+
+ACTOR BrainStem2 Replaces BrainStem
+{
+
+}
+
+ACTOR RealGibs2 Replaces RealGibs
+{
+
+}
+
+ACTOR Gibs2 : RealGibs2 Replaces Gibs
+{
+
+}
+
+actor VeryFuckedUpRevenant: CurbstompedMarine
+{
+
+}
+	   
+actor MarineFatalizedByRevenant: CurbstompedMarine
+{
+
+}
+	   
+	   
+actor CrushedRemains: CurbstompedMarine
+{
+
+}
+	   
+	   
+actor PlayerJustGotCutInHalf: CurbstompedMarine
+{
+
+}
+	   
+	   
+actor DeadNazi: CurbstompedMarine
+{
+
+}

@@ -1172,19 +1172,29 @@ Actor FireShotTrail : MNEFFECT
 Actor FreezeShotTrail : FireShotTrail
 {
   Translation "0:255=%[0,0,0]:[1.0,2.0,2.0]"
+  States
+ {
+  Spawn:
+	TNT1 A 0
+    Goto Death
+  Death:
+	FRSH AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 BRIGHT A_FadeOut(0.06)
+    Stop
+  }
 }
 
 Actor ShockShotTrail : FireShotTrail
 {
-  Translation "0:255=%[0,0,0]:[2.0,2.0,1.0]"
-  Scale .7
+  Alpha 0.7
+  Scale .3
+  Speed 2
     States
  {
   Spawn:
 	TNT1 A 0
     Goto Death
   Death:
-	FRSH AAAAAAAAAAAAAAAAAAAAAAAAA 1 BRIGHT A_FadeOut(0.06)
+	ELCF AAABBBCCCDDDEEEFFFAAABBBCCCDDDEEEFFFAAABBBCCCDDDEEEFFF 1 BRIGHT A_FadeOut(0.06)
     Stop
   }
 }
@@ -1203,6 +1213,43 @@ Actor ShadowArrowTrail : MNEFFECT
     Goto Death
   Death:
 	FX12 AABBAABBAABBAABBAABBAABBAABBAABBAABBAABBAABBAABBAABBAABB 1 BRIGHT A_FadeOut(0.02)
+    Stop
+  }
+}
+
+Actor FirePlasmaTrail : FireShotTrail
+{
+  Alpha 0.9
+  Scale .3
+  Speed 0
+    States
+ {
+  Spawn:
+	TNT1 A 0
+    Goto Death
+  Death:
+	FBAL CCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.1)
+    Stop
+  }
+}
+
+Actor FirePlasmaTrailBig : FirePlasmaTrail
+{
+  Scale .8
+}
+
+Actor IcePlasmaTrail : FireShotTrail
+{
+  Alpha 0.9
+  Scale .5
+  Speed 0
+    States
+ {
+  Spawn:
+	TNT1 A 0
+    Goto Death
+  Death:
+	FRST AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 BRIGHT A_FadeOut(0.05)
     Stop
   }
 }
@@ -1240,12 +1287,42 @@ Actor CanonBoomBig : CanonBoomSmall
   Scale 1
 }
 
+Actor CanonBoomFire : CanonBoomSmall
+{
+  Translation "0:255=%[0.3,0.0,0.0]:[1.0,0.0,0.0]"
+  Scale 1.2
+}
+
+Actor CanonBoomIce : CanonBoomSmall
+{
+  Translation "0:255=%[0,0,0]:[1.0,2.0,2.0]"
+  Scale 1.2
+}
+
+Actor CanonBoomShock : CanonBoomSmall
+{
+  Translation "0:255=%[0,0,0]:[2.0,2.0,1.0]"
+  Scale .6
+}
+
+Actor CanonBoomEarth : CanonBoomSmall
+{
+  Translation "0:255=%[0,0,0]:[1.0,0.7,0.1]"
+  Scale .3
+}
+
+Actor CanonBoomLight : CanonBoomSmall
+{
+  Translation "0:255=%[0,0,0]:[2.0,2.0,2.0]"
+  Scale .3
+}
+
 Actor CanonBoomPart : MNEFFECT
 {
   Speed 0
   Gravity 0
-  Alpha 0.8
-  Scale 0.5
+  Alpha 1
+  Scale 0.1
   States
  {
   Spawn:
@@ -1253,19 +1330,125 @@ Actor CanonBoomPart : MNEFFECT
 	TNT1 A 0 A_Jump (255, "SizeA", "SizeB", "SizeC", "SizeD")
     Goto Death
   SizeA:
-	TNT1 A 0 A_SetScale(0.4)
-	Goto Death
-  SizeB:
 	TNT1 A 0 A_SetScale(0.3)
 	Goto Death
-  SizeC:
+  SizeB:
 	TNT1 A 0 A_SetScale(0.2)
 	Goto Death
-  SizeD:
+  SizeC:
 	TNT1 A 0 A_SetScale(0.1)
+	Goto Death
+  SizeD:
+	TNT1 A 0 A_SetScale(0.05)
     Goto Death
   Death:
-	SBCE AAAABBBBCCCCDDDDEEEEFFFF 2 BRIGHT A_FadeOut(0.05)
+	SBCE AAAABBBBCCCCDDDDEEEE 2 BRIGHT A_FadeOut(0.04)
+	SBCE FFFFFFFFFFFFFFFFFFFF 2 BRIGHT A_FadeOut(0.04)
+    Stop
+  }
+}
+
+Actor WraithClothPart : MNEFFECT
+{
+  Speed 1
+  Damage 0
+  +MISSILE
+  Gravity .02
+  BounceType "Hexen" 
+  RenderStyle "Normal"
+  BounceFactor 0
+  Scale 1
+  +USEBOUNCESTATE
+  +THRUACTORS
+  States
+ {
+  Spawn:
+	WRTC AABCCB 4
+    Loop
+  Bounce.Floor:
+	TNT1 A 0
+	Goto Death
+  Death:
+	WRTC D 50
+	WRTC DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD 1 A_FadeOut(0.01)
+    Stop
+  }
+}
+
+Actor SnowflakeEffectA : MNEFFECT
+{
+  Speed 0
+  Gravity 0
+  Alpha 0.8
+  Scale 0.05
+  States
+ {
+  Spawn:
+	TNT1 A 0
+    Goto Death
+  Death:
+	SNWF A 2 BRIGHT A_SetScale(0.05)
+	SNWF A 2 BRIGHT A_SetScale(0.10)
+	SNWF A 2 BRIGHT A_SetScale(0.15)
+	SNWF A 2 BRIGHT A_SetScale(0.20)
+	SNWF A 2 BRIGHT A_SetScale(0.25)
+	SNWF A 2 BRIGHT A_SetScale(0.30)
+	SNWF A 2 BRIGHT A_SetScale(0.35)
+	SNWF A 2 BRIGHT A_SetScale(0.40)
+	SNWF A 2 BRIGHT A_SetScale(0.45)
+	SNWF A 2 BRIGHT A_SetScale(0.50)
+	SNWF A 2 BRIGHT A_SetScale(0.55)
+	SNWF A 2 BRIGHT A_SetScale(0.60)
+	SNWF A 2 BRIGHT A_SetScale(0.65)
+	SNWF A 2 BRIGHT A_SetScale(0.70)
+	SNWF A 2 BRIGHT A_SetScale(0.75)
+	SNWF A 20 BRIGHT A_SetScale(0.80)
+	SNWF A 1 BRIGHT A_SetScale(0.75)
+	SNWF A 1 BRIGHT A_SetScale(0.70)
+	SNWF A 1 BRIGHT A_SetScale(0.65)
+	SNWF A 1 BRIGHT A_SetScale(0.60)
+	SNWF A 1 BRIGHT A_SetScale(0.55)
+	SNWF A 1 BRIGHT A_SetScale(0.50)
+	SNWF A 1 BRIGHT A_SetScale(0.45)
+	SNWF A 1 BRIGHT A_SetScale(0.40)
+	SNWF A 1 BRIGHT A_SetScale(0.35)
+	SNWF A 1 BRIGHT A_SetScale(0.30)
+	SNWF A 1 BRIGHT A_SetScale(0.25)
+	SNWF A 1 BRIGHT A_SetScale(0.20)
+	SNWF A 1 BRIGHT A_SetScale(0.15)
+	SNWF A 1 BRIGHT A_SetScale(0.10)
+	SNWF A 1 BRIGHT A_SetScale(0.05)
+    Stop
+  }
+}
+
+Actor SnowflakeEffectB : MNEFFECT
+{
+  Speed 0
+  Gravity 0
+  Alpha 0.6
+  Scale 0.05
+  States
+ {
+  Spawn:
+	TNT1 A 0
+    Goto Death
+  Death:
+	SNWF A 2 BRIGHT A_SetScale(0.05)
+	SNWF A 2 BRIGHT A_SetScale(0.10)
+	SNWF A 2 BRIGHT A_SetScale(0.15)
+	SNWF A 2 BRIGHT A_SetScale(0.20)
+	SNWF A 2 BRIGHT A_SetScale(0.25)
+	SNWF A 2 BRIGHT A_SetScale(0.30)
+	SNWF A 2 BRIGHT A_SetScale(0.35)
+	SNWF A 40 BRIGHT A_SetScale(0.40)
+	SNWF A 1 BRIGHT A_SetScale(0.35)
+	SNWF A 1 BRIGHT A_SetScale(0.30)
+	SNWF A 1 BRIGHT A_SetScale(0.25)
+	SNWF A 1 BRIGHT A_SetScale(0.20)
+	SNWF A 1 BRIGHT A_SetScale(0.15)
+	SNWF A 1 BRIGHT A_SetScale(0.10)
+	SNWF A 1 BRIGHT A_SetScale(0.05)
     Stop
   }
 }
@@ -2021,6 +2204,19 @@ ACTOR ShadowFireTrail: FlameTrails
 	}
 }
 
+ACTOR SuccubusFireTrail: FlameTrails
+{
+    Scale 1
+	Translation "0:255=%[0.1,0.0,0.1]:[0.9,0.2,0.4]"
+	States
+	{
+    Spawn:
+        FIR1 ABC 2 BRIGHT
+        FIR2 ABCDEF 2 BRIGHT
+        Stop
+	}
+}
+
 ACTOR LightFireTrail: ShadowFireTrail
 {
     Scale 0.2
@@ -2050,6 +2246,7 @@ ACTOR LightFlare: ShadowFlare
     Scale 0.2
 	Translation "0:255=%[0,0,0]:[1.5,1.5,1.5]"
 }
+
 
 ACTOR ShadowExplosionFlames: FlameTrails
 {
@@ -2128,7 +2325,6 @@ ACTOR ScatterTrail: FlameTrails
 
 ACTOR PlasmaBallTrail: MNEFFECT
 {
-    Scale 1
 	Speed 0
 	Gravity 0
 	BounceType "Doom" 
@@ -2139,6 +2335,19 @@ ACTOR PlasmaBallTrail: MNEFFECT
 	{
     Spawn:
         PBAL CCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
+        Stop
+	}
+}
+
+ACTOR ShockPlasmaTrail: PlasmaBallTrail
+{
+	Alpha 0.1
+	Scale 0.7
+	Translation "0:255=%[0,0,0]:[2,2,0]"
+	States
+	{
+    Spawn:
+        PBAL CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.005)
         Stop
 	}
 }
@@ -2299,6 +2508,12 @@ Actor DarkSpark : BurningPartF
 
 Actor DarkSpark2 : DarkSpark
 {
+  Speed 3
+  Scale 1.2
+}
+
+Actor DarkSpark3 : DarkSpark
+{
   Speed 1
   Scale .9
 }
@@ -2313,8 +2528,8 @@ Actor OnFireEffect : MNEFFECT
  {
   Spawn:
 	TNT1 A 0 A_JumpIf(waterlevel > 1, "Death")
-	FIR1 ABCDEFGHI 2 BRIGHT
-    Goto Death
+	FIR1 ABCDEFGHI 2 BRIGHT LIGHT ("IMPBALL")
+    Goto Death 
   Death:
 	TNT1 A 0
     Stop
@@ -2970,6 +3185,44 @@ Actor CanonTrail : DarkHomingTrail
   }
 }
 
+Actor FireCanonTrail : CanonTrail
+{
+Translation "0:255=%[0.3,0.0,0.0]:[1.0,0.0,0.0]"
+}
+
+Actor IceCanonTrail : CanonTrail
+{
+Translation "0:255=%[0,0.2,0.2]:[1.0,2.0,2.0]"
+}
+
+Actor ShockCanonTrail : CanonTrail
+{
+Translation "0:255=%[0,0,0]:[2.0,2.0,1.0]"
+}
+
+Actor EarthCanonTrail : CanonTrail
+{
+Translation "0:255=%[0,0,0]:[1.0,0.7,0.1]"
+}
+
+Actor LightCanonTrail : CanonTrail
+{
+Scale 4
+Translation "0:255=%[0,0,0]:[2.0,2.0,1.0]"
+}
+
+Actor SlicerTrail : CanonTrail
+{
+Scale 1.5
+Translation "0:255=%[0,0,0]:[2.0,2.0,2.0]"
+States
+ {
+  Spawn:
+	LSRS AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1 BRIGHT A_FadeOut(0.06)
+    Goto Death
+  }
+}
+
 Actor MagnetTrail : MNEFFECT
 {
   Translation "0:255=%[0,0,0]:[1.5,0.5,1.5]"
@@ -3312,7 +3565,7 @@ Actor GargoyleCloud : MNEFFECT
   Speed 3
   Gravity 0
   Alpha 0.9
-  Scale 2
+  Scale 2.5
   Translation "0:255=%[0,0,0]:[0.2,0.0,0.6]"
   States
  {
@@ -3329,7 +3582,7 @@ Actor GargoyleCloud2 : GargoyleCloud
 {
   renderstyle Normal
   Speed 2
-  Scale .5
+  Scale 0.75
   States
  {
   Spawn:
@@ -3345,7 +3598,7 @@ Actor GargoyleCloud3 : GargoyleCloud
 {
   renderstyle Normal
   Speed 1
-  Scale 1
+  Scale 1.5
   States
  {
   Spawn:
@@ -3410,15 +3663,15 @@ Actor GargoyleCloudGen2 : MNEFFECT
  States
  {
   Spawn:
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud2", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud3", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud2", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud3", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud2", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
-	TNT1 A 1 A_CustomMissile ("GargoyleCloud3", random (10, 40), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud", random (20, 20), random (-10, 10), 180, 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud2", random (-20, 20), random (-10, 10), 0, 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud3", random (-20, 20), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud", random (-20, 20), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud2", random (-20, 20), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud3", random (-20, 20), random (-10, 10), 0, 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud", random (20, 20), random (-10, 10), 0, 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud2", random (20, 20), random (-10, 10), 180, 2 | 4, random (-50, 50))
+	TNT1 A 1 A_CustomMissile ("GargoyleCloud3", random (-20, 20), random (-10, 10), random (0, 360), 2 | 4, random (-50, 50))
 	Goto Death
   Death:
 	TNT1 A 0

@@ -360,7 +360,7 @@ ACTOR ManaCannons : MagicBaseSystem
 		TNT1 AAA 0
 		TNT1 A 0 A_PlaySound("Magic/FireShot", 1, .7)
 		TNT1 AAAAA 0 A_FireCustomMissile("FlameShotgunEffect2", random(-20, 20), 0, 0, 5, FPF_NOAUTOAIM, random(-20, 20))
-        MGFS A 0 A_FireCustomMissile("ManaFireball", 0, 0, 0, 5, FPF_NOAUTOAIM, 0)
+        MGFS A 0 A_FireCustomMissile("ManaFireball", 0, 0, 0, 5, FPF_NOAUTOAIM, 10)
 		MGFS A 2 BRIGHT
 		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
 		TNT1 A 0 A_AlertMonsters(1500)
@@ -444,7 +444,7 @@ ACTOR ManaCannons : MagicBaseSystem
 		
 	EarthGunsSpecial:
 		TNT1 A 0
-		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",3,2)
+		TNT1 A 0 A_JumpIfInventory("ManaGunsAmmo",5,2)
 		Goto NoAmmo
 		TNT1 AAA 0
 		TNT1 A 0 A_JumpIfInventory("AkimboToggle",1,"EarthGunsSpecialLeft")
@@ -452,13 +452,13 @@ ACTOR ManaCannons : MagicBaseSystem
 		MAGR A 0 A_PlaySound("Magic/Earth1", 0, 1)
 		MAGR A 0 A_PlaySound("ManaGuns/EarthShot", 1, 1)
 		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
-        MGES A 2 BRIGHT A_FireCustomMissile("RockShot", random(-1,1), 0, -1, 0, FPF_NOAUTOAIM, random(3,6))
-		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",3)
+        MGES A 4 BRIGHT A_FireCustomMissile("RockShot", 0, 0, -1, 0, FPF_NOAUTOAIM, -20)
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
 		TNT1 A 0 A_AlertMonsters(1500)
 		TNT1 A 0 A_SetAngle(frandom(1.5, -1.5) + angle)
 		TNT1 A 0 A_SetPitch(frandom(-2, -4) + pitch)
-		MGES A 2
-		MGES B 8
+		MGES A 4
+		MGES B 12
 		MGES BBBB 1 A_Refire
 		Goto Ready+11
 	EarthGunsSpecialLeft:
@@ -466,13 +466,13 @@ ACTOR ManaCannons : MagicBaseSystem
 		MAGR A 0 A_PlaySound("Magic/Earth1", 0, 1)
 		MAGR A 0 A_PlaySound("ManaGuns/EarthShot", 1, 1)
 		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterMidChance")
-        MGES C 2 BRIGHT A_FireCustomMissile("RockShot", random(-1,1), 0, -1, 0, FPF_NOAUTOAIM, random(3,6))
-		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",3)
+        MGES C 4 BRIGHT A_FireCustomMissile("RockShot", random(-1,1), 0, -1, 0, FPF_NOAUTOAIM, -20)
+		TNT1 A 0 A_Takeinventory("ManaGunsAmmo",5)
 		TNT1 A 0 A_AlertMonsters(1500)
 		TNT1 A 0 A_SetAngle(frandom(1.5, -1.5) + angle)
 		TNT1 A 0 A_SetPitch(frandom(-2, -4) + pitch)
-		MGES C 2
-		MGES D 8
+		MGES C 4
+		MGES D 12
 		MGES DDDD 1 A_Refire
 		Goto Ready+11
 	
@@ -711,9 +711,13 @@ ACTOR MagicShot : FastProjectile
   Scale .5
   alpha 0.6
   +NOTIMEFREEZE
+  +NOEXTREMEDEATH
   species "Marines"
   +THRUSPECIES
   Translation "0:255=%[0,0,0]:[1.0,0.5,1.0]"
+  species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
   States
   {
   Spawn:
@@ -737,6 +741,9 @@ ACTOR MGBlast : FastProjectile
   Damagetype Kick
   SeeSound "Rocket/MiniShoot"
   Obituary "$OB_MPROCKET" // "%o rode %k's rocket."
+  species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
   +NOEXTREMEDEATH
   States
 	{
@@ -815,7 +822,7 @@ ACTOR ManaFireball
 	DamageType Fire
 	Radius 8
 	Height 8
-	Speed 30
+	Speed 20
 	Damage (0)
 	PROJECTILE
     +THRUGHOST
@@ -826,28 +833,39 @@ ACTOR ManaFireball
 	Decal "Scorch"
 	Scale 1.6
 	+THRUSPECIES
+	BounceType "Hexen"
+	BounceFactor 0.9
+	WallBounceFactor 1
+	-NOGRAVITY
+	Gravity 1
 	+SEEKERMISSILE
+	species "Marines"
+	+THRUSPECIES
+	+DONTHURTSPECIES
+	+CANBOUNCEWATER
+	reactiontime 40
 	States
 	{
 	Spawn:
 	    TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater")
 		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails", 0, random( -2, 2))
-		FR7X A 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		FR7X A 1 BRIGHT LIGHT ("IMPBALL") A_SpawnItem("FireballFlare",0,0)
 		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails")
-		FR7X B 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		FR7X B 1 LIGHT ("IMPBALL") BRIGHT A_SpawnItem("FireballFlare",0,0)
 		TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
 		
 		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails", 0, random( -2, 2))
-		FR7X A 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		FR7X A 1 LIGHT ("IMPBALL") BRIGHT A_SpawnItem("FireballFlare",0,0)
 		TNT1 A 0 A_SpawnItem ("CoolAndNewFlameTrails")
-		FR7X B 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		FR7X B 1 LIGHT ("IMPBALL") BRIGHT A_SpawnItem("FireballFlare",0,0)
 		TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52", 2, 0, random (70, 110), 2, random (0, 360))
+		TNT1 A 0 A_Countdown
 		Loop
 		
 	SpawnUnderwater:
-		FR7X A 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		FR7X A 1 LIGHT ("IMPBALL") BRIGHT A_SpawnItem("FireballFlare",0,0)
 		TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
-		FR7X B 1 BRIGHT A_SpawnItem("FireballFlare",0,0)
+		FR7X B 1 LIGHT ("IMPBALL") BRIGHT A_SpawnItem("FireballFlare",0,0)
 		TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
 		Goto Spawn
 		
@@ -858,7 +876,7 @@ ACTOR ManaFireball
 	TNT1 A 0 A_SpawnItemEx ("SmallUnderwaterExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
 	EXPL AAAAAA 0 A_CustomMissile ("FireBallExplosionFlames", 1, 0, random (0, 360), 2, random (0, 360))
 	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
-	TNT1 A 0 A_Explode(50, 100, false, 0,100)
+	TNT1 A 0 A_Explode(100, 100, false, 0,100)
 	TNT1 A 0 A_PlaySound("custom/fireBreak", 2)
 	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
 	TNT1 AAAAA 1 BRIGHT A_Fire(30)
@@ -938,10 +956,6 @@ ACTOR ManaFireball
 	TNT1 AAAAA 1 BRIGHT A_Fire(30)
 	TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
 	TNT1 A 0 A_Explode(5, 100, false, 0,100)
-	TNT1 AAAAA 1 BRIGHT A_Fire(30)
-	TNT1 A 0 A_Explode(5, 100, false, 0,100)
-	TNT1 AAAAA 1 BRIGHT A_Fire(30)
-	TNT1 A 0 A_Explode(5, 100, false, 0,100)
 	stop
   XDeath:
     TNT1 A 0
@@ -963,6 +977,9 @@ ACTOR MGIceShot : FastProjectile
   Damage (0)
   Scale 1
   DamageType "Ice"
+  species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
   States
 	{
 	Spawn:
@@ -990,12 +1007,13 @@ ACTOR ShockRocket
 	PROJECTILE
 	+SEEKERMISSILE
 	MaxTargetRange 64
-	+FORCEPAIN
 	RenderStyle "Add"
 	Scale 0.5
 	Alpha 0.7
-    damagetype "ExplosiveImpact"
+    damagetype "ShockExplosive"
 	+NODAMAGETHRUST
+	species "Marines"
++THRUSPECIES
 	States
 	{
 	Spawn:
@@ -1061,67 +1079,68 @@ ACTOR RockShot
 {
     Radius 10
 	Height 10
-	Speed 45
-	Scale 0.8
+	Speed 0
+	Scale 0.5
 	Damage (0)
 	DamageType Kick
 	Projectile
-	BounceType "Doom" 
-    BounceFactor 0.8
-	BounceCount 9
+	BounceType "Hexen" 
+    BounceFactor 0.1
+	WallBounceFactor 0
 	-NOGRAVITY
 	+CANBOUNCEWATER
+	Gravity 10
+	reactiontime 4
+	species "Marines"
+	+THRUACTORS
+	+STEPMISSILE
 	+USEBOUNCESTATE
-	+BOUNCEONACTORS
-	Gravity 0.5
-	reactiontime 50
+	MaxStepHeight 25
 	States
 	{
 	Spawn:
-		RKSH ABCD 3 
-		TNT1 A 0 A_Countdown
+		TNT1 A 0 A_Recoil(-15)
+		MSTN A 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN A 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN B 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN B 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN C 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN C 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN D 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN D 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN E 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN E 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN D 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN D 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN C 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN C 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN B 1 A_Explode (40, 30, false, 0, 30) 
+		TNT1 A 0 A_Recoil(-15)
+		MSTN B 1 A_Explode (40, 30, false, 0, 30) 
 		Loop
-	Bounce.Actor.Creature:
-		TNT1 A 0 A_JumpIfInventory("ChargeAmmo",2,"BounceNormal")
-		TNT1 A 0 A_GiveInventory("ChargeAmmo",1)
-		TNT1 A 0 A_ChangeFlag("MISSILE", 0)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 0)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 0)
-		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 1)
-		TNT1 A 0 A_ScaleVelocity(0.01)
-		EXPL A 0 A_Explode (40, 40, false, 0, 40)
-		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
-		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
-		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
-		RKSH C 4 
-		TNT1 A 0 A_ScaleVelocity(-100)
-		TNT1 A 0 A_ChangeFlag("MISSILE", 1)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 1)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 1)
-		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
-		Goto Spawn
-	BounceNormal:
-		TNT1 A 0 A_ChangeFlag("MISSILE", 0)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 0)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 0)
-		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 1)
-		TNT1 A 0 A_ScaleVelocity(0.01)
-		EXPL A 0 A_Explode (40, 40, false, 0, 40)
-		TNT1 A 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
-		TNT1 A 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
-		TNT1 A 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
-		RKSH A 4 
-		TNT1 A 0 A_ScaleVelocity(100)
-		TNT1 A 0 A_ChangeFlag("MISSILE", 1)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", 1)
-		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", 1)
-		TNT1 A 0 A_ChangeFlag("NOGRAVITY", 0)
+	Bounce.Wall:
+		TNT1 A 0 A_Countdown
+		ESTN A 1 A_Explode (40, 30, false, 0, 30) 
 		Goto Spawn
 	Death:
-		RKSH A 50
 		TNT1 AAAA 0 A_CustomMissile ("RockBreakPart", 10, 0, random (0, 360), 2 | 4, random (30, 90))
 		TNT1 AAAA 0 A_CustomMissile ("RockBreakPart2", 10, 0, random (0, 360), 2 | 4, random (30, 90))
 		TNT1 AAAA 0 A_CustomMissile ("RockBreakPart3", 10, 0, random (0, 360), 2 | 4, random (30, 90))
+		ESTN EFGH 2
 		Stop
   }
 }
@@ -1141,6 +1160,9 @@ actor DarkBeam
 	-ACTIVATEIMPACT
 	-ACTIVATEPCROSS
 	+NODAMAGETHRUST
+	species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
 	Translation "0:255=%[0.1,0.0,0.1]:[0.3,0.2,0.9]"
 	states
 	{
@@ -1220,6 +1242,9 @@ ACTOR LightGunShot : FastProjectile
   alpha 0.6
   +NOTIMEFREEZE
   Translation "0:255=%[0.1,0.0,0.1]:[2.0,1.0,2.0]"
+  species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
   States
   {
   Spawn:
@@ -1304,6 +1329,9 @@ ACTOR LightWisp
 	DeathSound "imp/shotx"
 	Decal "Scorch"
 	Scale .3
+	species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
 	Translation "0:255=%[0.5,0.5,0.5]:[2.0,2.0,2.0]"
 	States
 	{

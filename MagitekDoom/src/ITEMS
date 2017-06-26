@@ -13,17 +13,18 @@ ACTOR N_HealthBonus: HealthBonus Replaces HealthBonus
 	States
 	{
 	Spawn:
-		GRHL AAA 2 BRIGHT
+		GRHL AAA 2 BRIGHT LIGHT ("LIFEGREEN")
 		Loop
 	}
 }
 
-ACTOR N_ArmorBonus : ArmorBonus Replaces ArmorBonus 
+ACTOR N_ArmorBonus : ArmorShard Replaces ArmorBonus 
 {
 	Inventory.Amount 1
 	Inventory.PickupMessage "+1 Armor"
 	Scale 1.4
 	Armor.MaxSaveAmount 500
+	Inventory.Icon "ARM6A0"
 	States
 	{
 	Spawn:
@@ -249,9 +250,9 @@ ACTOR N_CellBox : N_Cell Replaces CellPack
 
 ACTOR DroppedArmor : CustomInventory
 {
-  Inventory.PickupMessage "+25 Armor"
-  Radius 30
-  Height 16
+  Inventory.PickupMessage "+30 Armor"
+  Radius 25
+  Height 10
   Scale .5
   +NOTELEPORT
   +DROPOFF
@@ -278,7 +279,26 @@ ACTOR DroppedArmor : CustomInventory
       TNT1 A 0 BRIGHT
       stop
   Pickup:
-    TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 1 A_GiveInventory("N_ArmorBonus",1)
+    TNT1 AAAAAAAAAAAAAAA 1 A_GiveInventory("N_ArmorBonus",1)
+    Stop
+  }
+}
+
+ACTOR DroppedMenu : DroppedArmor
+{
+  Bouncefactor 0.7
+  Radius 60
+  Speed 0
+  -THRUACTORS
+  Inventory.PickupMessage ""
+  Inventory.PickupSound ""
+  States
+  {
+  Spawn:
+	TNT1 A 20
+	Loop
+  Pickup:
+    TNT1 A 1 A_GiveInventory("OpenMagitekMenu",1)
     Stop
   }
 }
@@ -313,9 +333,9 @@ ACTOR DroppedHealth : DroppedArmor
   States
   {
   Spawn:
-    GRHL AAAAAAA 2 BRIGHT
-	GRHL A 2 BRIGHT A_ChangeFlag("THRUACTORS",0)
-	GRHL AAAAAAA 2 BRIGHT	
+    GRHL AAAAAAA 2 BRIGHT LIGHT ("LIFEGREEN")
+	GRHL A 2 BRIGHT LIGHT ("LIFEGREEN") A_ChangeFlag("THRUACTORS",0)
+	GRHL AAAAAAA 2 BRIGHT LIGHT ("LIFEGREEN")	
     Loop
   Pickup:
     TNT1 AA 1 A_GiveInventory("HealthBonus",1)
@@ -366,8 +386,8 @@ ACTOR DroppedMagic : DroppedArmor
   States
   {
   Spawn:
-    MAGP ABCD 4 BRIGHT
-	MAGP ABCD 4 BRIGHT A_ChangeFlag("THRUACTORS",0)
+    MAGP ABCD 4 BRIGHT LIGHT ("MANABLUE")
+	MAGP ABCD 4 BRIGHT LIGHT ("MANABLUE") A_ChangeFlag("THRUACTORS",0)
     Loop
   Pickup:
     TNT1 A 1 A_GiveInventory("MagicAmmo",1)
@@ -595,9 +615,13 @@ ACTOR MagitekChestSpawn
 	{
 	Spawn:
         TNT1 A 0
+		TNT1 A 0 A_Jump(50, "NoSpawn")
 		TNT1 A 0 A_Jump(8, "ChestSpawn")
 		TNT1 A 1 A_CustomMissile("MagitekChest",20,0,0,2,random(45,80))
 		TNT1 AAAAA 0
+		Stop
+	NoSpawn:
+		TNT1 A 0
 		Stop
 	ChestSpawn:
 		TNT1 A 0
@@ -606,35 +630,42 @@ ACTOR MagitekChestSpawn
 	}
 }
 
-ACTOR MagitekChest
+ACTOR MagitekChest : SwitchableDecoration
 {
-   Height 12
+   Height 20
    Radius 30
    Speed 2
    Scale 1
-   +DOOMBOUNCE
-   - NOGRAVITY
-   +WINDTHRUST
-   +CLIENTSIDEONLY
+   +HEXENBOUNCE
+   -NOGRAVITY
    +MOVEWITHSECTOR
    +MISSILE
-   +NOBLOCKMAP
    -DROPOFF
    +NOTELEPORT
    +FORCEXYBILLBOARD
    +NOTDMATCH
    +GHOST
    +CANBOUNCEWATER
+   +THRUACTORS
    Mass 1000
+   +dontthrust 
+   +usespecial
    Gravity 0.5
    BounceFactor 0.5
+   activation thingspec_switch
    States
 	{
   Spawn:
 	CHST E 5 BRIGHT
     Loop
+  Active:
+  Inactive:
+	TNT1 A 0
+	TNT1 A 0 A_ChangeFlag("USESPECIAL", 0)
+	TNT1 A 0 A_Jump(255, "Death")
+	Goto Death
   Death:
-	CHST E 30
+	TNT1 A 0 
 	TNT1 A 0 A_PlaySound("General/OpenChest")
 	CHST F 30 A_CustomMissile("RandomItemChest",15,0,0,2,random(45,80))
 	CHST FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF 1 BRIGHT A_FadeOut(0.05)
@@ -651,7 +682,7 @@ ACTOR RandomItemChest
 	{
 	Spawn:
         TNT1 A 0
-		TNT1 A 0 A_Jump(255, "Medikit", "DroppedArmor", "HealthBonus", "MagicAmmo", "ClipBox", "ShellBox", "CellBox", "RocketBox", "Money")
+		TNT1 A 0 A_Jump(255, "Medikit", "DroppedArmor", "HealthBonus", "MagicAmmo", "ClipBox", "ShellBox", "CellBox", "RocketBox", "SpecialItems", "SpecialItems")
 	Medikit:
 		TNT1 A 0
 		TNT1 AA 2 A_CustomMissile("DroppedMedikit",5,0,random(0,360),2,random(45,80))
@@ -689,11 +720,39 @@ ACTOR RandomItemChest
 		TNT1 AAAAAA 2 A_CustomMissile("MagitekDollar",5,0,0,2,random(45,80))
 		TNT1 AAAAAAAAAAAA 2 A_CustomMissile("MagitekCoin",5,0,random(0,360),2,random(45,80))
 		stop
+	PowerUp:
+		TNT1 A 0
+		TNT1 A 2 A_CustomMissile("DemonStrengthRune",15,0,0,2,random(45,80))
+		stop
 	SpecialItems:
 		TNT1 A 0
-		TNT1 A 0 A_Jump(180, "DoubleDefense", "DoubleDamage", "FullMap", "Radioactive", "Frightener")
-		TNT1 A 0 A_Jump(180, "Haste", "ShieldArmor", "Berserk", "Marine")
-		TNT1 A 0 A_Jump(255, "Invunlerability")
+		TNT1 A 0 A_Jump(180, "GreenArmor", "FullMap", "Marine", "PowerUp")
+		TNT1 A 0 A_Jump(180, "BlueArmor", "ShieldArmor", "Berserk", "Soulsphere")
+		TNT1 A 0 A_Jump(255, "Invunlerability", "Megasphere")
+		stop
+	SpecialItemsOld:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(180, "DoubleDefense", "DoubleDamage", "Radioactive", "Frightener", "Haste")
+		stop
+	GreenArmor:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("LightArmor", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	BlueArmor:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("BlueArmor", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Soulsphere:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("Soulsphere", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	Megasphere:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("Megasphere", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
+		stop
+	NightVision:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("NightVision", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
 		stop
 	DoubleDefense:
 		TNT1 A 0
@@ -751,7 +810,7 @@ ACTOR MagitekSmallChest : MagitekChest
 	CHST A 5 BRIGHT
     Loop
   Death:
-	CHST A 30
+	TNT1 A 0 
 	TNT1 A 0 A_PlaySound("General/OpenChest")
 	CHST B 30 A_CustomMissile("RandomItemChestSmall",5,0,0,2,random(45,80))
 	CHST BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB 1 BRIGHT A_FadeOut(0.05)
@@ -768,7 +827,7 @@ ACTOR RandomItemChestSmall
 	{
 	Spawn:
         TNT1 A 0
-		TNT1 A 0 A_Jump(255, "Medikit", "DroppedArmor", "HealthBonus", "MagicAmmo", "Clip", "Shell", "Cell", "Rocket", "Money")
+		TNT1 A 0 A_Jump(255, "Medikit", "DroppedArmor", "HealthBonus", "MagicAmmo", "Clip", "Shell", "Cell", "Rocket", "PowerUp")
 		Stop
 	Medikit:
 		TNT1 A 0
@@ -807,19 +866,23 @@ ACTOR RandomItemChestSmall
 		TNT1 A 2 A_CustomMissile("MagitekDollar",15,0,0,2,random(45,80))
 		TNT1 AAAAAAAAAA 2 A_CustomMissile("MagitekCoin",15,0,0,2,random(45,80))
 		stop
+	PowerUp:
+		TNT1 A 0
+		TNT1 A 2 A_CustomMissile("DemonStrengthRune",15,0,0,2,random(45,80))
+		stop
 	}
 }
 
 ACTOR MagitekBossChest : MagitekChest
 {
-   Scale 2
+   Scale 1.5
    States
 	{
   Spawn:
 	CHST G 5 BRIGHT
     Loop
   Death:
-	CHST G 60
+	TNT1 A 0 
 	TNT1 A 0 A_PlaySound("General/OpenChest")
 	CHST H 10 A_CustomMissile("RandomItemChest",35,0,0,2,random(45,80))
 	CHST H 10 A_CustomMissile("RandomItemChest",35,-20,0,2,random(45,80))
@@ -874,7 +937,7 @@ ACTOR ItemBagHealthBonus_
   Spawn:
 	TNT1 A 0
 	TNT1 A 0 A_Jump(8, "ChestSpawn")
-	TNT1 A 0 A_Jump(75, "NoSpawn")
+	TNT1 A 0 A_Jump(150, "NoSpawn")
 	TNT1 AAAAA 0
     Goto Continue
   Continue:
@@ -914,7 +977,7 @@ ACTOR ItemBagStimpack_ : ItemBagHealthBonus_
   Death:
 	CHST C 5
 	TNT1 A 0 A_PlaySound("General/OpenBag")
-	CHST CC 15 A_CustomMissile("DroppedStimpack",25,0,0,2,random(45,80))
+	CHST C 15 A_CustomMissile("DroppedStimpack",25,0,0,2,random(45,80))
 	CHST CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC 1 BRIGHT A_FadeOut(0.05)
     Stop
   }
@@ -1167,78 +1230,55 @@ ACTOR ItemBagCell_ : ItemBagHealthBonus_
 //
 // --------------------------------------------------------------------------
 
-ACTOR BlurSphere2: BlurSphere Replaces BlurSphere
+ACTOR ChestReplacer: BlurSphere Replaces BlurSphere
 {
 -COUNTITEM
 	States
 	{
 	Spawn:
-		PINS A 2 Bright
-		TNT1 A 1
-		TNT1 A 0 A_Jump (255, "ShieldArmor", "HastePower", "DefensePower", "DamagePower", "RegenPower", "FreezePower", "ScarePower", "LightAmp", "Berserk", "Invunlerable", "Radiation", "Map")
-		Stop
-	ShieldArmor:
-		TNT1 A 0 A_SpawnItemEx ("ShieldArmor", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	HastePower:
-		TNT1 A 0 A_SpawnItemEx ("HastePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	DefensePower:
-		TNT1 A 0 A_SpawnItemEx ("DefensePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	DamagePower:
-		TNT1 A 0 A_SpawnItemEx ("DamagePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	RegenPower:
-		TNT1 A 0 A_SpawnItemEx ("RegenPower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	FreezePower:
-		TNT1 A 0 A_SpawnItemEx ("FreezePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	ScarePower:
-		TNT1 A 0 A_SpawnItemEx ("ScarePower", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	LightAmp:
-		TNT1 A 0 A_SpawnItemEx ("Infrared", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	Berserk:
-		TNT1 A 0 A_SpawnItemEx ("Berserk", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	Invunlerable:
-		TNT1 A 0 A_SpawnItemEx ("InvulnerabilitySphere ", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	Radiation:
-		TNT1 A 0 A_SpawnItemEx ("RadSuit", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
-	Map:
-		TNT1 A 0 A_SpawnItemEx ("Allmap ", 0, 0, 5, 0, 0, 0, 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEVELOCITY)
-		Stop
+		TNT1 A 2 Bright
+		TNT1 A 0 A_Jump(8, "ChestSpawn")
+		TNT1 A 1 A_CustomMissile("MagitekChest",5,0,0,2,random(45,80))
+		stop
+	ChestSpawn:
+		TNT1 A 0
+		TNT1 A 1 A_CustomMissile("MagitekBossChest",5,0,0,2,random(45,80))
+		stop
 	}
 }
 
-ACTOR ShieldArmor : BasicArmorPickup Replaces Chainsaw
+ACTOR ChestReplacer2 : ChestReplacer Replaces Chainsaw { }
+ACTOR ChestReplacer3 : ChestReplacer Replaces PlasmaRifle { }
+ACTOR ChestReplacer4 : ChestReplacer Replaces BFG9000 { }
+ACTOR ChestReplacer5 : ChestReplacer Replaces RocketLauncher { }
+ACTOR ChestReplacer6 : ChestReplacer Replaces SuperShotgun { }
+
+
+ACTOR ShieldArmor : BasicArmorPickup
 {
   Radius 20
   Height 16
   Inventory.PickupMessage "Picked up Shield Armor!"
-  Inventory.Icon "ARM2A0"
+  Inventory.Icon "ARM5A0"
   Armor.SavePercent 99
   Armor.SaveAmount 150
   Translation "0:255=%[0,0,0]:[1.5,0.5,0.5]"
+  Scale 1.3
+  Inventory.PickupSound "ARMOR"
   States
   {
   Spawn:
 	TNT1 A 0
-	TNT1 A 0 A_Jump (125, "Continue")
+	TNT1 A 0 A_Jump (200, "Continue")
 	Stop
   Continue:
     ARM2 A 6
-    ARM2 B 6 Bright
+    ARM2 BBB 2 Bright A_SpawnItem("RedFlareMedium",0,10)
     Loop
   }
 }
 
-ACTOR DefensePower : PowerupGiver Replaces PlasmaRifle
+ACTOR DefensePower : PowerupGiver
 {
   Inventory.PickupMessage "Half Damage!!"
   Powerup.Color Grey4 0.25
@@ -1269,7 +1309,7 @@ ACTOR PowerHalfDamage : PowerProtection
   Inventory.Icon "MEGAA0"
 }
 
-actor DamagePower : PowerupGiver Replaces BFG9000
+actor DamagePower : PowerupGiver
 {
  inventory.pickupmessage "Double Damage!!"
  inventory.maxamount 0
@@ -1336,7 +1376,7 @@ Actor RunSpeedPower2 : RunSpeedPower
   }
 }
 
-Actor FreezePower : PowerupGiver Replaces RocketLauncher
+Actor FreezePower : PowerupGiver
 {
   Inventory.Pickupmessage "Time is frozen!"
   Inventory.Icon "MEGAA0"
@@ -1359,7 +1399,7 @@ Actor FreezePower : PowerupGiver Replaces RocketLauncher
   }
 }
 
-Actor ScarePower : PowerupGiver Replaces SuperShotgun
+Actor ScarePower : PowerupGiver
 {
   Inventory.Icon "MEGAA0"
   Inventory.MaxAmount 0

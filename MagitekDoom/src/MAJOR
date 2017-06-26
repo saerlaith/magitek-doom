@@ -45,18 +45,22 @@ ACTOR Major : MagitekMonsterBase
         JDGZ A 4 A_Look
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ A 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ B 4 A_Look
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ B 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ C 4 A_Look
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ C 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ D 4 A_Look
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ D 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
         Loop
     See:
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
@@ -188,6 +192,7 @@ ACTOR Major : MagitekMonsterBase
         JDGZ G 4 A_Pain
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetMetal4", 5, 50,0)
         JDGZ G 4
+		TNT1 A 0 A_Jump(100, "RollLeft", "RollRight")
         Goto See
 	Pain.Stun:
 		TNT1 A 0 A_ChangeFlag("NOPAIN", 1)
@@ -655,13 +660,10 @@ Stop
 	}
 }
 
-ACTOR FrozenMajor
+ACTOR FrozenMajor : FrozenZombieman
 {
-	Health 55
 	Radius 16
 	Height 52
-	DamageFactor "Kick", 900
-	+SOLID	+SHOOTABLE	+NOBLOOD +PUSHABLE
 	Translation Ice
 	States
 	{
@@ -692,6 +694,7 @@ ACTOR FrozenMajor
 	Death:	
 	TNT1 A 0 A_NoBlocking
 	TNT1 A 0 A_PlaySound ("DSBOTTLE")
+	TNT1 A 0 A_Explode(200,100, false, 0, 50)
 	TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 48, 0, random (0, 360), 2, random (0, 160))
 	TNT1 AAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 48, 0, random (0, 360), 2, random (0, 160))
 	TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 48, 0, random (0, 360), 2, random (40, 120))

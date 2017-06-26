@@ -25,13 +25,17 @@ ACTOR SentryGuy : MagitekMonsterBase
   damagefactor "Melee", 10.1
   damagefactor "Fatality", 100
   damagefactor "SuperPunch", 100
+  damagefactor "Plasma", 0.5
+  damagefactor "Fire", 0.5
   bloodtype "Black_Blood"
   bloodcolor Black
   +MISSILEMORE
+  obituary "%o got a hole burned into $p body by a sentry."
   States
   {
 	Spawn:
 		SENT A 10 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
 	See:
 		SENT A 10 Light ("PLSGREENSMALL") A_Chase(0, "Missile", CHF_DONTMOVE)
 		TNT1 A 0 A_Jump(50, "JetLeft", "JetRight", "JetForward", "JetBackward")
@@ -302,20 +306,18 @@ ACTOR SentryGuy : MagitekMonsterBase
   }
 }
 
-ACTOR FrozenSentry
+ACTOR FrozenSentry : FrozenZombieman
 {
-	Health 40
+	Health 60
 	Radius 16
 	Height 52
 	Scale .8
-	DamageFactor "Kick", 900
-	+SOLID	+SHOOTABLE	+NOBLOOD +PUSHABLE
 	Translation Ice
 	States
 	{
 	Spawn:
 		SENT A 200
-		JDGZ A 2
+		SENT A 2
 		TNT1 A 0 A_PlaySound("ICEBRK1")
 		SENT A 50
 		SENT B 2
@@ -340,6 +342,10 @@ ACTOR FrozenSentry
 	Death:	
 		TNT1 A 0 A_NoBlocking
 		TNT1 A 0 A_PlaySound ("DSBOTTLE")
+		TNT1 A 0 A_Explode(200,100, false, 0, 50)
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk1", 48, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk2", 48, 0, random (0, 360), 2, random (0, 160))
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("XIceChunk3", 48, 0, random (0, 360), 2, random (40, 120))
 		SENT A 4
 		TNT1 A 0 A_CustomMissile ("SentryBoomGen", 35, 0, 0, 2 | 4, 0)
 		RBXP A 0 Bright A_CustomMissile ("SentryShard", 35, 0, random(0,360), 2 | 4, random (30, 60))
@@ -615,6 +621,7 @@ actor SentryWarning
   +RANDOMIZE
   +RIPPER
   +BLOODLESSIMPACT
+  +THRUACTORS
   Translation "0:255=%[0,0,0]:[1.8,2,1.8]"
   states
   {
@@ -642,6 +649,7 @@ ACTOR SentryGuyShot
   SeeSound "LightRifle/Fire"
   DeathSound "weapons/plasmax"
   reactiontime 30
+  obituary "%o got a hole burned into $p body by a sentry."
      States
    {
 	Spawn:
@@ -684,6 +692,7 @@ ACTOR SentryGuyShot2
   DamageType Plasma
   SeeSound "LightRifle/Fire"
   DeathSound "weapons/plasmax"
+  obituary "%o got a hole burned into $p body by a sentry."
   reactiontime 20
      States
    {

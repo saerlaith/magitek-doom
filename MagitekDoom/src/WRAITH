@@ -27,6 +27,8 @@ ACTOR Wraith : MagitekMonsterBase
 	PainChance "KickHead", 255
 	damagefactor "KickHead", 1.5
     PainChance 50
+	PainChance "Shock", 150
+	PainChance "ShockForce", 200
 	PainChance "Stun", 255
 	PainChance "Kick", 255
 	PainChance "Charm", 120
@@ -38,12 +40,11 @@ ACTOR Wraith : MagitekMonsterBase
     Monster
     +FLOORCLIP	
     -QUICKTORETALIATE
-    SeeSound ""
-	ActiveSound "" 
-    PainSound ""
-    DeathSound ""
-    HitObituary "%o was frozen by a Wraith."
-    Obituary "%o was frozen by a Wraith."
+    SeeSound "Wraith/Idle"
+	ActiveSound "Wraith/Idle" 
+    PainSound "Wraith/Pain"
+    DeathSound "Wraith/Death"
+    Obituary "%o is living out $p new life as an ice statue."
     States
     {
     Spawn:
@@ -51,10 +52,12 @@ ACTOR Wraith : MagitekMonsterBase
         WRTH A 4 A_Look
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue4", 5, 70,0)
         WRTH A 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue4", 5, 70,0)
         WRTH B 4 A_Look
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue4", 5, 70,0)
         WRTH B 4 A_Look
+		TNT1 A 0 A_SetAngle(angle + 20)
         Loop
     See:
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue4", 5, 70,0)
@@ -71,6 +74,7 @@ ACTOR Wraith : MagitekMonsterBase
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue8", 5, 70,0)
 		WRTH C 8
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue8", 5, 70,0)
+		TNT1 A 0 A_PlaySound("Wraith/Fire")
 		WRTH CCCCCCCC 1 A_CustomMissile ("FrostGen", 80, 0, 0, 2 | 4, 0)
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue8", 5, 70,0)
 		WRTH CCCCCCCC 1 A_CustomMissile ("FrostGen", 80, 0, 0, 2 | 4, 0)
@@ -102,6 +106,7 @@ ACTOR Wraith : MagitekMonsterBase
 		TNT1 A 0 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue8", 5, 70,0)
 		WRTH D 8
+		TNT1 A 0 A_PlaySound("Wraith/Breath")
 		TNT1 A 0 A_FaceTarget
 		TNT1 A 0 A_SpawnItem ("HeadshotTargetBlue8", 5, 70,0)
 		WRTH DDDD 2 A_CustomMissile ("FrostBreath", 50, random (15, -15), random (-10, 10), 2 | 4, random (-10, 4))
@@ -217,9 +222,32 @@ ACTOR Wraith : MagitekMonsterBase
 	Death.KickHead:
 		TNT1 A 0 A_Jump (95, 2)
 		TNT1 A 0 A_SpawnItemEx ("ItemBagMagicAmmo", 0, 0, 15)
+		TNT1 AAA 0
         WRTH F 4 A_Scream
-        WRTH GHIJKL 4 A_NoBlocking
+		TNT1 AAAAAAAA 0 A_CustomMissile ("WraithClothPart", random (10, 80), random (25, -25), random (0, 360), 2, random (0, 70))
+        WRTH GH 4 A_NoBlocking
+		TNT1 AAAAAAAA 0 A_CustomMissile ("WraithClothPart", random (10, 80), random (25, -25), random (0, 360), 2, random (0, 70))
+		WRTH IJ 4 A_NoBlocking
+		WRTH KL 4 A_NoBlocking
         WRTH M -1
+        Stop
+	Death.Ice: Death.IceHead: 
+	Death.Freeze:
+	Death.Frost:
+		TNT1 A 0 A_Jump (95, 2)
+		TNT1 A 0 A_SpawnItemEx ("ItemBagMagicAmmo", 0, 0, 15)
+		TNT1 AAA 0
+		TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
+		TNT1 A 0 A_ChangeFlag("SOLID", 0)
+		TNT1 A 0 A_SpawnItem("FrozenWraith")
+		Stop
+	Death.Fire: Death.Burn: Death.FireHead: 
+        TNT1 A 0
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_Jump (95, 2)
+		SENT A 0 A_SpawnItemEx ("ItemBagMagicAmmo", 0, 0, 15)
+        TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_SpawnItem("BurningZombieOld")
         Stop
     }
 }

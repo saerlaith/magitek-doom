@@ -1,15 +1,55 @@
 clearplayerclasses
-addplayerclass Doomer2
+addplayerclass Doomer
 
 weaponsection "Brutal_Doom"
 
-setslot 1 Melee_Attacks RazorSaw BFS
-setslot 2 BrutalPistol Battle_Rifle Mini_Gun
-setslot 3 Shot_Gun Revolver SSG
-setslot 4 EchoGun Rocket_Launcher Grenade_Launcher
-setslot 5 ChargeRifle Plasma_Gun BIG_FUCKING_GUN
-setslot 6 MBow MWand ManaCannons
+setslot 1 
+setslot 2 
+setslot 3 
+setslot 4 
+setslot 5 
+setslot 6 
 setslot 7 
 setslot 8 
 setslot 9 
 setslot 0 
+
+   addkeysection "BrutalDoom - Actions" BrutalDoomActions               // the last unquoted bit used to say MySampleKeysection
+   
+   addmenukey "Kick" kickem
+   alias kickem "puke 301"
+   defaultbind Q kickem
+
+   addmenukey "Reload" reloader
+   alias reloader "puke 303"
+   defaultbind R reloader
+
+   addmenukey "Offend" brutaltaunt
+   alias brutaltaunt "puke 302"
+   defaultbind F brutaltaunt
+	
+   addkeysection "Magic Stuff" MagicStuffSection               // here too
+
+   addmenukey "Quick Spell" magicA
+   alias magicA "puke 431"
+   defaultbind G magicA
+   
+   addmenukey "Weapon Slot 1" wepSwitch1
+   alias wepSwitch1 "puke 441"	
+   defaultbind 1 wepSwitch1
+   
+   addmenukey "Weapon Slot 2" wepSwitch2
+   alias wepSwitch2 "puke 442"
+   defaultbind 2 wepSwitch2
+   
+   addmenukey "Weapon Slot 3" wepSwitch3
+   alias wepSwitch3 "puke 443"
+   defaultbind 3 wepSwitch3
+   
+   addmenukey "Weapon Slot 4" wepSwitch4
+   alias wepSwitch4 "puke 444"
+   defaultbind 4 wepSwitch4
+   
+   addmenukey "Capture Ally" magicB
+   alias magicB "puke 432"
+   defaultbind X magicB

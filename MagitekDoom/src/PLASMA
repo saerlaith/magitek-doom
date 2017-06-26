@@ -1,0 +1,1086 @@
+ACTOR PlasmaAmmo : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 40
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 40
+}
+
+ACTOR AlternatingSlicer : Ammo
+{
+   Inventory.Amount 0
+   Inventory.MaxAmount 1
+   Ammo.BackpackAmount 0
+   Ammo.BackpackMaxAmount 1
+}
+
+ACTOR BFMagicCost : Ammo
+{
+	+INVENTORY.IGNORESKILL
+	Inventory.MaxAmount 8
+}
+
+// --------------------------------------------------------------------------
+//
+// Plasma rifle
+//
+// --------------------------------------------------------------------------
+
+ACTOR Plasma_Gun : MagicBaseSystem
+{
+	Weapon.SelectionOrder 100
+	Weapon.AmmoUse1 0
+	Weapon.AmmoGive1 40
+	Weapon.AmmoUse2 0
+	Weapon.AmmoGive2 0
+    Inventory.PickupSound "PLSDRAW"
+	Weapon.AmmoType1 "N_Cell"
+	Weapon.AmmoType2 "PlasmaAmmo"
+    +WEAPON.NOAUTOAIM
+	Inventory.PickupMessage "$GOTPLASMA"
+	States
+	{
+	Steady:
+	TNT1 A 1
+	Goto Ready
+	Ready:
+        TNT1 A 0 A_PlaySound("PLSDRAW")
+        TNT1 AAAAAA 0
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto ReadyFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"ReadyLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"ReadyDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"ReadyEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"ReadyShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"ReadyIce")
+	ReadyFlame:
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		1PSG A 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		1PSG B 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		1PSG C 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		1PSG B 4 A_WeaponReady
+		Goto Ready+6
+	ReadyIce:
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		2PSG A 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		2PSG B 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		2PSG C 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		2PSG B 4 A_WeaponReady
+		Goto Ready+6
+	ReadyShock:
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		3PSG A 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		3PSG B 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		3PSG C 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		3PSG B 4 A_WeaponReady
+		Goto Ready+6
+	ReadyEarth:
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		4PSG A 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		4PSG B 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		4PSG C 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		4PSG B 4 A_WeaponReady
+		Goto Ready+6
+	ReadyDark:
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		5PSG A 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		5PSG B 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		5PSG C 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		5PSG B 4 A_WeaponReady
+		Goto Ready+6
+	ReadyLight:
+        TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		6PSG A 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		6PSG B 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		6PSG C 4 A_WeaponReady
+		TNT1 A 0 A_JumpIfInventory("Kicking",1,"DoKick")
+        TNT1 A 0 A_JumpIfInventory("Taunting",1,"Taunt")
+		TNT1 A 0 A_JumpIfInventory("Salute1", 1, "MagicAction")
+		TNT1 A 0 A_JumpIfInventory("Salute2", 1, "MagicSwap")
+		TNT1 A 0 A_JumpIfInventory("MagicTSwap", 1, "MagicSwap2")
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+		6PSG B 4 A_WeaponReady
+		Goto Ready+6
+	MagicEnd:
+		TNT1 A 0
+		goto ready+9
+	DontNeedToReload:
+	Goto Ready+6
+	Deselect:
+		FAST A 0 A_Lower
+		Wait
+	Select:
+		TNT1 A 0 A_Takeinventory("FistsSelected",1)
+	TNT1 A 0 A_Takeinventory("SawSelected",1)
+	TNT1 A 0 A_Takeinventory("ShotgunSelected",1)
+	TNT1 A 0 A_Takeinventory("SSGSelected",1)
+	TNT1 A 0 A_Takeinventory("MinigunSelected",1)
+	TNT1 A 0 A_Giveinventory("PlasmaGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RocketLauncherSelected",1)
+    TNT1 A 0 A_Takeinventory("GrenadeLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("BFGSelected",1)
+	TNT1 A 0 A_Takeinventory("BFG10kSelected",1)
+	TNT1 A 0 A_Takeinventory("RailGunSelected",1)
+	TNT1 A 0 A_Takeinventory("SubMachineGunSelected",1)
+	TNT1 A 0 A_Takeinventory("RevenantLauncherSelected",1)
+	TNT1 A 0 A_Takeinventory("LostSoulSelected",1)
+	TNT1 A 0 A_Takeinventory("FlameCannonSelected",1)
+	TNT1 A 0 A_Takeinventory("HasBarrel",1)
+	
+		FAST A 0 A_Raise
+		Wait
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",1,2)
+		Goto Ready+6
+        TNT1 AAAA 0
+        TNT1 A 0 A_PlaySound("PLSM9",3)
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto FireFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"FireLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"FireDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"FireEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"FireShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"FireIce")
+	FireFlame:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"HasteFlame")
+		1PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		1PSF BCD 1 BRIGHT 
+		Goto FireContinue
+	FireIce:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"HasteIce")
+		2PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		2PSF BCD 1 BRIGHT 
+		Goto FireContinue
+	FireShock:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"HasteShock")
+		3PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		3PSF BCD 1 BRIGHT 
+		Goto FireContinue
+	FireEarth:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"HasteEarth")
+		4PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		4PSF BCD 1 BRIGHT 
+		Goto FireContinue
+	FireDark:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"HasteDark")
+		5PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		5PSF BCD 1 BRIGHT 
+		Goto FireContinue
+	FireLight:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"HasteLight")
+		6PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		6PSF BCD 1 BRIGHT 
+		Goto FireContinue
+	FireContinue:
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_Takeinventory("PlasmaAmmo",1)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+	FireCooldown:
+        TNT1 A 0 A_PlaySound("PLSCOOL")
+		0PSF ABCD 2
+		0PSF EEEEE 2 A_FireCustomMissile("SmokeSpawner",0,0,0,5)
+		0PSF DCBA 2
+        TNT1 A 0 A_PlaySound("BEPBEP")
+		Goto Ready+6
+		
+	HasteFlame:
+		1PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		1PSF C 1 BRIGHT 
+		Goto FireContinue
+	HasteIce:
+		2PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		2PSF C 1 BRIGHT 
+		Goto FireContinue
+	HasteShock:
+		3PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		3PSF C 1 BRIGHT 
+		Goto FireContinue
+	HasteEarth:
+		4PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		4PSF C 1 BRIGHT 
+		Goto FireContinue
+	HasteDark:
+		5PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		5PSF C 1 BRIGHT 
+		Goto FireContinue
+	HasteLight:
+		6PSF A 1 BRIGHT A_FireCustomMissile("Plasma_Ball", 0, 1, 0, 0)
+		6PSF C 1 BRIGHT 
+		Goto FireContinue
+	
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("MagicAmmo",1,3)
+		Goto NoMana
+        TNT1 AAAAA 0
+		TNT1 A 0 A_JumpIfInventory("BFMagicCost",1,3)
+		TNT1 A 0 A_Takeinventory("MagicAmmo",1)
+		TNT1 A 0 A_GiveInventory("BFMagicCost",99)
+		TNT1 AAAAA 0
+	
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,1)
+		Goto AltFireFlame
+		TNT1 A 0 A_JumpIfInventory("MagicType",5,"AltFireLight")
+		TNT1 A 0 A_JumpIfInventory("MagicType",4,"AltFireDark")
+		TNT1 A 0 A_JumpIfInventory("MagicType",3,"AltFireEarth")
+		TNT1 A 0 A_JumpIfInventory("MagicType",2,"AltFireShock")
+		TNT1 A 0 A_JumpIfInventory("MagicType",1,"AltFireIce")
+		
+	AltFireFlame:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",2,2)
+		Goto Ready+6
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_TakeInventory("PlasmaAmmo",2)
+		TNT1 A 0 A_Takeinventory("BFMagicCost",2)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FirePlasmaSide", 0, 0, 15, 0)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("FirePlasmaSide", 0, 0, -15, 0)
+		1PSF E 2 BRIGHT A_FireCustomMissile("FirePlasmaMid", 0, 0, 0, 0)
+		1PSF BCD 2 BRIGHT 
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+		
+	AltFireIce:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",2,2)
+		Goto Ready+6
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("BFMagicCost",2)
+		TNT1 A 0 A_TakeInventory("PlasmaAmmo",2)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		TNT1 A 0 BRIGHT A_FireCustomMissile("IcePlasma1", 0, 0, 0, 0)
+		2PSF E 2 BRIGHT A_FireCustomMissile("IcePlasma2", 0, 0, 0, 0)
+		2PSF BCD 2 BRIGHT 
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+		
+	AltFireShock:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",1,2)
+		Goto Ready+6
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("BFMagicCost",1)
+		TNT1 A 0 A_TakeInventory("PlasmaAmmo",1)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, 40, 20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasmaEffect", 0, 0, 40, 0)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, 40, -20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, 20, 20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasmaEffect", 0, 0, 20, 0)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, 20, -20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, 0, 20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasmaCenter", 0, 0, 0, 0)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, 0, -20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, -20, 20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasmaEffect", 0, 0, -20, 0)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, -20, -20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, -40, 20)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasmaEffect", 0, 0, -40, 0)
+		TNT1 A 0 A_FireCustomMissile("ShockPlasma", 0, 0, -40, -20)
+		3PSF E 2 BRIGHT 
+		3PSF C 2 BRIGHT 
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+		
+	AltFireEarth:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",2,4)
+		Goto Ready+6
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("BFMagicCost",4)
+		TNT1 A 0 A_TakeInventory("PlasmaAmmo",4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		4PSF E 3 BRIGHT A_FireCustomMissile("EarthPlasma", 0, 0, 0, 0)
+		4PSF BCD 3 BRIGHT 
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+		
+	AltFireDark:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",4,2)
+		Goto Ready+6
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("BFMagicCost",4)
+		TNT1 A 0 A_TakeInventory("PlasmaAmmo",4)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		5PSF E 3 BRIGHT A_FireCustomMissile("SuctionOrb", 0, 0, 0, 0)
+		5PSF BCD 3 BRIGHT 
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+		
+	AltFireLight:
+        TNT1 A 0 A_JumpIfInventory("Reloading",1,"Reload")
+        TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",2,2)
+		Goto Ready+6
+        TNT1 AAAA 0
+		TNT1 A 0 A_AlertMonsters (1500)
+		TNT1 A 0 A_Takeinventory("BFMagicCost",2)
+		TNT1 A 0 A_TakeInventory("PlasmaAmmo",2)
+		TNT1 A 0 BRIGHT A_FireCustomMissile("AlerterLowChance")
+		TNT1 A 0 A_JumpIfInventory("AlternatingSlicer",1,"SlicerShotReverse")
+	SlicerShotNormal:
+		6PSF E 2 BRIGHT A_FireCustomMissile("SlicerShot", 0, 0, 0, 0)
+		TNT1 A 0 A_GiveInventory("AlternatingSlicer",1)
+		Goto AltFireLightFinish
+	SlicerShotReverse:
+		6PSF E 2 BRIGHT A_FireCustomMissile("SlicerShotReverse", 0, 0, 0, 0)
+		TNT1 A 0 A_TakeInventory("AlternatingSlicer",1)
+		Goto AltFireLightFinish
+	AltFireLightFinish:
+		6PSF BCD 2 BRIGHT 
+		TNT1 A 0 A_SetPitch(frandom(-1, 0) + pitch)
+		TNT1 A 0 A_ReFire
+		Goto FireCooldown
+	
+	Flash:
+		TNT1 A 4
+        Goto LightDone
+	Spawn:
+		PLAS A -1
+		Stop
+
+    Reload:
+	    0PSR A 1 A_WeaponReady
+        TNT1 A 0 A_Takeinventory("Reloading",1)
+		TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",40,"DontNeedToReload")
+        TNT1 A 0 A_PlaySound("BEEEP")
+        TNT1 A 0 A_JumpIfInventory("N_Cell",1,3)
+        Goto Ready+6
+        TNT1 AAAA 0
+       
+
+        
+		TNT1 A 0 A_PlaySound("PLREADY")
+		
+	ReloadNormal:
+		TNT1 A 0 A_JumpIfInventory("IsHasted",1,"ReloadHaste")
+		0PSR A 12
+		0PSR BCDDDEFGHHII 1
+		
+		0PSR JKLMN 1
+		TNT1 A 0 A_FireCustomMissile("PlasmaCaseSpawn",-30,0,-4,-4)
+		0PSR OPQRSSSSTU 1
+		0PSR U 6
+		0PSR VWXYZ 1
+		0PSS ABBCBCEF 1
+		0PSR A 30
+		Goto FinishReload
+	
+	ReloadHaste:
+		0PSR A 12
+		0PSR BCDEGI 1
+		
+		0PSR JKLMN 1
+		TNT1 A 0 A_FireCustomMissile("PlasmaCaseSpawn",-30,0,-4,-4)
+		0PSR OQRST 1
+		0PSR U 6
+		0PSR VXZ 1
+		0PSS ABCEF 1
+		0PSR A 30
+		Goto FinishReload
+		
+	FinishReload:
+		TNT1 AAAAAAAAAA 0
+		TNT1 A 0 A_JumpIfInventory("PlasmaAmmo",40,15)
+		TNT1 A 0 A_JumpIfInventory("N_Cell",1,3)
+		Goto Ready+6
+        TNT1 AAAAAA 0
+		TNT1 A 0 A_Giveinventory("PlasmaAmmo",1)
+		TNT1 A 0 A_Takeinventory("N_Cell",1)
+		Goto FinishReload
+		TNT1 AAAAAAAA 0
+		
+		TNT1 A 0 A_Takeinventory("Reloading",1)
+        TNT1 A 0 A_PlaySound("BEPBEP")
+        Goto Ready+6
+	}
+}
+
+
+
+ACTOR Plasma_Ball Replaces PlasmaBall
+{
+	Radius 10
+	Height 10
+	Speed 60
+	Damage (20)
+    DamageType Plasma
+	Decal "Scorch"
+	Projectile
+	+RANDOMIZE
+	renderstyle ADD
+	alpha 0.90
+	Scale 0.10
+	DeathSound "weapons/plasmax"
+	SeeSound "PLSM9"
+    SeeSound "None"
+	Obituary "$OB_MPPLASMARIFLE"
+	species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
+	States
+	{
+	Spawn:
+        PBAL C 1 BRIGHT A_SpawnItem("PlasmaFlare",0,0)
+		PBAL C 0 BRIGHT A_SpawnItem("PlasmaBallTrail",0,0)
+		Loop
+
+	Xdeath:
+		TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_Explode(20, 50, false, 0, 20)
+		TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 B 1
+		TNT1 B 4
+		TNT2 AAA 4 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	Death:
+		TNT1 A 0 A_SpawnItemEx ("DetectFloorCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 A 0 A_Explode(20, 50, false, 0, 20)
+		TNT1 A 0 A_SpawnItemEx ("DetectCeilCraterSmall",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0)
+		TNT1 B 1
+		TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 B 4	
+		TNT2 AAAAAAAAA 4 A_CustomMissile ("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160))
+		Stop
+	}
+}
+
+ACTOR Plasma_Ball2 : Plasma_Ball
+{
+	States
+	{
+	Spawn:
+    PBAL C 4 BRIGHT A_SpawnItem("PlasmaFlare",0,0)
+	Loop
+
+	Xdeath:
+	TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+	Stop
+
+	Death:
+	TNT1 B 1
+	TNT1 A 0 A_CustomMissile ("BluePlasmaFire", 0, 0, random (0, 360), 2, random (0, 360))
+	TNT1 AAA 0 A_CustomMissile ("BluePlasmaParticle", 0, 0, random (0, 360), 2, random (0, 360))
+	Stop
+	}
+}
+
+
+ACTOR PlasmaBall75: Plasma_Ball
+{
+
+	SeeSound "PLSM9"
+}
+
+ACTOR FirePlasmaTrail {
+	Translation "0:255=%[0,0,0]:[2.0,0.0,0.0]"
+}
+
+ACTOR FirePlasmaMid : Plasma_Ball
+{
+	Speed 60
+	Damage (40)
+    DamageType PlasmaBall
+	alpha 0.9
+	Scale 0.5
+	-NOGRAVITY
+	Gravity 1.0
+	Translation "0:255=%[0,0,0]:[2.0,0.0,0.0]"
+	SeeSound "BewitchFirearm/Fire"
+	States
+	{
+	Spawn:
+        FBAL AABB 1 BRIGHT A_SpawnItem("FirePlasmaTrail",0,0)
+		Loop
+	XDeath:
+	Death:
+		TNT1 A 0
+		Stop
+	}
+}
+
+ACTOR FirePlasmaSide : FirePlasmaMid
+{
+	Speed 60
+	Damage (0)
+    DamageType Fire
+	+SEEKERMISSILE
+	+NODAMAGETHRUST
+	+PAINLESS
+	SeeSound ""
+	States
+	{
+	Death: Crash:
+		TNT1 AAA 0
+		TNT1 A 0 A_ChangeFlag("NOGRAVITY", TRUE)
+		TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_CustomMissile ("OnFireEffect", random (0, 30), random (-30, 30), random (0, 40), 2, random (0, 160))
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		TNT1 AAAAA 1 BRIGHT A_Fire(30)
+		TNT1 A 0 A_Explode(2, 100, false, 0,100)
+		stop
+	XDeath:
+		TNT1 A 0
+		TNT1 A 0 A_SeekerMissile(90,90,1,255,0)
+		SLSH A 0 A_PlaySound("custom/fireBreak", 1, 1.0)
+		TNT1 A 0 A_ChangeFlag("MISSILE", FALSE)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEIMPACT", FALSE)
+		TNT1 A 0 A_ChangeFlag("ACTIVATEPCROSS", FALSE)
+		TNT1 A 0 A_ChangeFlag("SOLID", FALSE)
+		Goto Death+11
+	}
+}
+
+actor IcePlasma1
+{
+  height 7
+  radius 7
+  damage (50)
+  speed 30
+  DamageType "Ice"
+  renderstyle Add
+  alpha .7
+  Scale 0.5
+  PROJECTILE
+  reactionTime 15
+  species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
+	SeeSound "BewitchFirearm/Ice"
+  states
+  {
+  Spawn:
+	TNT1 A 0
+	Goto Reg
+  Reg:
+    FRST A 1 Bright A_BishopMissileWeave
+	TNT1 A 0 A_CustomMissile("IcePlasmaTrail",0,0,0)
+	FRST A 1 Bright A_BishopMissileWeave
+	TNT1 A 0 A_CustomMissile("IcePlasmaTrail",0,0,0)
+	TNT1 A 0 A_Countdown
+    Loop
+  Death: XDeath: Crash:
+	TNT1 B 0
+	FRST BCDE 2 BRIGHT
+	Stop
+  }
+}
+
+ACTOR IcePlasma2 : IcePlasma1
+{
+    States
+    {
+      Spawn:
+        TNT1 A 0
+        TNT1 AAAAAAAAAAAA 0 A_BishopMissileWeave
+        goto Reg
+    }
+}
+
+ACTOR ShockPlasma
+{
+	Radius 10
+	Height 10
+	Speed 60
+	Damage (0)
+    DamageType ShockWeak
+	Decal "Scorch"
+	Projectile
+	+RANDOMIZE
+	renderstyle ADD
+	alpha 0.5
+	Scale 0.50
+	DeathSound "weapons/plasmax"
+	SeeSound "PLSM9"
+    SeeSound "None"
+	Obituary "$OB_MPPLASMARIFLE"
+	species "Marines"
+	+THRUSPECIES
+	+PAINLESS
+	States
+	{
+	Spawn:
+        TNT1 A 3
+	Continue:
+		SKOB D 1 BRIGHT A_SpawnItem("PlasmaFlare",0,0)
+		Loop
+	Death:
+		TNT1 A 0
+		TNT1 A 0 A_Explode(5, 20, false, 0, 20)
+		Stop
+	}
+}
+
+Actor ShockPlasmaEffect : ShockPlasma 
+{
+ States
+	{
+	Death:
+		TNT1 A 0 A_CustomMissile ("ShockBurst", 1, 0, random (0, 360), 2, random (0, 160))
+		TNT1 A 0 A_Explode(10, 20, false, 0, 20)
+		Stop
+	}
+}
+
+Actor ShockPlasmaCenter : ShockPlasmaEffect 
+{
+ DamageType ShockForce
+ SeeSound "BewitchFirearm/Shock"
+ -PAINLESS
+}
+
+ACTOR EarthPlasma
+{
+    Radius 15
+	Height 5
+	Speed 60
+	Scale 1
+	Damage (0)
+	DamageType ExplosiveImpact
+	Projectile
+	BounceType "Doom" 
+    BounceFactor 0.5
+	BounceCount 5
+	+CANBOUNCEWATER
+	+USEBOUNCESTATE
+	reactiontime 25
+	species "Marines"
+	SeeSound "BewitchFirearm/Earth"
++THRUSPECIES
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_Countdown
+		TNT1 A 0 A_ScaleVelocity(0.90)
+		ESTN C 1 Bright 
+		TNT1 A 0 A_ScaleVelocity(0.90)
+		ESTN C 1 Bright A_CustomMissile("FirePlasmaTrailBig",10)
+		Loop
+	Death:
+		TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL A 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_RadiusThrust(150, 100, RTF_AFFECTSOURCE | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+		EXPL A 0 Bright A_Explode(100, 100, true)
+		EXPL A 0 Bright A_Explode(100, 100, false)
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 0, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 40, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 80, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 120, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 160, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 200, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 240, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 280, 2 | 4, random (10, 80))
+		RBXP A 0 Bright A_CustomMissile ("BurningRubble", 0, 0, 320, 2 | 4, random (10, 80))
+		Stop
+	Bounce.Actor:
+		Goto Death
+  }
+}
+
+ACTOR BurningRubble
+{
+  Radius 10
+  Height 5
+  Speed 15
+  Damage (50)
+  Projectile
+  DamageType "Pistol"
+  -NOGRAVITY
+  Gravity 1
+  BounceType "Doom" 
+  BounceCount 99
+  WallBounceFactor 0.6
+  BounceFactor 0.6
+  Scale 0.8
+  +USEBOUNCESTATE
+  +DONTGIB
+  +NOEXTREMEDEATH
+  +THRUACTORS
+  +CANBOUNCEWATER
+  species "Marines"
++THRUSPECIES
+  reactiontime 20
+  Obituary "$OB_MPPLASMARIFLE" // "%o was melted by %k's shotgun."
+  Translation "0:255=%[0,0,0]:[0.8,0.8,0.5]"
+  States
+ {
+  Spawn:
+	ESTN DD 2 Bright A_CustomMissile ("FlameTrail", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+	TNT1 A 0 A_ChangeFlag("THRUACTORS", 0)
+	Goto Continue
+  Continue:
+    ESTN DDDD 2 Bright A_CustomMissile ("FlameTrail", 0, 0, random (0, 360), 2 | 4, random (-50, 50))
+    TNT1 A 0 A_Countdown
+	Loop
+  Death:
+    ESTN FGH 2 Bright
+    Stop
+  Bounce.Actor:
+	Goto Death
+  }
+}
+
+ACTOR SuctionOrb
+{
+  Radius 5
+  Height 5
+  Speed 20
+  Damage (0)
+  Projectile
+  DamageType "ExplosiveImpact"
+  -NOGRAVITY
+  Gravity 0.5
+  BounceType "Doom" 
+  BounceCount 99
+  WallBounceFactor 0.8
+  BounceFactor 0.4
+  Scale .2
+  RenderStyle "Translucent"
+  Alpha 0.8
+  +USEBOUNCESTATE
+  +THRUACTORS
+  +CANBOUNCEWATER
+  species "Marines"
+  SeeSound "BewitchFirearm/Dark"
++THRUSPECIES
++DONTHURTSPECIES
+  States
+ {
+  Spawn:
+	BLKH AABBCCDDEEFFGGHH 1 Bright A_RadiusThrust(-200, 300, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	Loop
+  Death:
+	TNT1 A 0 A_SetScale(0.25)
+    BLKH AA 1 Bright A_RadiusThrust(-220, 310, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.30)
+    BLKH BB 1 Bright A_RadiusThrust(-240, 320, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.35)
+    BLKH CC 1 Bright A_RadiusThrust(-260, 330, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.40)
+    BLKH DD 1 Bright A_RadiusThrust(-280, 340, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.45)
+    BLKH EE 1 Bright A_RadiusThrust(-300, 350, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.50)
+    BLKH FF 1 Bright A_RadiusThrust(-320, 360, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.55)
+    BLKH GG 1 Bright A_RadiusThrust(-340, 380, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.60)
+    BLKH HH 1 Bright A_RadiusThrust(-360, 390, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.65)
+    BLKH AA 1 Bright A_RadiusThrust(-380, 400, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.70)
+    BLKH BB 1 Bright A_RadiusThrust(-400, 410, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.75)
+    BLKH CC 1 Bright A_RadiusThrust(-420, 420, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.80)
+    BLKH DD 1 Bright A_RadiusThrust(-440, 430, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.85)
+    BLKH EE 1 Bright A_RadiusThrust(-460, 440, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.90)
+    BLKH FF 1 Bright A_RadiusThrust(-480, 450, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(0.95)
+    BLKH GG 1 Bright A_RadiusThrust(-500, 460, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_SetScale(1)
+    BLKH HH 1 Bright A_RadiusThrust(-500, 470, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	BLKH AABBCCDDEEFFGGHH 1 A_RadiusThrust(-500, 500, false | RTF_NOIMPACTDAMAGE | RTF_THRUSTZ)
+	TNT1 A 0 A_CustomMissile ("ShockwaveEffect", 0, 0, 0, 2 | 4, 0)
+	SHOK A 0 bright A_Explode (150, 150, false, 100)
+	BLKH A 2 A_SetScale(0.9)
+	BLKH B 2 A_SetScale(0.8)
+	BLKH C 2 A_SetScale(0.7)
+	BLKH D 2 A_SetScale(0.6)
+	BLKH E 2 A_SetScale(0.5)
+	BLKH F 2 A_SetScale(0.4)
+	BLKH G 2 A_SetScale(0.3)
+	BLKH H 2 A_SetScale(0.2)
+	BLKH A 2 A_SetScale(0.1)
+    Stop
+  }
+}
+
+actor SlicerShot
+{
+  radius 2
+  height 10
+  speed 20
+  damage 0
+  renderstyle Translucent
+  PROJECTILE
+  BounceType "Hexen"
+  +THRUACTORS
+  species "Marines"
++THRUSPECIES
++DONTHURTSPECIES
+	SeeSound "BewitchFirearm/Light"
+  states
+  {
+  Spawn:
+    TNT1 A 4 BRIGHT
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 120, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 130, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 140, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 150, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 160, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 170, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 180, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 190, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 200, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 210, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 220, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 230, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 240, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	Goto Death
+  Death:
+	TNT1 A 0
+    stop
+  }
+}
+
+actor SlicerShotReverse : SlicerShot
+{
+  states
+  {
+  Spawn:
+    TNT1 A 4 BRIGHT
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 240, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 230, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 220, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 210, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 200, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 190, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 180, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 170, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 160, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 150, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 140, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 130, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	TNT1 A 1 A_CustomMissile ("SliceSegment", 0, 0, 120, CMF_SAVEPITCH | CMF_OFFSETPITCH, 180)
+	Goto Death
+  }
+}
+
+actor SliceSegment
+{
+  radius 5
+  height 10
+  speed 20
+  damage (30)
+  Scale 1
+  renderstyle Translucent
+  deathsound "succubus/explode"
+  damagetype Slice
+  PROJECTILE
+  +THRUSPECIES
+  states
+  {
+  Spawn:
+	TNT1 A 0
+    TNT1 AAAAAAAAAA 1 BRIGHT A_CustomMissile ("SlicerTrail", 0, 0, 0, 2 | 4, 0)
+    Goto Death
+  Death: Crash:
+	TNT1 A 0
+    stop
+  }
+}

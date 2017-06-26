@@ -1,20 +1,67 @@
+
+
 Statusbar fullscreen, forcescaled
 {
 	DrawImage "HUDBG", 0, 0;
-	drawbar "armfull", "armempt", Armor, vertical, 9, 50;
-	drawbar "hpmfull", "hpmempt", Health, vertical, 12, 50;
-	drawbar "mpmfull", "mpmempt", MagicAmmo, vertical, -25, 50;
-	drawnumber 3, MM2SFNTO, Red, Health, fillzeros, 24, 40;
-	drawnumber 2, MM2SFNTO, Blue, MagicAmmo, fillzeros, -12, 40;
-	drawnumber 3, MM2SFNTO, DarkGreen, Armor, alignment(center), whennotzero, -4, 65;
-	drawnumber 3, METHUDF, Untranslated, Ammo2, alignment(center), 313, 131;
-	drawnumber 3, METHUDF, Untranslated, Ammo1, alignment(center), 317, 144;
-}
-Statusbar normal
-{
-	drawnumber 3, HUDFONT_DOOM, Red, Health, alignment(center), whennotzero, 10, -260;
-	drawnumber 3, HUDFONT_DOOM, DarkGreen, Armor, alignment(center), whennotzero, 10, -235;
+	drawimage armoricon, -16, 56, centerbottom, 15, 15;
 	
-	drawnumber 3, HUDFONT_DOOM, Black, Ammo1, alignment(center), 310, -235;
-	drawnumber 3, HUDFONT_DOOM, White, Ammo2, alignment(center), 310, -260;
+	drawbar "armfull", "armempt", Armor, vertical, interpolate(2), 3, 60;
+	drawbar "mpmfull", "mpmempt", MagicAmmo, vertical, interpolate(2), -22, 75;
+	
+	InInventory MagicType, 5
+	{
+	drawimage "HUDLIFE5", 9, 56, centerbottom, 10, 10;
+	drawbar "hpmfull5", "hpmempt5", Health, vertical, interpolate(2), 6, 60;
+	drawnumber 3, MM2SFNTO, Gray, Health, fillzeros, interpolate(2), 20, 35;
+	}
+	else InInventory MagicType, 4
+	{
+	drawimage "HUDLIFE4", 9, 56, centerbottom, 10, 10;
+	drawbar "hpmfull4", "hpmempt4", Health, vertical, interpolate(2), 6, 60;
+	drawnumber 3, MM2SFNTO, Purple, Health, fillzeros, interpolate(2), 20, 35;
+	}
+	else InInventory MagicType, 3
+	{
+	drawimage "HUDLIFE3", 9, 56, centerbottom, 10, 10;
+	drawbar "hpmfull3", "hpmempt3", Health, vertical, interpolate(2), 6, 60;
+	drawnumber 3, MM2SFNTO, Brown, Health, fillzeros, interpolate(2), 20, 35;
+	}
+	else InInventory MagicType, 2
+	{
+	drawimage "HUDLIFE2", 9, 56, centerbottom, 10, 10;
+	drawbar "hpmfull2", "hpmempt2", Health, vertical, interpolate(2), 6, 60;
+	drawnumber 3, MM2SFNTO, Gold, Health, fillzeros, interpolate(2), 20, 35;
+	}
+	else InInventory MagicType, 1 
+	{
+	drawimage "HUDLIFE1", 9, 56, centerbottom, 10, 10;
+	drawbar "hpmfull1", "hpmempt1", Health, vertical, interpolate(2), 6, 60;
+	drawnumber 3, MM2SFNTO, Cyan, Health, fillzeros, interpolate(2), 20, 35;
+	}
+	else 
+	{
+	drawimage "HUDLIFE0", 9, 56, centerbottom, 10, 10;
+	drawbar "hpmfull0", "hpmempt0", Health, vertical, interpolate(2), 6, 60;
+	drawnumber 3, MM2SFNTO, Red, Health, fillzeros, interpolate(2), 20, 35;
+	}
+	
+	
+	drawnumber 2, MM2SFNTO, LightBlue, MagicAmmo, fillzeros, interpolate(2), -10, 60;
+	drawnumber 3, MM2SFNTO, White, Armor, alignment(center), whennotzero, interpolate(2), -17, 35;
+	drawnumber 3, METHUDF, Untranslated, Ammo2, alignment(center), 317, 133;
+	drawnumber 3, METHUDF, Untranslated, Ammo1, alignment(center), 317, 148;
+}
+
+Statusbar normal, forcescaled
+{
+	drawnumber 3, MM2SFNTO, Red, Health, alignment(center), whennotzero, 120, 100;
+	drawnumber 3, MM2SFNTO, DarkGreen, Armor, alignment(center), whennotzero, 120, 112;
+	
+	drawnumber 3, MM2SFNTO, Black, Ammo1, alignment(center), 200, 112;
+	drawnumber 3, MM2SFNTO, White, Ammo2, alignment(center), 200, 100;
+}
+
+statusbar inventory
+{
+   drawinventorybar Doom, 7, INDEXFONT, 50, 170;
 }
