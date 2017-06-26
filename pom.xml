@@ -5,7 +5,7 @@
   <groupId>nico.doom</groupId>
   <artifactId>magitek</artifactId>
   <packaging>pom</packaging>
-  <version>1.0</version>
+  <version>1_0</version>
   <name>Maven Quick Start Archetype</name>
   <url>http://maven.apache.org</url>
   <modules>
