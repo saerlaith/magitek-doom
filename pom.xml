@@ -9,7 +9,6 @@
   <name>Maven Quick Start Archetype</name>
   <url>http://maven.apache.org</url>
   <modules>
-    <module>brutal19</module>
     <module>MagitekDoom</module>
   </modules>
 </project>
